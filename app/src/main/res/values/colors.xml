@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="btnSignUp">#39796b</color>
+
+    <color name="green">#9BAC44</color>
+    <color name="blue">#00ADEE</color>
+
+
+    <color name="btnSignActive">#A9d440</color>
+    <color name="overlayBackground">#7f333639</color>
+    <color name="overlayActionBar">#0e0d0e</color>
+    <color name="colorPrimary">#bdbdbd</color>
+    <color name="colorPrimaryDark">#707070</color>
+    <color name="colorAccent">#FFA000</color>
+
+    <color name="white">#ffffff</color>
+
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+
+
+</resources>
+
+    <!--<resources>-->
+    <!--<color name="colorPrimary">#004d40</color>-->
+    <!--<color name="colorPrimaryDark">#00251a</color>-->
+    <!--<color name="colorAccent">#39796b</color>-->
+    <!--<color name="btnSignUp">#39796b</color>-->
+    <!--<color name="btnSignActive">#A9d440</color>-->
+    <!--<color name="overlayBackground">#7f333639</color>-->
+    <!--<color name="overlayActionBar">#0e0d0e</color>-->
+    <!--<color name="primary">#E43F3F</color>-->
+    <!--<color name="primary_dark">#E12929</color>-->
+    <!--<color name="primary_darker">#CC1D1D</color>-->
+    <!--<color name="accent">#FFFFFF</color>-->
+
+    <!--<color name="black">#000000</color>-->
+    <!--<color name="jet">#222222</color>-->
+    <!--<color name="oil">#333333</color>-->
+    <!--<color name="monsoon">#777777</color>-->
+    <!--<color name="jumbo">#888888</color>-->
+    <!--<color name="aluminum">#999999</color>-->
+    <!--<color name="base">#AAAAAA</color>-->
+    <!--<color name="iron">#CCCCCC</color>-->
+    <!--<color name="white">#FFFFFF</color>-->
+
+
+    <!--</resources>-->

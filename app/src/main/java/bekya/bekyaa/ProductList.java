@@ -164,7 +164,6 @@ EditText name,descrip , discount, price;
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()) {
                     Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
-                    Toast.makeText(ProductList.this, "" + r.getImg1() + "\n" + r.getImg2() + r.getImg3(), Toast.LENGTH_SHORT).show();
 
                     array.add(0, r);
                     mAdapter.notifyDataSetChanged();

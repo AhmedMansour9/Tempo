@@ -1,6 +1,7 @@
 package bekya.bekyaa;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -205,11 +207,9 @@ EditText name,descrip , discount, price;
         imageLoader.init(config);
     }
     private void showaddFooddialog() {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProductList.this);
-        alertDialog.setTitle("أضف منتج جديد");
-        alertDialog.setMessage("من فضلك أملآ جميع البيانات");
-        LayoutInflater inflater = this.getLayoutInflater();
-         update_info_layout = inflater.inflate(R.layout.layout_add_product, null);
+        Dialog update_info_layout = new Dialog(ProductList.this);
+        update_info_layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        update_info_layout.setContentView(R.layout.layout_add_product);
        name = update_info_layout.findViewById(R.id.Name);
        descrip = update_info_layout.findViewById(R.id.descrip);
         discount = update_info_layout.findViewById(R.id.discount);
@@ -240,85 +240,69 @@ EditText name,descrip , discount, price;
                 uploadimage();
             }
         });
-      alertDialog.setView(update_info_layout);
-        alertDialog.setPositiveButton("نعم", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
 
-                Name=name.getText().toString().trim();
-                Discrption=descrip.getText().toString().trim();
-                Discount=discount.getText().toString().trim();
-                Price=price.getText().toString().trim();
-
-                if (Name.isEmpty() || Discrption.isEmpty()|| Discount.isEmpty()|| Price.isEmpty()) {
-                    Toast.makeText(getBaseContext(), "من فضلك أملآ جميع البيانات", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    SavedSahredPrefrenceSwitch(Name,Discrption,Discount,Price);
-                    dialogInterface.dismiss();
-                }
-
-            }
-        });
-
-        alertDialog.setNegativeButton("لا", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-
-
-            }
-        });
-
-        alertDialog.show();
+        update_info_layout.show();
     }
 
     private void uploadimage() {
-        if(dataT!=null) {
-            for (int i = 0; i < dataT.size(); i++) {
-                final ProgressDialog progressDialog  = new ProgressDialog(this);
-                progressDialog.setTitle("Uploading...");
-                progressDialog.show();
-                storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
-                Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
-                StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
-                imageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.e("ss", "onSuccess: " + taskSnapshot);
-                        progressDialog.dismiss();
-                        Uri u = taskSnapshot.getDownloadUrl();
-                        Gson i = new Gson();
-                        listimages.add(u.toString());
-                        String jsonFavorites = i.toJson(listimages);
-                        editor.putString("img", jsonFavorites);
-                        editor.commit();
-                        final int pos = dataT.size();
-                        int y = listimages.size();
+        Name = name.getText().toString().trim();
+        Discrption = descrip.getText().toString().trim();
+        Discount = discount.getText().toString().trim();
+        Price = price.getText().toString().trim();
 
-                        if (pos == y) {
+        if (Name.isEmpty() || Discrption.isEmpty() || Discount.isEmpty() || Price.isEmpty()) {
+            Toast.makeText(getBaseContext(), "من فضلك أملآ جميع البيانات", Toast.LENGTH_SHORT).show();
+
+        }else if(dataT==null){
+            SavedSahredPrefrenceSwitch(Name, Discrption, Discount, Price);
+        }
+        else {
+            if (dataT != null) {
+                for (int i = 0; i < dataT.size(); i++) {
+                    final ProgressDialog progressDialog = new ProgressDialog(this);
+                    progressDialog.setTitle("Uploading...");
+                    progressDialog.show();
+                    storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
+                    Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
+                    StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
+                    imageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.e("ss", "onSuccess: " + taskSnapshot);
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Uploaded Succesfully", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri u = taskSnapshot.getDownloadUrl();
+                            Gson i = new Gson();
+                            listimages.add(u.toString());
+                            String jsonFavorites = i.toJson(listimages);
+                            editor.putString("img", jsonFavorites);
+                            editor.commit();
+                            final int pos = dataT.size();
+                            int y = listimages.size();
 
+                            if (pos == y) {
+                                progressDialog.dismiss();
+                                SavedSahredPrefrenceSwitch(Name, Discrption, Discount, Price);
+                                Toast.makeText(getApplicationContext(), "Uploaded Succesfully", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        }
+                    })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                }
+                            });
+                }
             }
         }
     }
-
 
     private void chooseImage() {
         Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
@@ -435,14 +419,15 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     @Override
     public void Callback(View v, int poistion) {
         Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
-        inty.putExtra("key",array.get(poistion).getImg1());
-        inty.putExtra("name",array.get(poistion).getName());
-        inty.putExtra("discrp",array.get(poistion).getDiscrption());
-        inty.putExtra("discount",array.get(poistion).getDiscount());
-        inty.putExtra("phone",array.get(poistion).getPhone());
-        inty.putExtra("date",array.get(poistion).getDate());
-        startActivity(inty);
-
+        if(array.get(poistion).getImg1()!=null) {
+            inty.putExtra("key", array.get(poistion).getImg1());
+            inty.putExtra("name", array.get(poistion).getName());
+            inty.putExtra("discrp", array.get(poistion).getDiscrption());
+            inty.putExtra("discount", array.get(poistion).getDiscount());
+            inty.putExtra("phone", array.get(poistion).getPhone());
+            inty.putExtra("date", array.get(poistion).getDate());
+            startActivity(inty);
+        }
 
     }
 

@@ -92,14 +92,17 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
         holder.textphone.setText(textphone);
 
         String i = ha.getImg1();
+        if(i!=null) {
             Uri u = Uri.parse(i);
-         if(i!=null) {
              Picasso.with(context)
                      .load(u)
                      .fit()
                      .placeholder(R.drawable.no_media)
                      .into(holder.image);
-         }
+         }else {
+            holder.image.setImageResource(R.drawable.no_media);
+        }
+
 
 
 

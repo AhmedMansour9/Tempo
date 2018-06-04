@@ -23,6 +23,8 @@ import com.squareup.picasso.Picasso;
 import bekya.bekyaa.Interface.ItemClickListener;
 import bekya.bekyaa.Model.Category;
 import bekya.bekyaa.ViewHolder.MenuViewHolder;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class Home extends AppCompatActivity

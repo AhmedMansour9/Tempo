@@ -80,4 +80,9 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+    <dimen name="photo_width">110dp</dimen>
+    <dimen name="photo_height">110dp</dimen>
+    <string name="btn_ok">OK</string>
+
+    <string name="btn_pick_mul">Pick From Gallery (Multiple)</string>
 </resources>

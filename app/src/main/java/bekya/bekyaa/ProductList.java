@@ -1,61 +1,92 @@
 package bekya.bekyaa;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
-import com.example.bekya.bekya.Common.Common;
-import com.example.bekya.bekya.Interface.ItemClickListener;
-import com.example.bekya.bekya.Model.Product;
-import com.example.bekya.bekya.ViewHolder.ProductViewHolder;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
+import com.google.gson.Gson;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
-import java.util.UUID;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
+import bekya.bekyaa.Interface.itemViewinterface;
+import bekya.bekyaa.adapter.GalleryAdapter;
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class ProductList extends AppCompatActivity {
+public class ProductList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,itemViewinterface {
 
     RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    FirebaseDatabase database;
-    FirebaseStorage storage;
     RelativeLayout rootlayout;
-    StorageReference storageReference;
-    DatabaseReference productList;
     Uri saveUri;
     Button btnUpload;
     Button btnselect;
-    Product newProduct;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 EditText name,descrip , discount, price;
-    String catergoryId="";
-    FirebaseRecyclerAdapter<Product,ProductViewHolder> adapter;
+    GridView gridGallery;
+    Handler handler;
+    GalleryAdapter adapter;
+    List<Retrivedata> array;
+    ArrayList<String> listimages=new ArrayList<>();
+    ViewSwitcher viewSwitcher;
+    ImageLoader imageLoader;
+    DatabaseReference data;
+    private Adapteritems mAdapter;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    SharedPreferences.Editor editor;
+    SharedPreferences.Editor editt;
+    String text;
+    View update_info_layout;
+    ArrayList<CustomGallery> dataT;
+    String Name,Discrption,Discount,Price;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -70,18 +101,20 @@ EditText name,descrip , discount, price;
                 .build()
         );
         setContentView(R.layout.activity_product_list);
-
-        //Firebase
-        database = FirebaseDatabase.getInstance();
-        productList = database.getReference("Products");
+        handler = new Handler();
+        array=new ArrayList<>();
+        data= FirebaseDatabase.getInstance().getReference().child("Products");
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-
-        recyclerView = (RecyclerView)findViewById(R.id.recycler_product);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
         rootlayout = findViewById(R.id.rootlayout);
+        editor = getApplicationContext().getSharedPreferences("Photo", MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
+
+        initImageLoader();
+
+
+        Recyclview();
+        SwipRefresh();
         FloatingTextButton floatingTextButton = findViewById(R.id.fabbutton);
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabbutton);
         floatingTextButton.setOnClickListener(new View.OnClickListener() {
@@ -91,27 +124,106 @@ EditText name,descrip , discount, price;
             }
         });
 
-        //Get Intent Here
-        if (getIntent() != null) {
-            catergoryId = getIntent().getStringExtra("CategoryId");
-        } if (!catergoryId.isEmpty() && catergoryId != null) {
-            loadListFood(catergoryId);
-        }
 
 
     }
+    public void SwipRefresh(){
+        mSwipeRefreshLayout =  findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                Retrivedata();
+            }
+        });
+    }
+    public void Recyclview(){
+        recyclerView =findViewById(R.id.recycler_product);
+        recyclerView.setHasFixedSize(true);
+        mAdapter = new Adapteritems(array,ProductList.this);
+        mAdapter.setClickListener(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+    }
+    public void Retrivedata(){
+        array.clear();
+        mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        data.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.exists()) {
+                    Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
+                    Toast.makeText(ProductList.this, "" + r.getImg1() + "\n" + r.getImg2() + r.getImg3(), Toast.LENGTH_SHORT).show();
+
+                    array.add(0, r);
+                    mAdapter.notifyDataSetChanged();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void initImageLoader() {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .bitmapConfig(Bitmap.Config.RGB_565).build();
+        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+                this).defaultDisplayImageOptions(defaultOptions).memoryCache(
+                new WeakMemoryCache());
+
+        ImageLoaderConfiguration config = builder.build();
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
+    }
     private void showaddFooddialog() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProductList.this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProductList.this);
         alertDialog.setTitle("أضف منتج جديد");
         alertDialog.setMessage("من فضلك أملآ جميع البيانات");
         LayoutInflater inflater = this.getLayoutInflater();
-        View update_info_layout = inflater.inflate(R.layout.layout_add_product, null);
+         update_info_layout = inflater.inflate(R.layout.layout_add_product, null);
        name = update_info_layout.findViewById(R.id.Name);
        descrip = update_info_layout.findViewById(R.id.descrip);
         discount = update_info_layout.findViewById(R.id.discount);
         price = update_info_layout.findViewById(R.id.price);
 
+        gridGallery =update_info_layout.findViewById(R.id.gridGallery);
+        gridGallery.setFastScrollEnabled(true);
+        adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
+        adapter.setMultiplePick(false);
+        gridGallery.setAdapter(adapter);
+
+        viewSwitcher =update_info_layout.findViewById(R.id.viewSwitcher);
+        viewSwitcher.setDisplayedChild(1);
 
         btnUpload = update_info_layout.findViewById(R.id.btnupload);
        btnselect = update_info_layout.findViewById(R.id.btnselect);
@@ -129,17 +241,24 @@ EditText name,descrip , discount, price;
                 uploadimage();
             }
         });
-alertDialog.setView(update_info_layout);
+      alertDialog.setView(update_info_layout);
         alertDialog.setPositiveButton("نعم", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                if (newProduct != null)
-                {
-                    productList.push().setValue(newProduct);
-                    Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
-                            .show();
+
+                Name=name.getText().toString().trim();
+                Discrption=descrip.getText().toString().trim();
+                Discount=discount.getText().toString().trim();
+                Price=price.getText().toString().trim();
+
+                if (Name.isEmpty() || Discrption.isEmpty()|| Discount.isEmpty()|| Price.isEmpty()) {
+                    Toast.makeText(getBaseContext(), "من فضلك أملآ جميع البيانات", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    SavedSahredPrefrenceSwitch(Name,Discrption,Discount,Price);
+                    dialogInterface.dismiss();
                 }
+
             }
         });
 
@@ -156,103 +275,180 @@ alertDialog.setView(update_info_layout);
     }
 
     private void uploadimage() {
-        if (saveUri != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("يتم تحميل الصورة ...");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-            String imageName = UUID.randomUUID().toString();
-            final StorageReference imageFolder = storageReference.child("images/" + imageName);
-            imageFolder.putFile(saveUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(ProductList.this, "تم التحميل بنجاح", Toast.LENGTH_SHORT).show();
-                            imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    newProduct = new Product();
-                                    newProduct.setName(name.getText().toString());
-                                    newProduct.setDescription(descrip.getText().toString());
-                                    newProduct.setPrice(price.getText().toString());
-                                    newProduct.setDiscount(discount.getText().toString());
-                                    newProduct.setCategoryId(catergoryId);
-                                    newProduct.setImage(uri.toString());
-                                    //save url to user information table
+        if(dataT!=null) {
+            for (int i = 0; i < dataT.size(); i++) {
+                final ProgressDialog progressDialog  = new ProgressDialog(this);
+                progressDialog.setTitle("Uploading...");
+                progressDialog.show();
+                storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
+                Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
+                StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
+                imageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.e("ss", "onSuccess: " + taskSnapshot);
+                        progressDialog.dismiss();
+                        Uri u = taskSnapshot.getDownloadUrl();
+                        Gson i = new Gson();
+                        listimages.add(u.toString());
+                        String jsonFavorites = i.toJson(listimages);
+                        editor.putString("img", jsonFavorites);
+                        editor.commit();
+                        final int pos = dataT.size();
+                        int y = listimages.size();
 
-                                }
-                            });
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                        if (pos == y) {
                             progressDialog.dismiss();
-                            Toast.makeText(ProductList.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Uploaded Succesfully", Toast.LENGTH_SHORT).show();
                         }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploading ..." + progress + "%");
-                        }
-                    });
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            }
+                        });
+            }
         }
-
-
-                        }
+    }
 
 
     private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Choose Image"), Common.PICKUP_IMAGE_REQUEST);
+        Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+        startActivityForResult(i, 200);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Common.PICKUP_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
-        {
-            saveUri = data.getData();
-            btnselect.setText("تم تحديد الصورة");
 
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+            String[] all_path = data.getStringArrayExtra("all_path");
+
+            if (all_path.length > 4) {
+                Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+                startActivityForResult(i, 200);
+                Toast.makeText(this, "Choose 4 images Only", Toast.LENGTH_SHORT).show();
+            }
+
+            dataT = new ArrayList<CustomGallery>();
+
+            for (String string : all_path) {
+                CustomGallery item = new CustomGallery();
+                item.sdcardPath = string;
+
+
+                dataT.add(item);
+            }
+            viewSwitcher.setDisplayedChild(0);
+            adapter.addAll(dataT);
 
         }
 
+        }
+
+public void SavedSahredPrefrenceSwitch(String name,String discroption,String discount,String phone){
+
+    SharedPreferences sharedPref =getSharedPreferences("Photo", MODE_PRIVATE);
+    String jsonFavorit = sharedPref.getString("img", null);
+    Gson gson3 = new Gson();
+    String[] favoriteIte = gson3.fromJson(jsonFavorit,String[].class);
+    Retrivedata r=new Retrivedata();
+    String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+    if(jsonFavorit!=null){
+
+    int postion = favoriteIte.length;
+    if(postion==4) {
+        r.setImg1(favoriteIte[0]);
+        r.setImg2(favoriteIte[1]);
+        r.setImg3(favoriteIte[2]);
+        r.setImg4(favoriteIte[3]);
+        r.setName(name);
+        r.setDiscrption(discroption);
+        r.setDiscount(discount);
+        r.setPhone(phone);
+        r.setDate(date);
+        data.push().setValue(r);
+        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+                .show();
+
+    }
+    if (postion == 3) {
+        r.setImg1(favoriteIte[0]);
+        r.setImg2(favoriteIte[1]);
+        r.setImg3(favoriteIte[2]);
+        r.setName(name);
+        r.setDiscrption(discroption);
+        r.setDiscount(discount);
+        r.setPhone(phone);
+        r.setDate(date);
+        data.push().setValue(r);
+        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+                .show();
+
+    }
+    if (postion == 2){
+        r.setImg1(favoriteIte[0]);
+        r.setImg2(favoriteIte[1]);
+        r.setName(name);
+        r.setDiscrption(discroption);
+        r.setDiscount(discount);
+        r.setPhone(phone);
+        r.setDate(date);
+        data.push().setValue(r);
+        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+                .show();
+
+    }
+    if(postion==1) {
+        r.setImg1(favoriteIte[0]);
+        r.setName(name);
+        r.setDiscrption(discroption);
+        r.setDiscount(discount);
+        r.setPhone(phone);
+        r.setDate(date);
+        data.push().setValue(r);
+        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+                .show();
+
+    }}else {
+        r.setName(name);
+        r.setDiscrption(discroption);
+        r.setDiscount(discount);
+        r.setPhone(phone);
+        r.setDate(date);
+        data.push().setValue(r);
+        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+                .show();
     }
 
-    private void loadListFood(String catergoryId) {
-        adapter = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(Product.class,
-                R.layout.product_item,
-                ProductViewHolder.class,
-                productList.orderByChild("categoryId").equalTo(catergoryId)) {
-            @Override
-            protected void populateViewHolder(ProductViewHolder viewHolder, Product model, int position) {
-                viewHolder.product_name.setText(model.getName());
-                Picasso.with(getBaseContext()).load(model.getImage())
-                        .into(viewHolder.product_image);
+}
 
-                final Product local = model;
-                viewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        {
-                            Toast.makeText(ProductList.this, ""+local.getName(), Toast.LENGTH_SHORT).show();
+    @Override
+    public void Callback(View v, int poistion) {
+        Intent inty=new Intent(ProductList.this,activityoneitem.class);
+        inty.putExtra("key",array.get(poistion).getImg1());
+        inty.putExtra("name",array.get(poistion).getName());
+        inty.putExtra("discrp",array.get(poistion).getDiscrption());
+        inty.putExtra("discount",array.get(poistion).getDiscount());
+        inty.putExtra("phone",array.get(poistion).getPhone());
+        inty.putExtra("date",array.get(poistion).getDate());
+        startActivity(inty);
 
-                           // Start New Activity
-                            Intent foodDetail = new Intent(ProductList.this,ProductDetail.class);
-                            foodDetail.putExtra("ProductId",adapter.getRef(position).getKey());    //send food id to new activity
-                            startActivity(foodDetail);
-                        }
-                    }
-                });
-            }
-        };
-        //set Adapter
-        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onRefresh() {
+        Retrivedata();
     }
 }

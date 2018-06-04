@@ -1,4 +1,4 @@
-package bekya.bekyaa;
+package bekya.bekyaa.Model;
 
 /**
  * Created by HP on 04/06/2018.

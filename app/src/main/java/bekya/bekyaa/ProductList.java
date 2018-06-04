@@ -35,7 +35,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -55,6 +54,8 @@ import java.util.List;
 import java.util.Locale;
 
 import bekya.bekyaa.Interface.itemViewinterface;
+import bekya.bekyaa.Model.Retrivedata;
+import bekya.bekyaa.adapter.Adapteritems;
 import bekya.bekyaa.adapter.GalleryAdapter;
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -158,7 +159,6 @@ EditText name,descrip , discount, price;
         array.clear();
         mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(true);
-
         data.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -434,7 +434,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
 
     @Override
     public void Callback(View v, int poistion) {
-        Intent inty=new Intent(ProductList.this,activityoneitem.class);
+        Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
         inty.putExtra("key",array.get(poistion).getImg1());
         inty.putExtra("name",array.get(poistion).getName());
         inty.putExtra("discrp",array.get(poistion).getDiscrption());

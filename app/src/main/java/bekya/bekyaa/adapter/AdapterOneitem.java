@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -17,7 +16,7 @@ import java.util.List;
 import bekya.bekyaa.Interface.btnclicks;
 import bekya.bekyaa.Interface.imageclick;
 import bekya.bekyaa.R;
-import bekya.bekyaa.Retrivedata;
+import bekya.bekyaa.Model.Retrivedata;
 
 /**
  * Created by HP on 31/05/2018.
@@ -64,7 +63,7 @@ public class AdapterOneitem extends RecyclerView.Adapter<AdapterOneitem.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.itemrecycleherozantle, parent, false);
+                .inflate(R.layout.itemlayout, parent, false);
         return new MyViewHolder(itemView);
     }
 

@@ -25,7 +25,7 @@
         <activity android:name=".ProductDetail" />
         <activity android:name=".ProductList" />
         <activity android:name=".Home"></activity>
-        <activity android:name=".activityoneitem" />
+        <activity android:name=".ActivityOneItem" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package bekya.bekyaa;
+package bekya.bekyaa.adapter;
 
 /**
  * Created by HP on 31/03/2018.
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bekya.bekyaa.Interface.itemViewinterface;
+import bekya.bekyaa.R;
+import bekya.bekyaa.Model.Retrivedata;
 
 
 public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder>{

@@ -24,9 +24,10 @@ import java.util.List;
 
 import bekya.bekyaa.Interface.btnclicks;
 import bekya.bekyaa.Interface.imageclick;
+import bekya.bekyaa.Model.Retrivedata;
 import bekya.bekyaa.adapter.AdapterOneitem;
 
-public class activityoneitem extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener ,imageclick,btnclicks {
+public class ActivityOneItem extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener ,imageclick,btnclicks {
     List<Retrivedata> array;
     public RecyclerView recyclerView;
     private AdapterOneitem mAdapter;
@@ -38,7 +39,7 @@ public class activityoneitem extends AppCompatActivity implements SwipeRefreshLa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activityitems);
+        setContentView(R.layout.activityitem);
         array=new ArrayList<>();
         textname= findViewById(R.id.textname);
         textdiscrp= findViewById(R.id.textdiscrp);
@@ -108,7 +109,7 @@ public class activityoneitem extends AppCompatActivity implements SwipeRefreshLa
     public void Recyclview(){
         recyclerView =findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        mAdapter = new AdapterOneitem(array,activityoneitem.this);
+        mAdapter = new AdapterOneitem(array,ActivityOneItem.this);
          mAdapter.setClickListener(this);
          mAdapter.setClickList(this);
          linearLayoutManager = new LinearLayoutManager(this);

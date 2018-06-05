@@ -63,11 +63,12 @@ public class ActivityOneItem extends AppCompatActivity implements SwipeRefreshLa
 
     public void getdata(){
         String key=getIntent().getStringExtra("key");
+        String child=getIntent().getStringExtra("child");
         array.clear();
         mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(true);
 
-        DatabaseReference data= FirebaseDatabase.getInstance().getReference().child("Products");
+        DatabaseReference data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
         data.orderByChild("img1").equalTo(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

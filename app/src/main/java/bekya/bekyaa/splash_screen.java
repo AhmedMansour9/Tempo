@@ -27,7 +27,7 @@ public class splash_screen extends AppCompatActivity {
                 // Start your app main activity
 
 
-                    Intent i = new Intent(splash_screen.this, ProductList.class);
+                    Intent i = new Intent(splash_screen.this, Home.class);
                     startActivity(i);
 
                     // close this activity

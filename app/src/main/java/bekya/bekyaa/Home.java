@@ -2,6 +2,7 @@ package bekya.bekyaa;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,16 +14,26 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bekya.bekyaa.Interface.ItemClickListener;
 import bekya.bekyaa.Model.Category;
 import bekya.bekyaa.ViewHolder.MenuViewHolder;
+import bekya.bekyaa.adapter.ImageAdapterGride;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -31,10 +42,9 @@ public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseDatabase database;
     DatabaseReference category;
-
+    List<Category> listcatgory;
      TextView txtFullName;
-    RecyclerView recycler_menu;
-    RecyclerView.LayoutManager layoutManager;
+    GridView gridView;
 
     FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
 
@@ -52,7 +62,7 @@ public class Home extends AppCompatActivity
                 .build()
         );
         setContentView(R.layout.activity_home);
-
+        listcatgory=new ArrayList<>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("الصفحة الرئيسية");
@@ -72,50 +82,52 @@ public class Home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
             View headerView = navigationView.getHeaderView(0);
             txtFullName = (TextView)headerView.findViewById(R.id.txtFullName);
+        gridView = (GridView) findViewById(R.id.grid_view);
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                SharedPreferences.Editor share=getSharedPreferences("cat",MODE_PRIVATE).edit();
+                share.putString("Category",listcatgory.get(position).getCatogories());
+                share.commit();
+                startActivity(new Intent(Home.this,ProductList.class));
 
-        //set Name for User
-
-
-        // Load Menu
-        recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
-        recycler_menu.setHasFixedSize(true);
-        //layoutManager = new LinearLayoutManager(this);
-      //  recycler_menu.setLayoutManager(layoutManager);
-        recycler_menu.setLayoutManager(new GridLayoutManager(this , 2));
-
-        loadMenu();
-    }
-
-    private void loadMenu() {
-
-
-        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class,R.layout.menu_item,MenuViewHolder.class,category) {
-            @Override
-            protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
-                viewHolder.txtMenuName.setText(model.getName());
-                Picasso.with(getBaseContext()).load(model.getImage())
-                        .resize(200,250)
-                        .into(viewHolder.imageView);
-                final Category clickItem = model;
-                viewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        {
-
-                            //Get Category ID and send it to new Activity
-                            Intent foodList = new Intent(Home.this,ProductList.class);
-                            //Category ID is key, so we have to get the key of every item
-                            foodList.putExtra("CategoryId",adapter.getRef(position).getKey());
-                            startActivity(foodList);
-
-                        }
-                    }
-                });
             }
-        };
-        recycler_menu.setAdapter(adapter);
+        });
+      DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("Category");
+      databaseReference.addChildEventListener(new ChildEventListener() {
+          @Override
+          public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+              Category c=dataSnapshot.getValue(Category.class);
+              listcatgory.add(c);
+              gridView.setAdapter(new ImageAdapterGride(getApplication(),listcatgory));
+          }
+
+          @Override
+          public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+          }
+
+          @Override
+          public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+          }
+
+          @Override
+          public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+      });
+
+
+
     }
+
 
 
     @Override

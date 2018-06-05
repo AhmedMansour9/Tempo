@@ -22,7 +22,6 @@ public class ProductDetail extends AppCompatActivity {
 
     TextView product_Name,product_Price,product_Description;
     ImageView product_Image;
-    CollapsingToolbarLayout collapsingToolbarLayout;
 
     String productId="";
 
@@ -50,51 +49,8 @@ public class ProductDetail extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         products = database.getReference("Products");
 
-        //Initialize view
 
 
 
-        product_Description = (TextView)findViewById(R.id.product_description);
-        product_Name = (TextView)findViewById(R.id.product_name);
-        product_Price = (TextView)findViewById(R.id.product_price);
-        product_Image = (ImageView) findViewById(R.id.img_food);
-
-        collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing);
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
-        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
-
-        //Get food id from intent
-        if (getIntent() != null)
-            productId = getIntent().getStringExtra("ProductId");
-        if (!productId.isEmpty())    {
-            getDetailFood(productId);
-        }
-
-    }
-
-    private void getDetailFood(String productId) {
-        products.child(productId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentProduct =dataSnapshot.getValue(Product.class);
-
-                //set Image
-                Picasso.with(getBaseContext()).load(currentProduct.getImage())
-                        .into(product_Image);
-
-                collapsingToolbarLayout.setTitle(currentProduct.getName());
-
-                product_Price.setText(currentProduct.getPrice());
-
-                product_Name.setText(currentProduct.getName());
-
-                product_Description.setText(currentProduct.getDescription());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }

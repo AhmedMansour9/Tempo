@@ -5,31 +5,31 @@ package bekya.bekyaa.Model;
  */
 
 public class Category {
-    private String Name;
-    private String Image;
+    private String catogories;
+    private String img;
 
     public Category() {
 
     }
 
-    public Category(String name, String image) {
-        Name = name;
-        Image = image;
+    public Category(String catogories, String img) {
+        this.catogories = catogories;
+        this.img = img;
     }
 
-    public String getName() {
-        return Name;
+    public String getCatogories() {
+        return catogories;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setCatogories(String catogories) {
+        this.catogories = catogories;
     }
 
-    public String getImage() {
-        return Image;
+    public String getImg() {
+        return img;
     }
 
-    public void setImage(String image) {
-        Image = image;
+    public void setImg(String img) {
+        this.img = img;
     }
 }

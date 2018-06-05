@@ -89,7 +89,7 @@ EditText name,descrip , discount, price;
     View update_info_layout;
     ArrayList<CustomGallery> dataT;
     String Name,Discrption,Discount,Price;
-
+    String child;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -106,7 +106,9 @@ EditText name,descrip , discount, price;
         setContentView(R.layout.activity_product_list);
         handler = new Handler();
         array=new ArrayList<>();
-        data= FirebaseDatabase.getInstance().getReference().child("Products");
+        SharedPreferences shared=getSharedPreferences("cat",MODE_PRIVATE);
+         child=shared.getString("Category",null);
+        data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
         storage = FirebaseStorage.getInstance();
         rootlayout = findViewById(R.id.rootlayout);
         editor = getApplicationContext().getSharedPreferences("Photo", MODE_PRIVATE).edit();
@@ -169,6 +171,8 @@ EditText name,descrip , discount, price;
 
                     array.add(0, r);
                     mAdapter.notifyDataSetChanged();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }else {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
@@ -420,6 +424,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     public void Callback(View v, int poistion) {
         Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
         if(array.get(poistion).getImg1()!=null) {
+            inty.putExtra("child",child);
             inty.putExtra("key", array.get(poistion).getImg1());
             inty.putExtra("name", array.get(poistion).getName());
             inty.putExtra("discrp", array.get(poistion).getDiscrption());

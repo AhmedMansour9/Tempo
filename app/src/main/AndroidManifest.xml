@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="bekya.bekyaa">
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,7 +22,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".ProductDetail" />
-        <activity android:name=".ProductList" />
+        <activity android:name=".CustomGalleryActivity" >
+                <intent-filter>
+                    <action android:name="luminous.ACTION_PICK" />
+                    <action android:name="luminous.ACTION_MULTIPLE_PICK" />
+
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".ProductList">
+
+        </activity>
         <activity android:name=".Home"></activity>
         <activity android:name=".ActivityOneItem" />
     </application>

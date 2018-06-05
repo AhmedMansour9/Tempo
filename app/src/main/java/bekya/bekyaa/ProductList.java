@@ -7,10 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,6 +29,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -74,6 +78,8 @@ public class ProductList extends AppCompatActivity implements SwipeRefreshLayout
 EditText name,descrip , discount, price;
     GridView gridGallery;
     Handler handler;
+    ImageView imgSinglePick;
+
     GalleryAdapter adapter;
     List<Retrivedata> array;
     ArrayList<String> listimages=new ArrayList<>();
@@ -115,7 +121,7 @@ EditText name,descrip , discount, price;
         editor.clear();
         editor.commit();
 
-        initImageLoader();
+
 
 
         Recyclview();
@@ -213,6 +219,7 @@ EditText name,descrip , discount, price;
     private void showaddFooddialog() {
         Dialog update_info_layout = new Dialog(ProductList.this);
         update_info_layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        initImageLoader();
         update_info_layout.setContentView(R.layout.layout_add_product);
        name = update_info_layout.findViewById(R.id.Name);
        descrip = update_info_layout.findViewById(R.id.descrip);
@@ -249,6 +256,7 @@ EditText name,descrip , discount, price;
     }
 
     private void uploadimage() {
+
         Name = name.getText().toString().trim();
         Discrption = descrip.getText().toString().trim();
         Discount = discount.getText().toString().trim();
@@ -311,14 +319,23 @@ EditText name,descrip , discount, price;
     private void chooseImage() {
         Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
         startActivityForResult(i, 200);
+//        if(isAvailable(getApplicationContext(),i))
+//            {startActivityForResult(i, 200);
+//            }else {
+
+//            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//            photoPickerIntent.setType("image/*");
+//            startActivityForResult(photoPickerIntent, 200);
+//        }
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+         if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
             String[] all_path = data.getStringArrayExtra("all_path");
+
 
             if (all_path.length > 4) {
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
@@ -439,5 +456,13 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     @Override
     public void onRefresh() {
         Retrivedata();
+    }
+
+    public static boolean isAvailable(Context ctx, Intent intent) {
+        final PackageManager mgr = ctx.getPackageManager();
+        List<ResolveInfo> list =
+                mgr.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 }

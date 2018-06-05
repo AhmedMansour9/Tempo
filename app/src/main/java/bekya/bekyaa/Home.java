@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,13 +40,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements  SwipeRefreshLayout.OnRefreshListener, NavigationView.OnNavigationItemSelectedListener {
     FirebaseDatabase database;
     DatabaseReference category;
     List<Category> listcatgory;
      TextView txtFullName;
     GridView gridView;
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
     FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
 
     @Override
@@ -94,40 +95,63 @@ public class Home extends AppCompatActivity
 
             }
         });
-      DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("Category");
-      databaseReference.addChildEventListener(new ChildEventListener() {
-          @Override
-          public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-              Category c=dataSnapshot.getValue(Category.class);
-              listcatgory.add(c);
-              gridView.setAdapter(new ImageAdapterGride(getApplication(),listcatgory));
-          }
-
-          @Override
-          public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-          }
-
-          @Override
-          public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-          }
-
-          @Override
-          public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-          }
-
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-
-          }
-      });
 
 
+        SwipRefresh();
 
     }
+    public void SwipRefresh(){
+        mSwipeRefreshLayout =  findViewById(R.id.swipe_cont);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                RetriveCategories();
+            }
+        });
+    }
+   public void RetriveCategories(){
+        listcatgory.clear();
+        
+       mSwipeRefreshLayout.setRefreshing(true);
+       DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("Category");
+       databaseReference.addChildEventListener(new ChildEventListener() {
+           @Override
+           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+               Category c=dataSnapshot.getValue(Category.class);
+               listcatgory.add(c);
+               gridView.setAdapter(new ImageAdapterGride(getApplication(),listcatgory));
+               mSwipeRefreshLayout.setRefreshing(false);
+           }
+
+           @Override
+           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+           }
+
+           @Override
+           public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+           }
+
+           @Override
+           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+
+
+   }
 
 
     @Override
@@ -170,5 +194,10 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+      RetriveCategories();
     }
 }

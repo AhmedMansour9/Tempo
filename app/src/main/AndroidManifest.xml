@@ -27,12 +27,20 @@
                     <action android:name="luminous.ACTION_PICK" />
                     <action android:name="luminous.ACTION_MULTIPLE_PICK" />
 
+                    <category android:name="android.intent.category.DEFAULT" />
+
             </intent-filter>
 
         </activity>
         <activity android:name=".ProductList">
 
         </activity>
+
+        <service android:name=".tokenid.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
         <activity android:name=".Home"></activity>
         <activity android:name=".ActivityOneItem" />
     </application>

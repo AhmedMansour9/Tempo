@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,20 +37,18 @@ import bekya.bekyaa.Interface.ItemClickListener;
 import bekya.bekyaa.Model.Category;
 import bekya.bekyaa.ViewHolder.MenuViewHolder;
 import bekya.bekyaa.adapter.ImageAdapterGride;
+import bekya.bekyaa.tokenid.SharedPrefManager;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class Home extends AppCompatActivity
-        implements  SwipeRefreshLayout.OnRefreshListener, NavigationView.OnNavigationItemSelectedListener {
-    FirebaseDatabase database;
-    DatabaseReference category;
-    List<Category> listcatgory;
-     TextView txtFullName;
-    GridView gridView;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+        implements   NavigationView.OnNavigationItemSelectedListener {
+    Fragment fr;
+    private int mCurrentSelectedPosition = 0;
     FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
-
+    TextView txtFullName;
+    public static String token;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -63,14 +63,11 @@ public class Home extends AppCompatActivity
                 .build()
         );
         setContentView(R.layout.activity_home);
-        listcatgory=new ArrayList<>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("الصفحة الرئيسية");
         setSupportActionBar(toolbar);
         //Initialize Firebase
-        database = FirebaseDatabase.getInstance();
-        category = database.getReference("category");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -78,80 +75,17 @@ public class Home extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
             View headerView = navigationView.getHeaderView(0);
-            txtFullName = (TextView)headerView.findViewById(R.id.txtFullName);
-        gridView = (GridView) findViewById(R.id.grid_view);
+        txtFullName = (TextView)headerView.findViewById(R.id.txtFullName);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                SharedPreferences.Editor share=getSharedPreferences("cat",MODE_PRIVATE).edit();
-                share.putString("Category",listcatgory.get(position).getCatogories());
-                share.commit();
-                startActivity(new Intent(Home.this,ProductList.class));
-
-            }
-        });
-
-
-        SwipRefresh();
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
     }
-    public void SwipRefresh(){
-        mSwipeRefreshLayout =  findViewById(R.id.swipe_cont);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
-                android.R.color.holo_green_dark,
-                android.R.color.holo_orange_dark,
-                android.R.color.holo_blue_dark);
-
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                RetriveCategories();
-            }
-        });
-    }
-   public void RetriveCategories(){
-        listcatgory.clear();
-        
-       mSwipeRefreshLayout.setRefreshing(true);
-       DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("Category");
-       databaseReference.addChildEventListener(new ChildEventListener() {
-           @Override
-           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-               Category c=dataSnapshot.getValue(Category.class);
-               listcatgory.add(c);
-               gridView.setAdapter(new ImageAdapterGride(getApplication(),listcatgory));
-               mSwipeRefreshLayout.setRefreshing(false);
-           }
-
-           @Override
-           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-           }
-
-           @Override
-           public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-           }
-
-           @Override
-           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-           }
-
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
-
-           }
-       });
-
-
-   }
 
 
     @Override
@@ -187,17 +121,39 @@ public class Home extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_products) {
-            // Handle the Menu action
+        switch (item.getItemId()) {
+            case R.id.nav_products:
+                mCurrentSelectedPosition = 0;
+                fr = new Categories();
+                break;
+            case R.id.posts:
+                mCurrentSelectedPosition = 1;
+
+                fr = new myposts();
+                break;
+
+
+
+            default:
+                mCurrentSelectedPosition = 0;
+
         }
+        if (item.isChecked()) {
+            item.setChecked(false);
+        } else {
+            item.setChecked(true);
+        }
+        item.setChecked(true);
+
+
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flContent,fr);
+        transaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    public void onRefresh() {
-      RetriveCategories();
-    }
 }

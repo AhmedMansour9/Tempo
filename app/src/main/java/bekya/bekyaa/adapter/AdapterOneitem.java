@@ -34,9 +34,9 @@ public class AdapterOneitem extends RecyclerView.Adapter<AdapterOneitem.MyViewHo
         ImageView btnnext,btnpervious;
         public MyViewHolder(View view) {
             super(view);
-            image =  view.findViewById(R.id.imageon);
-            btnnext=view.findViewById(R.id.playnext);
-            btnpervious=view.findViewById(R.id.playpervious);
+//            image =  view.findViewById(R.id.imageon);
+//            btnnext=view.findViewById(R.id.playnext);
+//            btnpervious=view.findViewById(R.id.playpervious);
 
             view.setOnClickListener(this);
 
@@ -71,29 +71,29 @@ public class AdapterOneitem extends RecyclerView.Adapter<AdapterOneitem.MyViewHo
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Retrivedata ha=array.get(position);
 
-        String i = ha.getImg1();
-        Uri u = Uri.parse(i);
-        if(i!=null) {
-            Picasso.with(context)
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
-                    .into(holder.image);
-        }
-        holder.btnnext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            btnclick.Callnext(view,position);
-
-            }
-        });
-        holder.btnpervious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                 btnclick.Callbacks(view,position);
-
-            }
-        });
+//        String i = ha.getImg1();
+//        Uri u = Uri.parse(i);
+//        if(i!=null) {
+//            Picasso.with(context)
+//                    .load(u)
+//                    .fit()
+//                    .placeholder(R.drawable.no_media)
+//                    .into(holder.image);
+//        }
+//        holder.btnnext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            btnclick.Callnext(view,position);
+//
+//            }
+//        });
+//        holder.btnpervious.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                 btnclick.Callbacks(view,position);
+//
+//            }
+//        });
 
 
 

@@ -9,6 +9,11 @@
         android:icon="@drawable/ic_exit_to_app_black_24dp"
         android:iconTint="@android:color/white"
         android:title="Your Products" />
+        <item
+            android:id="@+id/posts"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:iconTint="@android:color/white"
+            android:title="Posts" />
     </group>
 
 

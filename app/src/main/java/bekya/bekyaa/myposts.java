@@ -275,7 +275,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final String key = dataSnapshot.getKey();
-
+                mSwipeRefreshLayout.setRefreshing(false);
                 DatabaseReference datas= FirebaseDatabase.getInstance().getReference().child("Products");
                 datas.child(key).orderByChild("token").equalTo(token).addChildEventListener(new ChildEventListener() {
                     @Override

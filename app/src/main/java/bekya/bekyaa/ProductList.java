@@ -530,7 +530,6 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     @Override
     public void Callback(View v, int poistion) {
         Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
-        if(arrayadmin.get(poistion).getImg1()!=null) {
             inty.putExtra("child",child);
             inty.putExtra("key", arrayadmin.get(poistion).getImg1());
             inty.putExtra("name", arrayadmin.get(poistion).getName());
@@ -539,7 +538,6 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
             inty.putExtra("phone", arrayadmin.get(poistion).getPhone());
             inty.putExtra("date", arrayadmin.get(poistion).getDate());
             startActivity(inty);
-        }
 
     }
 

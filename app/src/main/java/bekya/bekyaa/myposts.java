@@ -110,7 +110,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     public void Recyclview(){
         recyclerView =v.findViewById(R.id.recyclerposts);
         recyclerView.setHasFixedSize(true);
-//        mAdapter = new Adapteritems(array,getContext());
+        mAdapter = new Adapteritems(array,getContext());
         mAdapter.setClickButton(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

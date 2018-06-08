@@ -55,24 +55,22 @@ public class ActivityOneItem extends AppCompatActivity implements  imageclick,bt
         setContentView(R.layout.activityitem);
         set=new Retrivedata();
         array = new ArrayList<>();
-//        textname = findViewById(R.id.textname);
-//        textdiscrp = findViewById(R.id.textdiscrp);
-//        textdiscount = findViewById(R.id.textdiscount);
-//        textphone = findViewById(R.id.textphone);
-//        textdate = findViewById(R.id.textdate);
+        textname = findViewById(R.id.textname);
+        textdiscrp = findViewById(R.id.textdiscrp);
+        textdiscount = findViewById(R.id.textdiscount);
+        textphone = findViewById(R.id.textphone);
+        textdate = findViewById(R.id.textdate);
 
-//        String name = getIntent().getStringExtra("name");
-//        String discrption = getIntent().getStringExtra("discrp");
-//        String discount = getIntent().getStringExtra("discount");
-//        String phone = getIntent().getStringExtra("phone");
-//        String date = getIntent().getStringExtra("date");
-//        textname.setText(name);
-//        textdiscrp.setText(discrption);
-//        textdiscount.setText(discount);
-//        textphone.setText(phone);
-//        textdate.setText(date);
-//        Recyclview();
-//        SwipRefresh();
+        String name = getIntent().getStringExtra("name");
+        String discrption = getIntent().getStringExtra("discrp");
+        String discount = getIntent().getStringExtra("discount");
+        String phone = getIntent().getStringExtra("phone");
+        String date = getIntent().getStringExtra("date");
+        textname.setText(name);
+        textdiscrp.setText(discrption);
+        textdiscount.setText(discount);
+        textphone.setText(phone);
+        textdate.setText(date);
         getdata(new firebase() {
             @Override
             public void Call(Retrivedata r) {
@@ -147,9 +145,6 @@ public class ActivityOneItem extends AppCompatActivity implements  imageclick,bt
     public void getdata(final firebase f){
         String key=getIntent().getStringExtra("key");
         String child=getIntent().getStringExtra("child");
-//        array.clear();
-//        mAdapter.notifyDataSetChanged();
-//        mSwipeRefreshLayout.setRefreshing(true);
 
         DatabaseReference data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
         data.orderByChild("img1").equalTo(key).addValueEventListener(new ValueEventListener() {

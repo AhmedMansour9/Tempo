@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -70,7 +71,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     ImageView deltone,deletetwo,deletethree,deletefour;
     ImageView cameraone,cameratwo,camerathree,camerafour;
     EditText editname,editdiscrp,editdiscount,editphone;
-    FrameLayout rootlayout;
+    RelativeLayout rootlayout;
     Dialog update_items_layout;
     String imgOne,imgTwo,imgThree,imgFour;
     private Uri filePathone,filePathtwo,filePaththree,filePathfour;
@@ -82,6 +83,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     String child;
     String Nameone;
     Button finish;
+    TextView text;
     public ChildEventListener mListener;
     public myposts() {
         // Required empty public constructor
@@ -99,7 +101,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         storageReference = storage.getReference();
         array=new ArrayList<>();
         rootlayout =v.findViewById(R.id.rootlayout);
-
+        text=v.findViewById(R.id.text);
         token = SharedPrefManager.getInstance(getContext()).getDeviceToken();
         Recyclview();
         SwipRefresh();
@@ -276,23 +278,22 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final String key = dataSnapshot.getKey();
                 mSwipeRefreshLayout.setRefreshing(false);
-                DatabaseReference datas= FirebaseDatabase.getInstance().getReference().child("Products");
-                datas.child(key).orderByChild("token").equalTo(token).addChildEventListener(new ChildEventListener() {
+                DatabaseReference datas= FirebaseDatabase.getInstance().getReference().child("Products").child(key);
+                datas.orderByChild("token").equalTo(token).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         if(dataSnapshot.exists()) {
                             Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
-
+                            text.setVisibility(View.INVISIBLE);
                             if(r!=null &&!hasId(r.getName())) {
                                 r.setKey(key);
                                 array.add( r);
                                 mAdapter.notifyDataSetChanged();
-                                mSwipeRefreshLayout.setRefreshing(false);
+                                
                             }
 
                         }
                         else {
-                            mSwipeRefreshLayout.setRefreshing(false);
                         }
 
                     }

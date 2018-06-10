@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,8 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.veinhorn.scrollgalleryview.MediaInfo;
 import com.veinhorn.scrollgalleryview.ScrollGalleryView;
-import com.veinhorn.scrollgalleryview.loader.DefaultImageLoader;
-import com.veinhorn.scrollgalleryview.loader.DefaultVideoLoader;
 import com.veinhorn.scrollgalleryview.loader.MediaLoader;
 
 import java.util.ArrayList;
@@ -34,12 +31,11 @@ import java.util.List;
 import bekya.bekyaa.Interface.btnclicks;
 import bekya.bekyaa.Interface.imageclick;
 import bekya.bekyaa.Model.Retrivedata;
-import bekya.bekyaa.adapter.AdapterOneitem;
 
 public class ActivityOneItem extends AppCompatActivity implements  imageclick,btnclicks {
     List<Retrivedata> array;
     public RecyclerView recyclerView;
-    private AdapterOneitem mAdapter;
+
     TextView textprice;
     TextView textname, textdiscrp, textdiscount, textphone, textdate;
     LinearLayoutManager linearLayoutManager;
@@ -189,39 +185,6 @@ public class ActivityOneItem extends AppCompatActivity implements  imageclick,bt
     public interface firebase{
        void Call(Retrivedata r);
     }
-    public void Recyclview(){
-//        recyclerView =findViewById(R.id.recycler);
-//        recyclerView.setHasFixedSize(true);
-        mAdapter = new AdapterOneitem(array,ActivityOneItem.this);
-         mAdapter.setClickListener(this);
-         mAdapter.setClickList(this);
-//         linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(mAdapter);
-
-    }
-//    public void SwipRefresh(){
-//        mSwipeRefreshLayout =  findViewById(R.id.swipe_container);
-//        mSwipeRefreshLayout.setOnRefreshListener(this);
-//        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
-//                android.R.color.holo_green_dark,
-//                android.R.color.holo_orange_dark,
-//                android.R.color.holo_blue_dark);
-//
-//        mSwipeRefreshLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                getdata();
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public void onRefresh() {
-//        getdata();
-//    }
 
     @Override
     public void Callnext(View view, int poistion) {

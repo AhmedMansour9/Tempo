@@ -46,7 +46,6 @@ dependencies {
     compile 'com.android.support:transition:26.1.0'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.veinhorn.scrollgalleryview:library:1.0.8'
-
-
+    implementation files('libs/joda-time-2.4.jar')
 }
 apply plugin: 'com.google.gms.google-services'

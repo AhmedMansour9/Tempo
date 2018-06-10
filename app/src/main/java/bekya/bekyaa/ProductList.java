@@ -20,7 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -52,13 +54,21 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Duration;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import bekya.bekyaa.Interface.itemViewinterface;
 import bekya.bekyaa.Model.Retrivedata;
@@ -69,6 +79,8 @@ import bekya.bekyaa.tokenid.SharedPrefManager;
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.provider.Settings.System.DATE_FORMAT;
 
 public class ProductList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,itemViewinterface,imgclick {
 
@@ -87,7 +99,7 @@ EditText name,descrip , discount, price;
     EditText editname,editdiscrp,editdiscount,editphone;
     Button finish;
     GalleryAdapter adapter;
-    List<Retrivedata> arrayadmin;
+    ArrayList<Retrivedata> arrayadmin;
     ArrayList<String> listimages=new ArrayList<>();
     ViewSwitcher viewSwitcher;
     ImageLoader imageLoader;
@@ -107,6 +119,8 @@ EditText name,descrip , discount, price;
     Dialog update_items_layout;
     Dialog update_info_layout;
     public ChildEventListener mListener;
+    public static String date2;
+    EditText product;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -121,7 +135,8 @@ EditText name,descrip , discount, price;
         );
         setContentView(R.layout.activity_product_list);
           token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
-
+         date2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        product = findViewById(R.id.findyourproduct);
         handler = new Handler();
         arrayadmin=new ArrayList<>();
         SharedPreferences shared=getSharedPreferences("cat",MODE_PRIVATE);
@@ -147,9 +162,10 @@ EditText name,descrip , discount, price;
             }
         });
 
-
-
+       RecycleviewSerach();
     }
+
+
     public void SwipRefresh(){
         mSwipeRefreshLayout =  findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -189,7 +205,20 @@ EditText name,descrip , discount, price;
         }
         return false;
     }
-
+    public void RecycleviewSerach(){
+        product.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mAdapter.getFilter().filter(charSequence);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+    }
     public void Retrivedata(){
         arrayadmin.clear();
         mAdapter.notifyDataSetChanged();
@@ -199,28 +228,31 @@ EditText name,descrip , discount, price;
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()) {
                     Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
+                    String Date = r.getDate();
+                    int days = GetDays(Date, ProductList.date2);
+                    if (days > 30) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    } else {
 
+                        if (r != null && !hasId(r.getName())) {
+                            if (r.getAdmin()) {
+                                arrayadmin.add(r);
+                            }
 
-                    if(r!=null &&!hasId(r.getName())) {
-                        if(r.getAdmin()){
-                            arrayadmin.add(r);
+                            if (r.getAdmin() == false) {
+                                arrayadmin.add(r);
+                            }
+
+                            mAdapter.notifyDataSetChanged();
                         }
 
-                        if(r.getAdmin()==false){
-                            arrayadmin.add(r);
-                        }
 
-                        mAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                    }else{
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
 
-
-
-
-
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }else {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
             }
 
             @Override
@@ -882,4 +914,18 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
             }
         });
     }
+    public int GetDays(String dateone,String datetwo){
+        String date1 = dateone;
+        String date2 =datetwo;
+        DateTimeFormatter formatter =  DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTime d1 = formatter.parseDateTime(date1);
+        DateTime d2 = formatter.parseDateTime(date2);
+        long diffInMillis = d2.getMillis() - d1.getMillis();
+
+        Duration duration = new Duration(diffInMillis);
+        int days = (int) duration.getStandardDays();
+
+        return days;
+    }
+
 }

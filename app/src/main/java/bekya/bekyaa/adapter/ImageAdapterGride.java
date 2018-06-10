@@ -53,7 +53,8 @@ public class ImageAdapterGride extends BaseAdapter {
                     .fit()
                     .placeholder(R.drawable.no_media)
                     .into(imgview);
-
+           TextView text=gridView.findViewById(R.id.text);
+           text.setText(c.getCatogories());
 
 
 

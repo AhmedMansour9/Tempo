@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#cecece"
+    android:background="#f2f2f2"
     android:layout_height="wrap_content">
 
 <LinearLayout
@@ -120,7 +120,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="150dp"
         android:weightSum="3">
         <TextView
@@ -131,10 +131,11 @@
             android:paddingLeft="20dp"
             />
 <EditText
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="3"
     android:id="@+id/editname"
+    android:maxLines="1"
     android:background="#fff"
     />
 
@@ -142,7 +143,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="200dp"
         android:weightSum="3">
         <TextView
@@ -157,13 +158,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:id="@+id/editdiscrp"
+            android:maxLines="1"
+
             android:background="#fff"
             />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="250dp"
         android:weightSum="3">
         <TextView
@@ -171,20 +174,23 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Discount"
+
             android:paddingLeft="20dp"
             />
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:background="#fff"
+            android:maxLines="1"
+
             android:id="@+id/editdiscount"
             />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="300dp"
         android:weightSum="3">
         <TextView
@@ -195,10 +201,12 @@
             android:paddingLeft="20dp"
             />
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:background="#fff"
+            android:maxLines="1"
+
             android:id="@+id/editphone"
             />
 
@@ -216,6 +224,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/finish"
         android:text="Finish"
+        android:background="@drawable/btnfinish"
 
         />
 

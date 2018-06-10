@@ -68,7 +68,7 @@ public class Home extends AppCompatActivity
         toolbar.setTitle("الصفحة الرئيسية");
         setSupportActionBar(toolbar);
         //Initialize Firebase
-
+       DatabaseReference dat=FirebaseDatabase.getInstance().getReference().child("Category").push();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

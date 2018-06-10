@@ -45,6 +45,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.Days;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -65,7 +67,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     DatabaseReference data;
     RecyclerView recyclerView;
     private Adapteritems mAdapter;
-    List<Retrivedata> array;
+    ArrayList<Retrivedata> array;
     SwipeRefreshLayout mSwipeRefreshLayout;
     ImageView imgone,imgtwo,imgthree,imgfour;
     ImageView deltone,deletetwo,deletethree,deletefour;
@@ -105,6 +107,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         token = SharedPrefManager.getInstance(getContext()).getDeviceToken();
         Recyclview();
         SwipRefresh();
+
 
 
         return v;
@@ -289,7 +292,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                                 r.setKey(key);
                                 array.add( r);
                                 mAdapter.notifyDataSetChanged();
-                                
+
                             }
 
                         }

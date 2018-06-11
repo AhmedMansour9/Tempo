@@ -43,22 +43,25 @@ import bekya.bekyaa.Model.Retrivedata;
 
 
 public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder> implements Filterable {
-    private ArrayList<Retrivedata> mArrayList;
+    private List<Retrivedata> mArrayList=new ArrayList<>();
     itemViewinterface itemclick;
     List<Retrivedata> array=new ArrayList<>();
     public imgclick btnclick;
   Context context;
+   public static List<Retrivedata> filteredList = new ArrayList<>();
+
 
     @Override
     public Filter getFilter() {
         return new Filter() {
+
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
+                filteredList.clear();
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
                     array = mArrayList;
                 } else {
-                    ArrayList<Retrivedata> filteredList = new ArrayList<>();
                     for (Retrivedata androidVersion : mArrayList) {
                         if (androidVersion.getName().toLowerCase().contains(charString)) {
                             filteredList.add(androidVersion);}}
@@ -69,7 +72,9 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
             }
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                array = (ArrayList<Retrivedata>) filterResults.values;
+
+                array = (List<Retrivedata>) filterResults.values;
+
                 notifyDataSetChanged();
             }
         };
@@ -103,7 +108,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
         }
     }
-    public Adapteritems( ArrayList<Retrivedata> moviesList , Context context) {
+    public Adapteritems( List<Retrivedata> moviesList , Context context) {
         this.array = moviesList;
         this.context=context;
         mArrayList = moviesList;
@@ -128,9 +133,9 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-    Retrivedata y=array.get(position);
 
 
+        Retrivedata y=array.get(holder.getAdapterPosition());
 
 
             Boolean admin=y.getAdmin();
@@ -225,15 +230,6 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
     @Override
     public int getItemCount() {
         return array.size();
-    }
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
     }
 
   }

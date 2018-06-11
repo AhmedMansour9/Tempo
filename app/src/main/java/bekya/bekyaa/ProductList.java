@@ -212,7 +212,10 @@ EditText name,descrip , discount, price;
             }
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 mAdapter.getFilter().filter(charSequence);
+               mAdapter.notifyDataSetChanged();
+
             }
             @Override
             public void afterTextChanged(Editable editable) {
@@ -228,21 +231,19 @@ EditText name,descrip , discount, price;
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()) {
                     Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
+
                     String Date = r.getDate();
                     int days = GetDays(Date, ProductList.date2);
                     if (days > 30) {
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
-
                         if (r != null && !hasId(r.getName())) {
                             if (r.getAdmin()) {
-                                arrayadmin.add(r);
+                                arrayadmin.add(0,r);
                             }
-
                             if (r.getAdmin() == false) {
                                 arrayadmin.add(r);
                             }
-
                             mAdapter.notifyDataSetChanged();
                         }
 
@@ -250,7 +251,6 @@ EditText name,descrip , discount, price;
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                     }else{
-                        mSwipeRefreshLayout.setRefreshing(false);
                     }
 
             }
@@ -561,15 +561,31 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
 
     @Override
     public void Callback(View v, int poistion) {
-        Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
-            inty.putExtra("child",child);
-            inty.putExtra("key", arrayadmin.get(poistion).getImg1());
-            inty.putExtra("name", arrayadmin.get(poistion).getName());
-            inty.putExtra("discrp", arrayadmin.get(poistion).getDiscrption());
-            inty.putExtra("discount", arrayadmin.get(poistion).getDiscount());
-            inty.putExtra("phone", arrayadmin.get(poistion).getPhone());
-            inty.putExtra("date", arrayadmin.get(poistion).getDate());
-            startActivity(inty);
+
+      if(!Adapteritems.filteredList.isEmpty()){
+          Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
+          inty.putExtra("child",child);
+          inty.putExtra("key", Adapteritems.filteredList.get(poistion).getImg1());
+          inty.putExtra("name", Adapteritems.filteredList.get(poistion).getName());
+          inty.putExtra("discrp", Adapteritems.filteredList.get(poistion).getDiscrption());
+          inty.putExtra("discount", Adapteritems.filteredList.get(poistion).getDiscount());
+          inty.putExtra("phone", Adapteritems.filteredList.get(poistion).getPhone());
+          inty.putExtra("date", Adapteritems.filteredList.get(poistion).getDate());
+          startActivity(inty);
+
+      }else if(Adapteritems.filteredList.isEmpty()){
+          Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
+          inty.putExtra("child",child);
+          inty.putExtra("key", arrayadmin.get(poistion).getImg1());
+          inty.putExtra("name", arrayadmin.get(poistion).getName());
+          inty.putExtra("discrp", arrayadmin.get(poistion).getDiscrption());
+          inty.putExtra("discount", arrayadmin.get(poistion).getDiscount());
+          inty.putExtra("phone", arrayadmin.get(poistion).getPhone());
+          inty.putExtra("date", arrayadmin.get(poistion).getDate());
+          startActivity(inty);
+
+      }
+
 
     }
 

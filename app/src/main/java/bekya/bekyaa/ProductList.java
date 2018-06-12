@@ -240,11 +240,13 @@ EditText name,descrip , discount, price;
                         if (r != null && !hasId(r.getName())) {
                             if (r.getAdmin()) {
                                 arrayadmin.add(0,r);
+                                mAdapter.notifyDataSetChanged();
                             }
                             if (r.getAdmin() == false) {
                                 arrayadmin.add(r);
+                                mAdapter.notifyDataSetChanged();
                             }
-                            mAdapter.notifyDataSetChanged();
+
                         }
 
 
@@ -676,7 +678,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                String Name =array.get(adapterPosition).getName();
+                String Name =arrayadmin.get(adapterPosition).getName();
 
                 data.removeEventListener(mListener);
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Products").child(child);

@@ -68,7 +68,9 @@ public class Home extends AppCompatActivity
         toolbar.setTitle("الصفحة الرئيسية");
         setSupportActionBar(toolbar);
         //Initialize Firebase
-       DatabaseReference dat=FirebaseDatabase.getInstance().getReference().child("Category").push();
+//       DatabaseReference dat=FirebaseDatabase.getInstance().getReference().child("Category").push();
+//      dat.child("catogories").setValue("ayhaga");
+//      dat.child("img").setValue("https://firebasestorage.googleapis.com/v0/b/bekya-5f805.appspot.com/o/images%2FBuilding-20-512%20(1).png?alt=media&token=30c517ca-f7dc-49d9-9265-264547bfb70f");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

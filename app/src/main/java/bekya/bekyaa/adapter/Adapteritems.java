@@ -43,7 +43,7 @@ import bekya.bekyaa.Model.Retrivedata;
 
 
 public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder> implements Filterable {
-    private List<Retrivedata> mArrayList=new ArrayList<>();
+    private List<Retrivedata> mArrayList;
     itemViewinterface itemclick;
     List<Retrivedata> array=new ArrayList<>();
     public imgclick btnclick;
@@ -135,7 +135,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
 
-        Retrivedata y=array.get(holder.getAdapterPosition());
+        Retrivedata y=array.get(position);
 
 
             Boolean admin=y.getAdmin();
@@ -231,7 +231,15 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
     public int getItemCount() {
         return array.size();
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
   }
 
 

@@ -48,6 +48,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
     List<Retrivedata> array=new ArrayList<>();
     public imgclick btnclick;
   Context context;
+  public static TextView textadmin;
    public static List<Retrivedata> filteredList = new ArrayList<>();
 
 
@@ -72,7 +73,6 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
             }
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-
                 array = (List<Retrivedata>) filterResults.values;
 
                 notifyDataSetChanged();
@@ -125,6 +125,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.product_item, parent, false);
+        textadmin=itemView.findViewById(R.id.admintext);
         return new MyViewHolder(itemView);
     }
 
@@ -136,7 +137,9 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
 
         Retrivedata y=array.get(position);
-
+          if(!filteredList.isEmpty()){
+              holder.textadmin.setVisibility(View.INVISIBLE);
+          }
 
             Boolean admin=y.getAdmin();
             if(admin){
@@ -229,7 +232,8 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return array.size();
+     return   array.size();
+
     }
     @Override
     public long getItemId(int position) {

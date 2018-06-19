@@ -214,6 +214,7 @@ EditText name,descrip , discount, price;
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 mAdapter.getFilter().filter(charSequence);
+
                mAdapter.notifyDataSetChanged();
 
             }
@@ -935,7 +936,8 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     public int GetDays(String dateone,String datetwo){
         String date1 = dateone;
         String date2 =datetwo;
-        DateTimeFormatter formatter =  DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter =  DateTimeFormat.forPattern("dd-MM-yyyy").withLocale(Locale.ENGLISH);
+
         DateTime d1 = formatter.parseDateTime(date1);
         DateTime d2 = formatter.parseDateTime(date2);
         long diffInMillis = d2.getMillis() - d1.getMillis();

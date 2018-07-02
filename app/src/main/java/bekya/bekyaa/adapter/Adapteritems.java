@@ -72,8 +72,8 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
             }
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                 array = (List<Retrivedata>) filterResults.values;
-                 // Adapteritems.this.notify();
+
+                array = (List<Retrivedata>) filterResults.values;
 
                 notifyDataSetChanged();
             }
@@ -84,7 +84,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         public ImageView image,imageedit,imgdelete;
         CardView itemcard;
-      public   TextView textname,textprice,textgovern,textphone,textdate,textadmin;
+        TextView textname,textdiscraption,textdiscount,textphone,textdate,textadmin;
         public MyViewHolder(View view) {
             super(view);
             image =  view.findViewById(R.id.product_image);
@@ -92,9 +92,9 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
             imageedit=view.findViewById(R.id.imageedit);
             imgdelete=view.findViewById(R.id.imagedeleteee);
             textname= view.findViewById(R.id.product_name);
-            textprice= view.findViewById(R.id.price);
-            textgovern= view.findViewById(R.id.govern);
-           // textphone= view.findViewById(R.id.textphone);
+            textdiscraption= view.findViewById(R.id.discount);
+            textdiscount= view.findViewById(R.id.discraptionn);
+            textphone= view.findViewById(R.id.textphone);
             textdate=view.findViewById(R.id.textdate);
             itemcard=view.findViewById(R.id.itemcard);
             view.setOnClickListener(this);
@@ -136,9 +136,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
 
         Retrivedata y=array.get(position);
-        if(!filteredList.isEmpty()){
-            holder.textadmin.setVisibility(View.INVISIBLE);
-        }
+
 
             Boolean admin=y.getAdmin();
             if(admin){
@@ -163,14 +161,14 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
             String text=y.getName();
             holder.textname.setText(text);
 
-            String textprice=y.getDiscount();
-            holder.textprice.setText(textprice + " ج.م");
+            String textdiscrp=y.getDiscrption();
+            holder.textdiscraption.setText(textdiscrp);
 
-            String textgovern=y.getGovern();
-            holder.textgovern.setText(textgovern);
+            String textdiscount=y.getDiscount();
+            holder.textdiscount.setText(textdiscount);
 
-//            String textphone=y.getPhone();
-//            holder.textphone.setText(textphone);
+            String textphone=y.getPhone();
+            holder.textphone.setText(textphone);
 
             String img1 = y.getImg1();
             String img2 = y.getImg2();

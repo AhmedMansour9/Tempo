@@ -11,7 +11,8 @@ public class Retrivedata {
    private String img4;
    private String name;
    private String discrption;
-   private String discount;
+    private String govern;
+    private String discount;
    private String phone;
    private String date;
    private String token;
@@ -19,33 +20,18 @@ public class Retrivedata {
    private Boolean Admin;
     public Retrivedata(){}
 
-    public Retrivedata(String img1, String img2, String img3, String img4, String name, String discrption, String discount, String phone, String date, String token) {
+    public Retrivedata(String img1, String img2, String img3, String img4, String name, String discrption, String discount, String phone, String date,String govern, String token) {
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
         this.img4 = img4;
         this.name = name;
+        this.govern = govern;
         this.discrption = discrption;
         this.discount = discount;
         this.phone = phone;
         this.date = date;
         this.token = token;
-    }
-
-    public Boolean getAdmin() {
-        return Admin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        Admin = admin;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getImg1() {
@@ -96,6 +82,14 @@ public class Retrivedata {
         this.discrption = discrption;
     }
 
+    public String getGovern() {
+        return govern;
+    }
+
+    public void setGovern(String govern) {
+        this.govern = govern;
+    }
+
     public String getDiscount() {
         return discount;
     }
@@ -126,5 +120,21 @@ public class Retrivedata {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Boolean getAdmin() {
+        return Admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        Admin = admin;
     }
 }

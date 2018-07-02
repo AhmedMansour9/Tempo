@@ -56,6 +56,7 @@ import bekya.bekyaa.Model.Retrivedata;
 import bekya.bekyaa.adapter.Adapteritems;
 import bekya.bekyaa.adapter.imgclick;
 import bekya.bekyaa.tokenid.SharedPrefManager;
+import dmax.dialog.SpotsDialog;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -208,8 +209,8 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
     @Override
     public void onClickdelete(View view, final int adapterPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Do You Want to Delete This Post ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage("عايز تمسح البوست ده ؟");
+        builder.setPositiveButton("نعم", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String Name =array.get(adapterPosition).getName();
@@ -235,7 +236,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 dialog.cancel();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("لا", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -464,15 +465,15 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
     public void imgfileone(Uri filePath,final String childimage, final ImageView image, final String IMAGE) {
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
+        final SpotsDialog waitingdialog = new SpotsDialog(getActivity());
+        waitingdialog.setTitle("يتم التحميل ..");
+        waitingdialog.show();
         StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
         ref.putFile(filePath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
+                        waitingdialog.dismiss();
                         Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
                         final Uri u = taskSnapshot.getDownloadUrl();
                         Picasso.with(getActivity())
@@ -502,7 +503,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
+                        waitingdialog.dismiss();
                         Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -511,7 +512,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                 .getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        waitingdialog.setMessage("Uploaded " + (int) progress + "%");
                     }
                 });
 
@@ -586,7 +587,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             public void onClick(View view) {
                 if(editname.getText().toString().isEmpty()||editdiscount.getText().toString().isEmpty()||
                         editdiscrp.getText().toString().isEmpty()||editphone.getText().toString().isEmpty() ){
-                    Toast.makeText(getContext(), "من فضلك املئ البيانات ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "لازم تكتب كل البيانات ", Toast.LENGTH_LONG).show();
 
                 }else {
                     data.child(child).orderByChild("name").equalTo(Nameone).addValueEventListener(new ValueEventListener() {
@@ -608,7 +609,7 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                     });
 
                     update_items_layout.dismiss();
-                    Snackbar.make(rootlayout, "تم تعديل منجك بنجاح", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(rootlayout, "تم تعديل منتجك بنجاح", Snackbar.LENGTH_LONG)
                             .show();
 
                 }

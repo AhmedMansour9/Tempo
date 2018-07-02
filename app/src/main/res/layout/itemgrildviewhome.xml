@@ -17,15 +17,18 @@
 
     <ImageView
         android:id="@+id/full_image_view"
-        android:layout_width="170dp"
+        android:layout_width="match_parent"
+        android:layout_marginRight="5dp"
         android:scaleType="fitXY"
-        android:layout_height="150dp"/>
+        android:src="@drawable/no_media"
+        android:layout_height="wrap_content"/>
 
      <TextView
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_gravity="center"
          android:background="@drawable/bctext"
+         android:text="الموضة و الجمال"
          android:gravity="center_horizontal"
          android:id="@+id/text"
          />

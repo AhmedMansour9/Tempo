@@ -1,5 +1,7 @@
 package bekya.bekyaa;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -57,6 +59,7 @@ import com.squareup.picasso.Picasso;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -76,6 +79,7 @@ import bekya.bekyaa.adapter.Adapteritems;
 import bekya.bekyaa.adapter.GalleryAdapter;
 import bekya.bekyaa.adapter.imgclick;
 import bekya.bekyaa.tokenid.SharedPrefManager;
+import dmax.dialog.SpotsDialog;
 import ru.dimorinny.floatingtextbutton.FloatingTextButton;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -86,17 +90,20 @@ public class ProductList extends AppCompatActivity implements SwipeRefreshLayout
 
     RecyclerView recyclerView;
     RelativeLayout rootlayout;
+    String Names;
     String Nameone;
     Button btnUpload;
     Button btnselect;
     SwipeRefreshLayout mSwipeRefreshLayout;
-EditText name,descrip , discount, price;
+EditText name,descrip , phone, price ,govern;
     GridView gridGallery;
+    private RequestPermissionListener mRequestPermissionHandler;
+
     Handler handler;
     ImageView imgone,imgtwo,imgthree,imgfour;
     ImageView deltone,deletetwo,deletethree,deletefour;
     ImageView cameraone,cameratwo,camerathree,camerafour;
-    EditText editname,editdiscrp,editdiscount,editphone;
+    EditText editname,editdiscrp,editdiscount,editphone,editgovern;
     Button finish;
     GalleryAdapter adapter;
     ArrayList<Retrivedata> arrayadmin;
@@ -114,7 +121,7 @@ EditText name,descrip , discount, price;
     StorageReference storageReference;
     public static String token;
     ArrayList<CustomGallery> dataT;
-    String Name,Discrption,Discount,Price;
+    String Name,Discrption,Phone,Price,Govern;
     String child;
     Dialog update_items_layout;
     Dialog update_info_layout;
@@ -134,15 +141,16 @@ EditText name,descrip , discount, price;
                 .build()
         );
         setContentView(R.layout.activity_product_list);
+        Adapteritems.filteredList.clear();
           token = SharedPrefManager.getInstance(getApplicationContext()).getDeviceToken();
-         date2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+         date2 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
         product = findViewById(R.id.findyourproduct);
         handler = new Handler();
         arrayadmin=new ArrayList<>();
         SharedPreferences shared=getSharedPreferences("cat",MODE_PRIVATE);
          child=shared.getString("Category",null);
         data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
-
+        mRequestPermissionHandler = new RequestPermissionListener();
         storage = FirebaseStorage.getInstance();
         rootlayout = findViewById(R.id.rootlayout);
         editor = getApplicationContext().getSharedPreferences("Photo", MODE_PRIVATE).edit();
@@ -164,7 +172,34 @@ EditText name,descrip , discount, price;
 
        RecycleviewSerach();
     }
+    private void handleButtonClicked(){
+        mRequestPermissionHandler.requestPermission(this, new String[] {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, 200, new RequestPermissionListener.RequestPermissionListene() {
+            @Override
+            public void onSuccess() {
+               // Toast.makeText(ProductList.this, "request permission success", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+                startActivityForResult(i, 200);
 
+            }
+
+            @Override
+            public void onFailed() {
+                Toast.makeText(ProductList.this, "request permission failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mRequestPermissionHandler.onRequestPermissionsResult(requestCode, permissions,
+                grantResults);
+
+    }
 
     public void SwipRefresh(){
         mSwipeRefreshLayout =  findViewById(R.id.swipe_container);
@@ -214,7 +249,9 @@ EditText name,descrip , discount, price;
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 mAdapter.getFilter().filter(charSequence);
-               mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
+
+
 
             }
             @Override
@@ -297,8 +334,10 @@ EditText name,descrip , discount, price;
         update_info_layout.setContentView(R.layout.layout_add_product);
        name = update_info_layout.findViewById(R.id.Name);
        descrip = update_info_layout.findViewById(R.id.descrip);
-        discount = update_info_layout.findViewById(R.id.discount);
+        phone = update_info_layout.findViewById(R.id.phone);
         price = update_info_layout.findViewById(R.id.price);
+        govern = update_info_layout.findViewById(R.id.govern);
+
 
         gridGallery =update_info_layout.findViewById(R.id.gridGallery);
         gridGallery.setFastScrollEnabled(true);
@@ -333,21 +372,35 @@ EditText name,descrip , discount, price;
 
         Name = name.getText().toString().trim();
         Discrption = descrip.getText().toString().trim();
-        Discount = discount.getText().toString().trim();
+        Phone = phone.getText().toString().trim();
         Price = price.getText().toString().trim();
+        Govern = govern.getText().toString().trim();
 
-        if (Name.isEmpty() || Discrption.isEmpty() || Discount.isEmpty() || Price.isEmpty()) {
-            Toast.makeText(getBaseContext(), "من فضلك أملآ جميع البيانات", Toast.LENGTH_SHORT).show();
 
-        }else if(dataT==null){
-            SavedSahredPrefrenceSwitch(Name, Discrption, Discount, Price);
+        if (Name.isEmpty() || Discrption.isEmpty() || Phone.isEmpty() || Price.isEmpty()) {
+            Toast.makeText(getBaseContext(), "لازم تكتب كل البيانات", Toast.LENGTH_LONG).show();
+
+        }
+        else if(phone.length() < 11 || phone.length() >11 )
+        {
+            Toast.makeText(getBaseContext(), "لازم يكون رقم التليفون 11 رقم", Toast.LENGTH_LONG).show();
+
+        } else if(price.length() >7 )
+        {
+            Toast.makeText(getBaseContext(), "لا يمكن زيادة السعر عن 7 أرقام", Toast.LENGTH_LONG).show();
+
+        }
+
+        else if(dataT==null){
+            SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price,Govern);
+            update_info_layout.dismiss();
         }
         else {
             if (dataT != null) {
                 for (int i = 0; i < dataT.size(); i++) {
-                    final ProgressDialog progressDialog = new ProgressDialog(this);
-                    progressDialog.setTitle("Uploading...");
-                    progressDialog.show();
+                    final SpotsDialog waitingdialog = new SpotsDialog(this);
+                    waitingdialog.setTitle("يتم التحميل ..");
+                    waitingdialog.show();
                     storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
                     Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
                     StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
@@ -355,7 +408,7 @@ EditText name,descrip , discount, price;
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Log.e("ss", "onSuccess: " + taskSnapshot);
-                            progressDialog.dismiss();
+                            waitingdialog.dismiss();
                             Uri u = taskSnapshot.getDownloadUrl();
                             Gson i = new Gson();
                             listimages.add(u.toString());
@@ -366,10 +419,10 @@ EditText name,descrip , discount, price;
                             int y = listimages.size();
 
                             if (pos == y) {
-                                progressDialog.dismiss();
-                                SavedSahredPrefrenceSwitch(Name, Discrption, Discount, Price);
+                                waitingdialog.dismiss();
+                                SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price,Govern);
                                 update_info_layout.dismiss();
-                                Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+                                Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
                                         .show();
                             }
                         }
@@ -377,7 +430,7 @@ EditText name,descrip , discount, price;
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
+                                    waitingdialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             })
@@ -393,9 +446,7 @@ EditText name,descrip , discount, price;
     }
 
     private void chooseImage() {
-        Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-        startActivityForResult(i, 200);
-
+handleButtonClicked();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -453,7 +504,7 @@ EditText name,descrip , discount, price;
             if (all_path.length > 4) {
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
                 startActivityForResult(i, 200);
-                Toast.makeText(this, "Choose 4 images Only", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "مينفعش أكتر من 4 صور", Toast.LENGTH_LONG).show();
             }
 
             dataT = new ArrayList<CustomGallery>();
@@ -473,14 +524,14 @@ EditText name,descrip , discount, price;
 
         }
 
-public void SavedSahredPrefrenceSwitch(String name,String discroption,String discount,String phone){
+public void SavedSahredPrefrenceSwitch(String name,String discroption,String phone,String discount , String govern){
 
     SharedPreferences sharedPref =getSharedPreferences("Photo", MODE_PRIVATE);
     String jsonFavorit = sharedPref.getString("img", null);
     Gson gson3 = new Gson();
     String[] favoriteIte = gson3.fromJson(jsonFavorit,String[].class);
     Retrivedata r=new Retrivedata();
-    String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+    String date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
 
     if(jsonFavorit!=null){
 
@@ -491,6 +542,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         r.setImg3(favoriteIte[2]);
         r.setImg4(favoriteIte[3]);
         r.setName(name);
+        r.setGovern(govern);
         r.setDiscrption(discroption);
         r.setDiscount(discount);
         r.setPhone(phone);
@@ -498,7 +550,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
                 .show();
 
     }
@@ -510,11 +562,12 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         r.setDiscrption(discroption);
         r.setDiscount(discount);
         r.setPhone(phone);
+        r.setGovern(govern);
         r.setDate(date);
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
                 .show();
 
     }
@@ -524,12 +577,13 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         r.setName(name);
         r.setDiscrption(discroption);
         r.setDiscount(discount);
+        r.setGovern(govern);
         r.setPhone(phone);
         r.setDate(date);
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
                 .show();
 
     }
@@ -539,11 +593,12 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         r.setDiscrption(discroption);
         r.setDiscount(discount);
         r.setPhone(phone);
+        r.setGovern(govern);
         r.setDate(date);
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
                 .show();
 
     }}else {
@@ -552,10 +607,11 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         r.setDiscount(discount);
         r.setPhone(phone);
         r.setDate(date);
+        r.setGovern(govern);
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
                 .show();
     }
 
@@ -573,6 +629,8 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
           inty.putExtra("discount", Adapteritems.filteredList.get(poistion).getDiscount());
           inty.putExtra("phone", Adapteritems.filteredList.get(poistion).getPhone());
           inty.putExtra("date", Adapteritems.filteredList.get(poistion).getDate());
+          inty.putExtra("govern", Adapteritems.filteredList.get(poistion).getGovern());
+
           startActivity(inty);
 
       }else if(Adapteritems.filteredList.isEmpty()){
@@ -584,6 +642,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
           inty.putExtra("discount", arrayadmin.get(poistion).getDiscount());
           inty.putExtra("phone", arrayadmin.get(poistion).getPhone());
           inty.putExtra("date", arrayadmin.get(poistion).getDate());
+          inty.putExtra("govern", arrayadmin.get(poistion).getGovern());
           startActivity(inty);
 
       }
@@ -603,10 +662,32 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         update_items_layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
         update_items_layout.setContentView(R.layout.edititems);
        init2();
-       Nameone=arrayadmin.get(adapterPosition).getName();
+        if(Adapteritems.filteredList.isEmpty()){
+            Nameone=arrayadmin.get(adapterPosition).getName();
+            imgOne=arrayadmin.get(adapterPosition).getImg1();
+            imgTwo=arrayadmin.get(adapterPosition).getImg2();
+            imgThree=arrayadmin.get(adapterPosition).getImg3();
+            imgFour=arrayadmin.get(adapterPosition).getImg4();
+            editname.setText(arrayadmin.get(adapterPosition).getName());
+            editdiscrp.setText(arrayadmin.get(adapterPosition).getDiscrption());
+            editdiscount.setText(arrayadmin.get(adapterPosition).getDiscount());
+            editphone.setText(arrayadmin.get(adapterPosition).getPhone());
 
-        imgOne=arrayadmin.get(adapterPosition).getImg1();
-       if(imgOne!=null){
+        }else if(!Adapteritems.filteredList.isEmpty()){
+            Nameone=Adapteritems.filteredList.get(adapterPosition).getName();
+            imgOne=Adapteritems.filteredList.get(adapterPosition).getImg1();
+            imgTwo=Adapteritems.filteredList.get(adapterPosition).getImg2();
+            imgThree=Adapteritems.filteredList.get(adapterPosition).getImg3();
+            imgFour=Adapteritems.filteredList.get(adapterPosition).getImg4();
+            editname.setText(Adapteritems.filteredList.get(adapterPosition).getName());
+            editdiscrp.setText(Adapteritems.filteredList.get(adapterPosition).getDiscrption());
+            editdiscount.setText(Adapteritems.filteredList.get(adapterPosition).getDiscount());
+            editphone.setText(Adapteritems.filteredList.get(adapterPosition).getPhone());
+
+        }
+
+
+        if(imgOne!=null){
            Uri u = Uri.parse(imgOne);
            Picasso.with(getApplicationContext())
                    .load(u)
@@ -617,7 +698,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
        }else {
           deltone.setVisibility(View.INVISIBLE);
        }
-         imgTwo=arrayadmin.get(adapterPosition).getImg2();
+
         if(imgTwo!=null){
             Uri u = Uri.parse(imgTwo);
             Picasso.with(getApplicationContext())
@@ -628,7 +709,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         }else {
             deletetwo.setVisibility(View.INVISIBLE);
         }
-         imgThree=arrayadmin.get(adapterPosition).getImg3();
+
         if(imgThree!=null){
             Uri u = Uri.parse(imgThree);
             Picasso.with(getApplicationContext())
@@ -640,7 +721,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
             deletethree.setVisibility(View.INVISIBLE);
         }
 
-         imgFour=arrayadmin.get(adapterPosition).getImg4();
+
         if(imgFour!=null){
             Uri u = Uri.parse(imgFour);
             Picasso.with(getApplicationContext())
@@ -651,10 +732,6 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
         }else {
             deletefour.setVisibility(View.INVISIBLE);
         }
-        editname.setText(arrayadmin.get(adapterPosition).getName());
-        editdiscrp.setText(arrayadmin.get(adapterPosition).getDiscrption());
-        editdiscount.setText(arrayadmin.get(adapterPosition).getDiscount());
-       editphone.setText(arrayadmin.get(adapterPosition).getPhone());
     clickimgeon();
     clickimgtwo();
     clickimgethree();
@@ -674,15 +751,21 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     @Override
     public void onClickdelete(View view, final int adapterPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do You Want to Delete This Post ?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage("عايز تمسح الإعلان ده ؟");
+        builder.setPositiveButton("نعم", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String Name =arrayadmin.get(adapterPosition).getName();
 
+                if(!Adapteritems.filteredList.isEmpty()){
+                    Names =Adapteritems.filteredList.get(adapterPosition).getName();
+
+                }else if(Adapteritems.filteredList.isEmpty()){
+                    Names =arrayadmin.get(adapterPosition).getName();
+
+                }
                 data.removeEventListener(mListener);
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Products").child(child);
-                databaseReference.orderByChild("name").equalTo(Name).addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.orderByChild("name").equalTo(Names).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot data:dataSnapshot.getChildren()){
@@ -695,13 +778,22 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
 
                     }
                 });
-                arrayadmin.remove(adapterPosition);
-                mAdapter.notifyDataSetChanged();
+                if(!Adapteritems.filteredList.isEmpty()){
+                    Adapteritems.filteredList.remove(adapterPosition);
+                    mAdapter.notifyDataSetChanged();
+
+
+                }else if(Adapteritems.filteredList.isEmpty()){
+                    arrayadmin.remove(adapterPosition);
+                    mAdapter.notifyDataSetChanged();
+
+
+                }
 
                 dialog.cancel();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("لا", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -782,15 +874,15 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
 
     public void imgfileone(Uri filePath,final String childimage, final ImageView image, final String IMAGE) {
 
-        final ProgressDialog progressDialog = new ProgressDialog(ProductList.this);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
+        final SpotsDialog waitingdialog = new SpotsDialog(ProductList.this);
+        waitingdialog.setTitle("يتم التحميل ..");
+        waitingdialog.show();
         StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
         ref.putFile(filePath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
+                        waitingdialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                         final Uri u = taskSnapshot.getDownloadUrl();
                         Picasso.with(getApplicationContext())
@@ -820,7 +912,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
+                        waitingdialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -829,7 +921,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                 .getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        waitingdialog.setMessage("Uploaded " + (int) progress + "%");
                     }
                 });
 
@@ -904,7 +996,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
             public void onClick(View view) {
                 if(editname.getText().toString().isEmpty()||editdiscount.getText().toString().isEmpty()||
                         editdiscrp.getText().toString().isEmpty()||editphone.getText().toString().isEmpty() ){
-                    Toast.makeText(getApplicationContext(), "من فضلك املئ البيانات ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "لازم تكتب كل البيانات ", Toast.LENGTH_SHORT).show();
 
                 }else {
                     data.orderByChild("name").equalTo(Nameone).addValueEventListener(new ValueEventListener() {
@@ -918,6 +1010,9 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
 
                             }
                             update_items_layout.dismiss();
+                            Adapteritems.filteredList.clear();
+                            product.setText("");
+
                         }
 
                         @Override
@@ -935,7 +1030,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String dis
     public int GetDays(String dateone,String datetwo){
         String date1 = dateone;
         String date2 =datetwo;
-        DateTimeFormatter formatter =  DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter =  DateTimeFormat.forPattern("dd-MM-yyyy").withLocale(Locale.ENGLISH);
         DateTime d1 = formatter.parseDateTime(date1);
         DateTime d2 = formatter.parseDateTime(date2);
         long diffInMillis = d2.getMillis() - d1.getMillis();

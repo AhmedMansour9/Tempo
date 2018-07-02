@@ -1,10 +1,16 @@
 package bekya.bekyaa;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,99 +37,147 @@ import java.util.List;
 import bekya.bekyaa.Interface.btnclicks;
 import bekya.bekyaa.Interface.imageclick;
 import bekya.bekyaa.Model.Retrivedata;
+import ru.dimorinny.floatingtextbutton.FloatingTextButton;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class ActivityOneItem extends AppCompatActivity implements  imageclick,btnclicks {
+public class ActivityOneItem extends AppCompatActivity implements imageclick, btnclicks {
     List<Retrivedata> array;
     public RecyclerView recyclerView;
+    private static final int REQUEST_CALL = 1;
+    private Context context;
 
-    TextView textprice;
-    TextView textname, textdiscrp, textdiscount, textphone, textdate;
+    TextView textprice, textdiscrp, textphone, textdate, textgovern;
     LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     Retrivedata set;
     private static final String movieUrl = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4";
-    String img1,img2,img3,img4;
+    String img1, img2, img3, img4;
     private ScrollGalleryView scrollGalleryView;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Cairo-Bold.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
         setContentView(R.layout.activityitem);
-        set=new Retrivedata();
+        set = new Retrivedata();
         array = new ArrayList<>();
-        textname = findViewById(R.id.textname);
+      //  textname = findViewById(R.id.textname);
         textdiscrp = findViewById(R.id.textdiscrp);
-        textdiscount = findViewById(R.id.textdiscount);
-        textphone = findViewById(R.id.textphone);
+        textprice = findViewById(R.id.textprice);
+        //textphone = findViewById(R.id.textphone);
         textdate = findViewById(R.id.textdate);
+        textgovern = findViewById(R.id.textgovern);
+        FloatingTextButton floatingTextButton = findViewById(R.id.makecall);
+        floatingTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makecall();
+            }
+        });
 
-        String name = getIntent().getStringExtra("name");
+
+       // String name = getIntent().getStringExtra("name");
         String discrption = getIntent().getStringExtra("discrp");
-        String discount = getIntent().getStringExtra("discount");
-        String phone = getIntent().getStringExtra("phone");
+       // String discount = getIntent().getStringExtra("discount");
+        String price = getIntent().getStringExtra("discount");
         String date = getIntent().getStringExtra("date");
-        textname.setText(name);
+        String govern = getIntent().getStringExtra("govern");
+
+        //textname.setText(name);
+        textgovern.setText(govern);
         textdiscrp.setText(discrption);
-        textdiscount.setText(discount);
-        textphone.setText(phone);
+      //  textdiscount.setText(discount);
+        textprice.setText(price + " ج.م");
         textdate.setText(date);
         getdata(new firebase() {
             @Override
             public void Call(Retrivedata r) {
-                img1=r.getImg1();
-                img2=r.getImg2();
-                img3=r.getImg3();
+                img1 = r.getImg1();
+                img2 = r.getImg2();
+                img3 = r.getImg3();
+                img4=r.getImg4();
                 List<MediaInfo> infos = new ArrayList<>(images.size());
 
-                for (String url : images) infos.add(MediaInfo.mediaLoader(new PicassoImageLoader(url)));
+                for (String url : images)
+                    infos.add(MediaInfo.mediaLoader(new PicassoImageLoader(url)));
+
+
 
                 scrollGalleryView = (ScrollGalleryView) findViewById(R.id.scroll_gallery_view);
-                scrollGalleryView
-                        .setThumbnailSize(100)
-                        .setZoom(true)
-                        .setFragmentManager(getSupportFragmentManager())
-                        .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader(img1)))
-                        .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img2))))
-                        .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img3))))
-                        .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img4))))
+                if(img1!=null&&img2!=null&&img3!=null&&img4!=null) {
+                    scrollGalleryView
+                            .setThumbnailSize(100)
+                            .setZoom(true)
+                            .setFragmentManager(getSupportFragmentManager())
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader(img1)))
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img2))))
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img3))))
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img4))));
+                }
+                if(img1!=null&&img2!=null&&img3!=null&&img4==null){
+                    scrollGalleryView
+                            .setThumbnailSize(100)
+                            .setZoom(true)
+                            .setFragmentManager(getSupportFragmentManager())
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader(img1)))
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img2))))
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img3))));
 
+                }
+                if(img1!=null&&img2!=null&&img3==null&&img4==null){
+                    scrollGalleryView
+                            .setThumbnailSize(100)
+                            .setZoom(true)
+                            .setFragmentManager(getSupportFragmentManager())
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader(img1)))
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader((img2))));
+                }
+                if(img1!=null&&img2==null&&img3==null&&img4==null){
+                    scrollGalleryView
+                            .setThumbnailSize(100)
+                            .setZoom(true)
+                            .setFragmentManager(getSupportFragmentManager())
+                            .addMedia(MediaInfo.mediaLoader(new PicassoImageLoader(img1)));
+                }
 
-                        .addMedia(MediaInfo.mediaLoader(new MediaLoader() {
-                            @Override
-                            public boolean isImage() {
-                                return true;
-                            }
-
-                            @Override
-                            public void loadMedia(Context context, ImageView imageView,
-                                                  MediaLoader.SuccessCallback callback) {
-//                        imageView.setImageBitmap(toBitmap(R.drawable.wallpaper3));
-//                                Picasso.with(context)
-//                                        .load(img1)
-//                                        .fit()
-//                                        .placeholder(R.drawable.no_media)
-//                                        .into(imageView);
-//                                callback.onSuccess();
-                            }
-
-                            @Override
-                            public void loadThumbnail(Context context, ImageView thumbnailView,
-                                                      MediaLoader.SuccessCallback callback) {
-//                                thumbnailView.setImageBitmap(toBitmap(R.drawable.wallpaper3));
-//                                Picasso.with(context)
-//                                        .load(img1)
-//                                        .fit()
-//                                        .placeholder(R.drawable.no_media)
-//                                        .into(thumbnailView);
-//                                callback.onSuccess();
-                            }
-                        }));
 
             }
         });
 
 //                .addMedia(MediaInfo.mediaLoader(new DefaultVideoLoader(movieUrl, R.mipmap.default_video)))
 //                .addMedia(infos);
+    }
+
+    private void makecall() {
+        String phone = getIntent().getStringExtra("phone");
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phone));
+
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(ActivityOneItem.this, new String[]{android.Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+
+
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+        } else {
+            startActivity(intent);
+        }
     }
     private Bitmap toBitmap(int image) {
         return ((BitmapDrawable) getResources().getDrawable(image)).getBitmap();

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="145dp"
     app:cardElevation="4dp"
     android:id="@+id/itemcard"
     android:layout_marginBottom="10dp"
@@ -30,17 +30,16 @@
             android:layout_marginTop="15dp"
             android:layout_toRightOf="@id/product_image"
             android:background="@drawable/bctext"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text=""
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:gravity="right"
+            android:text="كيبورد لالبابلا بلالبابلاب لباالب"
+            android:textSize="12sp"
             android:textColor="#000000" />
 
         <TextView
-            android:id="@+id/discount"
+            android:id="@+id/price"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/product_name"
@@ -48,69 +47,53 @@
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/product_image"
             android:background="@drawable/bctext"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
+            android:text="25 ج.م"
+            android:gravity="right"
+            android:textSize="12sp"
             android:singleLine="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:textColor="#000000" />
 
         <TextView
-            android:id="@+id/discraptionn"
+            android:id="@+id/govern"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/discount"
+            android:layout_below="@id/price"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/product_image"
             android:background="@drawable/bctext"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:scrollHorizontally="true"
+            android:text="كيبورد"
+            android:gravity="right"
+            android:textSize="12sp"
             android:singleLine="true"
             android:textColor="#000000"
-            android:textStyle="bold" />
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
 
-        <TextView
-            android:id="@+id/textphone"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/discraptionn"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/product_image"
-            android:background="@drawable/bctext"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textStyle="bold" />
+            />
 
         <TextView
             android:id="@+id/textdate"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textphone"
+            android:layout_below="@id/govern"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/product_image"
             android:background="@drawable/bctext"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
+            android:text="25-6-1999"
+            android:gravity="right"
+            android:textSize="12sp"
             android:singleLine="true"
             android:textColor="#000000"
-            android:textStyle="bold" />
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+
+            />
+
+
 
         <ImageView
             android:id="@+id/imageedit"
@@ -128,7 +111,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="60dp"
-            android:src="@drawable/delete"
+            android:src="@drawable/ic_delete_forever_black_24dp"
+
             android:visibility="invisible" />
 
         <TextView
@@ -137,8 +121,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:text="اعلان ممول"
-            android:layout_marginRight="2dp"
+            android:text="إعلان مميز"
+            android:background="@drawable/imageborder"
+            android:textSize="10sp"
+            android:layout_marginRight="5dp"
+            android:paddingRight="3dp"
+            android:paddingLeft="3dp"
             android:textColor="#000000"
             android:visibility="invisible" />
 

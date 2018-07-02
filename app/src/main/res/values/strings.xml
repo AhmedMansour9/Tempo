@@ -6,6 +6,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="aboutus"> عشان تعمل إعلان مميز برجاء التواصل مع خدمة العملاء على رقم 01000057220
+    </string>
 
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
@@ -82,7 +84,7 @@
     <string name="email_fmt">Email: %s</string>
     <dimen name="photo_width">110dp</dimen>
     <dimen name="photo_height">110dp</dimen>
-    <string name="btn_ok">OK</string>
+    <string name="btn_ok">موافق</string>
 
     <string name="btn_pick_mul">Pick From Gallery (Multiple)</string>
 

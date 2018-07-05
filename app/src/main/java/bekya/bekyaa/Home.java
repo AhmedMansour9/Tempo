@@ -30,6 +30,7 @@ public class Home extends AppCompatActivity
    // FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
     TextView txtFullName;
     public static String token;
+    public static Toolbar toolbar;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -45,7 +46,7 @@ public class Home extends AppCompatActivity
         );
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("الصفحة الرئيسية");
         setSupportActionBar(toolbar);
         toolbar.setLogo(R.mipmap.actionbarlogotw);

@@ -19,6 +19,7 @@
         android:id="@+id/full_image_view"
         android:layout_width="match_parent"
         android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:scaleType="fitXY"
         android:src="@drawable/no_media"
         android:layout_height="wrap_content"/>
@@ -28,9 +29,13 @@
          android:layout_height="wrap_content"
          android:layout_gravity="center"
          android:background="@drawable/bctext"
-         android:text="الموضة و الجمال"
          android:gravity="center_horizontal"
          android:id="@+id/text"
+         android:scrollbars = "vertical"
+
+         android:maxLines="1"
+         android:paddingRight="10dp"
+         android:paddingLeft="5dp"
          />
     </android.support.v7.widget.CardView>
 

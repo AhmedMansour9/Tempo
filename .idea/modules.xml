@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BEKYA.iml" filepath="$PROJECT_DIR$/BEKYA.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\CS 4\graduation\beKyaaBns\beKyaa.iml" filepath="E:\CS 4\graduation\beKyaaBns\beKyaa.iml" />
-      <module fileurl="file://C:\Users\HP\Downloads\BEKYA\beKyaaBns.iml" filepath="C:\Users\HP\Downloads\BEKYA\beKyaaBns.iml" />
+      <module fileurl="file://$PROJECT_DIR$/beKyaaBns.iml" filepath="$PROJECT_DIR$/beKyaaBns.iml" />
     </modules>
   </component>
 </project>

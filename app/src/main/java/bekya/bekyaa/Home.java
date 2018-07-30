@@ -1,6 +1,7 @@
 package bekya.bekyaa;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,14 +12,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import bekya.bekyaa.Common.Common;
 import bekya.bekyaa.Model.Category;
 import bekya.bekyaa.tokenid.SharedPrefManager;
+import io.paperdb.Paper;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -144,6 +151,8 @@ public class Home extends AppCompatActivity
                 welcomeAlert.show();
 
                 return true;
+            case R.id.nav_setting:
+                showSettingdialog();
 
 
 
@@ -168,6 +177,43 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showSettingdialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
+        alertDialog.setTitle("ضبط الإشعارات");
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout_setting= inflater.inflate(R.layout.setting_layout,null);
+        final CheckBox chk_subscribe =layout_setting.findViewById(R.id.chk_new);
+        //remember state of checkbox
+        Paper.init(this);
+        String isSubscribe = Paper.book().read("sub_new","true");
+        if(isSubscribe==null|| TextUtils.isEmpty(isSubscribe) || isSubscribe.equals("false"))
+            chk_subscribe.setChecked(false);
+        else
+            chk_subscribe.setChecked(true);
+
+        alertDialog.setView(layout_setting);
+        alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if(chk_subscribe.isChecked())
+                {
+                    FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
+                    Paper.book().write("sub_new" , "true");
+                }
+                else
+                {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(Common.topicName);
+                    Paper.book().write("sub_new" , "false");
+                }
+
+            }
+        });
+        alertDialog.show();
+
+
     }
 
 

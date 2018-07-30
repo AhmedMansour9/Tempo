@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">Bekya</string>
     <string name="title_activity_home">Home</string>
+    <string name="selectcountry"> اختار محافظتك</string>
+    <string-array name="country">
+        <item>بنى سويف</item>
+        <item>ببا</item>
+        <item>الفشن</item>
+        <item>سمسطا</item>
+        <item>الواسطى</item>
+        <item>إهناسيا</item>
+        <item>ناصر</item>
+        <item>شرق النيل</item>
+
+
+
+    </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

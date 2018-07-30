@@ -133,24 +133,27 @@
                     android:id="@+id/textgovern"
                     />
             </android.support.v7.widget.CardView>
-            <ru.dimorinny.floatingtextbutton.FloatingTextButton
-                android:id="@+id/makecall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:floating_background_color="@color/blue"
-                app:floating_left_icon="@drawable/ic_call_black_24dp"
-                app:floating_title="كلم البايع"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true"
 
-                app:floating_title_color="@android:color/white"
-                />
+
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:id="@+id/makecall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        app:floating_background_color="@color/blue"
+        app:floating_left_icon="@drawable/ic_call_black_24dp"
+        app:floating_title="كلم البايع"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+
+        app:floating_title_color="@android:color/white"
+        />
+
 
 
 </android.support.design.widget.CoordinatorLayout>

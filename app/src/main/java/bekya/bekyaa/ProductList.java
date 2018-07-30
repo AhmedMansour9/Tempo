@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,11 +29,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -46,6 +49,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
@@ -63,7 +67,11 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,7 +94,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static android.provider.Settings.System.DATE_FORMAT;
 
-public class ProductList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,itemViewinterface,imgclick {
+public class ProductList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,itemViewinterface,imgclick{
 
     RecyclerView recyclerView;
     RelativeLayout rootlayout;
@@ -111,6 +119,7 @@ EditText name,descrip , phone, price ,govern;
     ViewSwitcher viewSwitcher;
     ImageLoader imageLoader;
     DatabaseReference data;
+    private Bitmap bitmap;
     private Adapteritems mAdapter;
     StorageReference storageRef;
     SharedPreferences.Editor editor;
@@ -119,15 +128,18 @@ EditText name,descrip , phone, price ,govern;
     private Uri filePathone,filePathtwo,filePaththree,filePathfour;
     FirebaseStorage storage;
     StorageReference storageReference;
+    byte [] dat;
     public static String token;
     ArrayList<CustomGallery> dataT;
     String Name,Discrption,Phone,Price,Govern;
     String child;
     Dialog update_items_layout;
     Dialog update_info_layout;
+    Spinner s1, s2;
     public ChildEventListener mListener;
     public static String date2;
     EditText product;
+    String state[] = null;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -275,7 +287,7 @@ EditText name,descrip , phone, price ,govern;
 
                     String Date = r.getDate();
                     int days = GetDays(Date, ProductList.date2);
-                    if (days > 30) {
+                    if (days > 90) {
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
                         if (r != null && !hasId(r.getName())) {
@@ -401,50 +413,64 @@ EditText name,descrip , phone, price ,govern;
         }
         else {
             if (dataT != null) {
-                for (int i = 0; i < dataT.size(); i++) {
-                    final SpotsDialog waitingdialog = new SpotsDialog(this);
-                    waitingdialog.setTitle("يتم التحميل ..");
-                    waitingdialog.show();
-                    storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
-                    Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
-                    StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
-                    imageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.e("ss", "onSuccess: " + taskSnapshot);
-                            waitingdialog.dismiss();
-                            Uri u = taskSnapshot.getDownloadUrl();
-                            Gson i = new Gson();
-                            listimages.add(u.toString());
-                            String jsonFavorites = i.toJson(listimages);
-                            editor.putString("img", jsonFavorites);
-                            editor.commit();
-                            final int pos = dataT.size();
-                            int y = listimages.size();
+                if (dataT != null) {
 
-                            if (pos == y) {
+                    for (int i = 0; i < dataT.size(); i++) {
+                        final SpotsDialog waitingdialog = new SpotsDialog(this);
+                        waitingdialog.setTitle("يتم التحميل ..");
+                        waitingdialog.show();
+                     //   Uri fi = Uri.parse(dataT.get(i).sdcardPath);
+                        File imageFile = new File(dataT.get(i).sdcardPath);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath(),options);
+                            //bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fi);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        image.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
+                          byte[] dat = bytes.toByteArray();
+
+                        storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
+                        Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
+                        StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
+                        UploadTask uploadTask = imageRef.putBytes(dat);
+
+
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Log.e("ss", "onSuccess: " + taskSnapshot);
                                 waitingdialog.dismiss();
-                                SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price,Govern);
-                                update_info_layout.dismiss();
-                                Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
-                                        .show();
-                            }
-                        }
-                    })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    waitingdialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri u = taskSnapshot.getDownloadUrl();
+                                Gson i = new Gson();
+                                listimages.add(u.toString());
+                                String jsonFavorites = i.toJson(listimages);
+                                editor.putString("img", jsonFavorites);
+                                editor.commit();
+                                final int pos = dataT.size();
+                                int y = listimages.size();
 
+                                if (pos == y) {
+                                    waitingdialog.dismiss();
+                                    SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price, Govern);
+                                    update_info_layout.dismiss();
+                                    Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+                                            .show();
                                 }
-                            });
-                }
+                            }
+                        })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        waitingdialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                    }
+                                });
+                    }}
             }
         }
     }
@@ -464,7 +490,16 @@ handleButtonClicked();
             if(filePathone != null)
             {
                 String imagechild="img1";
-             imgfileone(filePathone,imagechild,imgone,Nameone);
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathone);
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    byte[] dat = bytes.toByteArray();
+
+                    imgfileone(dat,imagechild,imgone,Nameone);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }else   if(requestCode == 100 && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
@@ -474,7 +509,16 @@ handleButtonClicked();
             if(filePathtwo != null)
             {
                 String imagechild="img2";
-                imgfileone(filePathtwo,imagechild,imgtwo,Nameone);
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathtwo);
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    byte[] dat = bytes.toByteArray();
+
+                    imgfileone(dat,imagechild,imgone,Nameone);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -485,9 +529,17 @@ handleButtonClicked();
             filePaththree = data.getData();
             if(filePaththree != null)
             {
-
                 String imagechild="img3";
-                imgfileone(filePaththree,imagechild,imgthree,Nameone);
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePaththree);
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    byte[] dat = bytes.toByteArray();
+
+                    imgfileone(dat,imagechild,imgone,Nameone);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         }  else   if(requestCode == 250 && resultCode == RESULT_OK
@@ -498,8 +550,16 @@ handleButtonClicked();
             if(filePathfour != null)
             {
                 String imagechild="img4";
-                imgfileone(filePathfour,imagechild,imgfour,Nameone);
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathfour);
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    byte[] dat = bytes.toByteArray();
 
+                    imgfileone(dat,imagechild,imgone,Nameone);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
             String[] all_path = data.getStringArrayExtra("all_path");
@@ -526,7 +586,7 @@ handleButtonClicked();
         }
 
 
-        }
+            }
 
 public void SavedSahredPrefrenceSwitch(String name,String discroption,String phone,String discount , String govern){
 
@@ -536,7 +596,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
     String[] favoriteIte = gson3.fromJson(jsonFavorit,String[].class);
     Retrivedata r=new Retrivedata();
     String date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
-
+if(token!=null)
     if(jsonFavorit!=null){
 
     int postion = favoriteIte.length;
@@ -876,58 +936,48 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         });
     }
 
-    public void imgfileone(Uri filePath,final String childimage, final ImageView image, final String IMAGE) {
+    public void imgfileone(byte [] a,final String childimage, final ImageView image, final String IMAGE) {
 
         final SpotsDialog waitingdialog = new SpotsDialog(ProductList.this);
         waitingdialog.setTitle("يتم التحميل ..");
         waitingdialog.show();
         StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-        ref.putFile(filePath)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        UploadTask uploadTask=ref.putBytes(a);
+         uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                waitingdialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                final Uri u = taskSnapshot.getMetadata().getDownloadUrl();
+                Picasso.with(getApplicationContext())
+                        .load(u)
+                        .fit()
+                        .placeholder(R.drawable.no_media)
+                        .into(image);
+
+                DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
+                data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        waitingdialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                        final Uri u = taskSnapshot.getDownloadUrl();
-                        Picasso.with(getApplicationContext())
-                                .load(u)
-                                .fit()
-                                .placeholder(R.drawable.no_media)
-                                .into(image);
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot data:dataSnapshot.getChildren()){
+                            data.getRef().child(childimage).setValue(u.toString());
 
-                        DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
-                        data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot data:dataSnapshot.getChildren()){
-                                    data.getRef().child(childimage).setValue(u.toString());
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
+                        }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        waitingdialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                .getTotalByteCount());
-                        waitingdialog.setMessage("Uploaded " + (int) progress + "%");
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
+
+            }
+        });
 
     }
     public void deleteimage(final String childimage){
@@ -1044,5 +1094,6 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
 
         return days;
     }
+
 
 }

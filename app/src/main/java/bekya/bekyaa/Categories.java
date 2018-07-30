@@ -2,6 +2,7 @@ package bekya.bekyaa;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
@@ -71,12 +72,14 @@ public class Categories extends Fragment implements  SwipeRefreshLayout.OnRefres
     WindowManager.LayoutParams params;
     ImageView imgone,imgtwo;
     CardView card;
+    Context con;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.catogries, container, false);
         listcatgory = new ArrayList<>();
+        con=this.getActivity();
         database = FirebaseDatabase.getInstance();
         category = database.getReference("category");
         imgone = v.findViewById(R.id.img1);
@@ -149,13 +152,13 @@ public class Categories extends Fragment implements  SwipeRefreshLayout.OnRefres
 
 //                rela.setVisibility(View.VISIBLE);
                 if(comp.getImg1()!=null){
-                    Picasso.with(getContext())
+                    Picasso.with(con)
                             .load(comp.getImg1())
                             .fit()
                             .into(imgone);
                 }
                 if(comp.getImg2()!=null){
-                    Picasso.with(getContext())
+                    Picasso.with(con)
                             .load(comp.getImg2())
                             .fit()
                             .into(imgtwo);
@@ -266,6 +269,6 @@ public class Categories extends Fragment implements  SwipeRefreshLayout.OnRefres
     @Override
     public void onDestroy() {
         super.onDestroy();
-        
+
         }
 }

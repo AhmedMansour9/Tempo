@@ -118,7 +118,7 @@ EditText name,descrip , phone, price ,govern;
     ArrayList<String> listimages=new ArrayList<>();
     ViewSwitcher viewSwitcher;
     ImageLoader imageLoader;
-    DatabaseReference data;
+    DatabaseReference data,dataadmin;
     private Bitmap bitmap;
     private Adapteritems mAdapter;
     StorageReference storageRef;
@@ -132,7 +132,7 @@ EditText name,descrip , phone, price ,govern;
     public static String token;
     ArrayList<CustomGallery> dataT;
     String Name,Discrption,Phone,Price,Govern;
-    String child;
+    String child,childadmin;
     Dialog update_items_layout;
     Dialog update_info_layout;
     Spinner s1, s2;
@@ -162,7 +162,10 @@ EditText name,descrip , phone, price ,govern;
         SharedPreferences shared=getSharedPreferences("cat",MODE_PRIVATE);
          child=shared.getString("Category",null);
         data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
+        childadmin=shared.getString("categoryadmin",null);
+        data = FirebaseDatabase.getInstance().getReference().child("Products").child(child);
         mRequestPermissionHandler = new RequestPermissionListener();
+        dataadmin= FirebaseDatabase.getInstance().getReference().child("Products").child(childadmin);
         storage = FirebaseStorage.getInstance();
         rootlayout = findViewById(R.id.rootlayout);
         editor = getApplicationContext().getSharedPreferences("Photo", MODE_PRIVATE).edit();
@@ -224,7 +227,8 @@ EditText name,descrip , phone, price ,govern;
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                Retrivedata();
+                Retrivedataadmin();
+                Retrivedatauser();
             }
         });
     }
@@ -275,14 +279,12 @@ EditText name,descrip , phone, price ,govern;
             }
         });
     }
-    public void Retrivedata(){
-        arrayadmin.clear();
-        mAdapter.notifyDataSetChanged();
+    public void Retrivedatauser() {
         mSwipeRefreshLayout.setRefreshing(true);
-        mListener= data.addChildEventListener(new ChildEventListener() {
+        data.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
 
                     String Date = r.getDate();
@@ -291,22 +293,64 @@ EditText name,descrip , phone, price ,govern;
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
                         if (r != null && !hasId(r.getName())) {
-                            if (r.getAdmin()) {
-                                arrayadmin.add(0,r);
-                                mAdapter.notifyDataSetChanged();
-                            }
-                            if (r.getAdmin() == false) {
-                                arrayadmin.add(r);
-                                mAdapter.notifyDataSetChanged();
-                            }
+                            arrayadmin.add(0, r);
 
+                            mAdapter.notifyDataSetChanged();
                         }
 
 
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
-                    }else{
+                } else {
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void Retrivedataadmin() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        mListener=dataadmin.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.exists()) {
+                    Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
+
+                    String Date = r.getDate();
+                    int days = GetDays(Date, ProductList.date2);
+                    if (days > 90) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    } else {
+                        if (r != null && !hasId(r.getName())) {
+                            arrayadmin.add(0,r);
+                            mAdapter.notifyDataSetChanged();
+
+                        }
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+
                     }
+                } else {
+                }
 
             }
 
@@ -393,7 +437,7 @@ EditText name,descrip , phone, price ,govern;
         Govern = govern.getText().toString().trim();
 
 
-        if (Name.isEmpty() || Discrption.isEmpty() || Phone.isEmpty() || Price.isEmpty()) {
+        if (Name.isEmpty() || Discrption.isEmpty() || Phone.isEmpty() || Price.isEmpty()||Govern.isEmpty()||token.isEmpty()) {
             Toast.makeText(getBaseContext(), "لازم تكتب كل البيانات", Toast.LENGTH_LONG).show();
 
         }
@@ -406,7 +450,6 @@ EditText name,descrip , phone, price ,govern;
             Toast.makeText(getBaseContext(), "لا يمكن زيادة السعر عن 7 أرقام", Toast.LENGTH_LONG).show();
 
         }
-
         else if(dataT==null){
             SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price,Govern);
             update_info_layout.dismiss();
@@ -493,7 +536,7 @@ handleButtonClicked();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathone);
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                     byte[] dat = bytes.toByteArray();
 
                     imgfileone(dat,imagechild,imgone,Nameone);
@@ -512,7 +555,7 @@ handleButtonClicked();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathtwo);
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                     byte[] dat = bytes.toByteArray();
 
                     imgfileone(dat,imagechild,imgone,Nameone);
@@ -533,7 +576,7 @@ handleButtonClicked();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePaththree);
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                     byte[] dat = bytes.toByteArray();
 
                     imgfileone(dat,imagechild,imgone,Nameone);
@@ -553,7 +596,7 @@ handleButtonClicked();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathfour);
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                     byte[] dat = bytes.toByteArray();
 
                     imgfileone(dat,imagechild,imgone,Nameone);
@@ -596,7 +639,6 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
     String[] favoriteIte = gson3.fromJson(jsonFavorit,String[].class);
     Retrivedata r=new Retrivedata();
     String date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
-if(token!=null)
     if(jsonFavorit!=null){
 
     int postion = favoriteIte.length;
@@ -716,7 +758,11 @@ if(token!=null)
 
     @Override
     public void onRefresh() {
-        Retrivedata();
+        arrayadmin.clear();
+        mAdapter.notifyDataSetChanged();
+
+        Retrivedataadmin();
+        Retrivedatauser();
     }
 
 

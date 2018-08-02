@@ -139,19 +139,19 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
 
         Retrivedata y=array.get(position);
+
         if(!filteredList.isEmpty()){
             holder.textadmin.setVisibility(View.INVISIBLE);
         }
-          if(!filteredList.isEmpty()){
-              holder.textadmin.setVisibility(View.INVISIBLE);
-          }
-
+        if(!filteredList.isEmpty()){
+            holder.textadmin.setVisibility(View.INVISIBLE);
+        }
             Boolean admin=y.getAdmin();
             if(admin){
                 holder.textadmin.setVisibility(View.VISIBLE);
 
             }else {
-
+                holder.textadmin.setVisibility(View.GONE);
             }
 
             String token=y.getToken();

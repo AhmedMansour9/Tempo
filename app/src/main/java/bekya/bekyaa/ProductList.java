@@ -227,8 +227,9 @@ EditText name,descrip , phone, price ,govern;
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                Retrivedataadmin();
                 Retrivedatauser();
+                Retrivedataadmin();
+
             }
         });
     }
@@ -760,9 +761,9 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
     public void onRefresh() {
         arrayadmin.clear();
         mAdapter.notifyDataSetChanged();
-
-        Retrivedataadmin();
         Retrivedatauser();
+        Retrivedataadmin();
+
     }
 
 
@@ -874,20 +875,13 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
 
                 }
                 data.removeEventListener(mListener);
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Products").child(child);
-                databaseReference.orderByChild("name").equalTo(Names).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot data:dataSnapshot.getChildren()){
-                            data.getRef().removeValue();
-                        }
-                    }
+                String Name =arrayadmin.get(adapterPosition).getName();
+                if(arrayadmin.get(adapterPosition).getAdmin()){
+                    DeletetePost(childadmin,Name);
+                }else {
+                    DeletetePost(child,Name);
+                }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
                 if(!Adapteritems.filteredList.isEmpty()){
                     Adapteritems.filteredList.remove(adapterPosition);
                     mAdapter.notifyDataSetChanged();
@@ -912,6 +906,23 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         builder.show();
 
 
+
+    } public void DeletetePost(String child,String Name){
+        data.removeEventListener(mListener);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Products").child(child);
+        databaseReference.orderByChild("name").equalTo(Name).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data:dataSnapshot.getChildren()){
+                    data.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

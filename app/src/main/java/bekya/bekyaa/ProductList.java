@@ -290,7 +290,7 @@ EditText name,descrip , phone, price ,govern;
 
                     String Date = r.getDate();
                     int days = GetDays(Date, ProductList.date2);
-                    if (days > 90) {
+                    if (days > 350) {
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
                         if (r != null && !hasId(r.getName())) {
@@ -338,7 +338,7 @@ EditText name,descrip , phone, price ,govern;
 
                     String Date = r.getDate();
                     int days = GetDays(Date, ProductList.date2);
-                    if (days > 90) {
+                    if (days > 350) {
                         mSwipeRefreshLayout.setRefreshing(false);
                     } else {
                         if (r != null && !hasId(r.getName())) {

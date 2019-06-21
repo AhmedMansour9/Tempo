@@ -6,7 +6,9 @@ package bekya.bekyaa.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,11 +18,17 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -85,6 +93,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         public ImageView image,imageedit,imgdelete;
+        ProgressBar progross;
         CardView itemcard;
       public   TextView textname,textprice,textgovern,textphone,textdate,textadmin;
         public MyViewHolder(View view) {
@@ -99,6 +108,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
            // textphone= view.findViewById(R.id.textphone);
             textdate=view.findViewById(R.id.textdate);
             itemcard=view.findViewById(R.id.itemcard);
+            progross=view.findViewById(R.id.progross);
             view.setOnClickListener(this);
 
         }
@@ -185,32 +195,96 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
             if(img1!=null) {
                 Uri u = Uri.parse(img1);
-                Picasso.with(context)
-                        .load(u)
-                        .fit()
-                        .placeholder(R.drawable.no_media)
+//                Picasso.with(context)
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(holder.image);
+               holder.progross.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load( u)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(holder.image);
             }else if(img2!=null){
                 Uri u = Uri.parse(img2);
-                Picasso.with(context)
+//                Picasso.with(context)
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(holder.image);
+                holder.progross.setVisibility(View.VISIBLE);
+                Glide.with(context)
                         .load(u)
-                        .fit()
-                        .placeholder(R.drawable.no_media)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(holder.image);
 
             }else if(img3!=null){
                 Uri u = Uri.parse(img3);
-                Picasso.with(context)
+//                Picasso.with(context)
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(holder.image);
+                holder.progross.setVisibility(View.VISIBLE);
+                Glide.with(context)
                         .load(u)
-                        .fit()
-                        .placeholder(R.drawable.no_media)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(holder.image);
             }else if(img4!=null){
                 Uri u = Uri.parse(img4);
-                Picasso.with(context)
+//                Picasso.with(context)
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(holder.image);
+                holder.progross.setVisibility(View.VISIBLE);
+                Glide.with(context)
                         .load(u)
-                        .fit()
-                        .placeholder(R.drawable.no_media)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                holder.progross.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(holder.image);
 
             }else {

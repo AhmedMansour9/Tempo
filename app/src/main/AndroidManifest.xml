@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="bekya.bekyaa"
-    >
+    package="bekya.bekyaa">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,11 +14,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/bekyaalogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/bekyaround"
         android:supportsRtl="false"
-        tools:replace="android:supportsRtl"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan|adjustResize"
-        android:theme="@style/AppTheme">
+        tools:replace="android:supportsRtl">
+        <activity android:name=".ChatUsers"></activity>
         <activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,35 +27,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CustomGalleryActivity" >
-                <intent-filter>
-                    <action android:name="luminous.ACTION_PICK" />
-                    <action android:name="luminous.ACTION_MULTIPLE_PICK" />
+        <activity android:name=".CustomGalleryActivity">
+            <intent-filter>
+                <action android:name="luminous.ACTION_PICK" />
+                <action android:name="luminous.ACTION_MULTIPLE_PICK" />
 
-                    <category android:name="android.intent.category.DEFAULT" />
-
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".ProductList"
-            android:windowSoftInputMode="adjustPan|adjustResize"
-
-            >
-
-
-        </activity>
+        <activity
+            android:name=".ProductList"
+            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
 
         <service android:name=".tokenid.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".MyFirebaseMessaging">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data        android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
 
-
-
-        <activity android:name=".ActivityOneItem"
-
-            />
+        
+        <activity android:name=".ActivityOneItem" />
     </application>
 
 </manifest>

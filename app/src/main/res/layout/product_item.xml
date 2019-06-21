@@ -13,6 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <ProgressBar
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:id="@+id/progross"
+            android:layout_marginLeft="@dimen/_30sdp"
+            />
 
         <ImageView
             android:id="@+id/product_image"
@@ -20,6 +28,7 @@
             android:layout_height="130dp"
             android:layout_centerVertical="true"
             android:padding="4dp"
+            android:adjustViewBounds="true"
             android:scaleType="fitXY" />
 
         <TextView
@@ -125,6 +134,8 @@
             android:paddingLeft="@dimen/_2sdp"
             android:textColor="#000000"
             android:visibility="invisible" />
+
+
 
 
     </RelativeLayout>

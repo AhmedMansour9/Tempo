@@ -139,6 +139,13 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_height="wrap_content">
     <ru.dimorinny.floatingtextbutton.FloatingTextButton
         android:id="@+id/makecall"
         android:layout_width="wrap_content"
@@ -147,13 +154,19 @@
         app:floating_background_color="@color/blue"
         app:floating_left_icon="@drawable/ic_call_black_24dp"
         app:floating_title="كلم البايع"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-
+        app:floating_title_color="@android:color/white"
+        />
+    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+        android:id="@+id/makechat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        app:floating_background_color="@color/blue"
+        app:floating_title="نواصل مع البايع"
+        android:layout_toRightOf="@+id/makecall"
         app:floating_title_color="@android:color/white"
         />
 
-
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

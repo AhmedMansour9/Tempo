@@ -4,13 +4,16 @@ package bekya.bekyaa;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,6 +34,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -43,7 +52,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import org.joda.time.Days;
 
@@ -142,10 +150,26 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         imgOne=array.get(adapterPosition).getImg1();
         if(imgOne!=null){
             Uri u = Uri.parse(imgOne);
-            Picasso.with(getContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
+//            Picasso.with(getContext())
+//                    .load(u)
+//                    .fit()
+//                    .placeholder(R.drawable.no_media)
+//                    .into(imgone);
+            Glide.with(getContext())
+                    .load( u)
+                    .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(imgone);
 
         }else {
@@ -154,21 +178,54 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         imgTwo=array.get(adapterPosition).getImg2();
         if(imgTwo!=null){
             Uri u = Uri.parse(imgTwo);
-            Picasso.with(getContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
+//            Picasso.with(getContext())
+//                    .load(u)
+//                    .fit()
+//                    .placeholder(R.drawable.no_media)
+//                    .into(imgtwo);
+            Glide.with(getContext())
+                    .load( u)
+                    .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(imgtwo);
+
         }else {
             deletetwo.setVisibility(View.INVISIBLE);
         }
         imgThree=array.get(adapterPosition).getImg3();
         if(imgThree!=null){
             Uri u = Uri.parse(imgThree);
-            Picasso.with(getContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
+//            Picasso.with(getContext())
+//                    .load(u)
+//                    .fit()
+//                    .placeholder(R.drawable.no_media)
+//                    .into(imgthree);
+            Glide.with(getContext())
+                    .load( u)
+                    .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(imgthree);
         }else {
             deletethree.setVisibility(View.INVISIBLE);
@@ -177,10 +234,27 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         imgFour=array.get(adapterPosition).getImg4();
         if(imgFour!=null){
             Uri u = Uri.parse(imgFour);
-            Picasso.with(getContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
+//            Picasso.with(getContext())
+//                    .load(u)
+//                    .fit()
+//                    .placeholder(R.drawable.no_media)
+//                    .into(imgfour);
+
+            Glide.with(getContext())
+                    .load( u)
+                    .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(imgfour);
         }else {
             deletefour.setVisibility(View.INVISIBLE);
@@ -476,12 +550,27 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                         waitingdialog.dismiss();
                         Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
                         final Uri u = taskSnapshot.getDownloadUrl();
-                        Picasso.with(getActivity())
-                                .load(u)
-                                .fit()
-                                .placeholder(R.drawable.no_media)
+//                        Picasso.with(getActivity())
+//                                .load(u)
+//                                .fit()
+//                                .placeholder(R.drawable.no_media)
+//                                .into(image);
+                        Glide.with(getActivity())
+                                .load( u)
+                                .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                        return false;
+                                    }
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                        return false;
+                                    }
+                                })
                                 .into(image);
-
                         DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
                         data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -617,5 +706,21 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             }
         });
     }
+    @Override
+    public void setMenuVisibility(final boolean visible) {
+        super.setMenuVisibility(visible);
+        if (visible) {
+            Home.Visablty = true;
+        } else {
 
+        }
+
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Home.Visablty=true;
+    }
 }

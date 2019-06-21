@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,12 +22,17 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 import com.veinhorn.scrollgalleryview.MediaInfo;
 import com.veinhorn.scrollgalleryview.ScrollGalleryView;
 import com.veinhorn.scrollgalleryview.loader.MediaLoader;
@@ -54,6 +61,7 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
     private static final String movieUrl = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4";
     String img1, img2, img3, img4;
     private ScrollGalleryView scrollGalleryView;
+    String tokenUser;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -84,9 +92,9 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
                 makecall();
             }
         });
+        FloatingTextButton floatingT = findViewById(R.id.makechat);
 
-
-       // String name = getIntent().getStringExtra("name");
+         tokenUser = getIntent().getStringExtra("tokenuser");
         String discrption = getIntent().getStringExtra("discrp");
        // String discount = getIntent().getStringExtra("discount");
         String price = getIntent().getStringExtra("discount");
@@ -106,7 +114,14 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
 
             }
         });
-
+        floatingT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent intent=new Intent(ActivityOneItem.this,ChatUsers.class);
+               intent.putExtra("tokenuser",tokenUser);
+               startActivity(intent);
+            }
+        });
         getdatafromadmin(new firebase() {
             @Override
             public void Call(Retrivedata r) {
@@ -342,12 +357,27 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
         dialog.setContentView(R.layout.windowimage);
         ImageView img=dialog.findViewById(R.id.imagefullscreen);
 
-        Picasso.with(this)
+//        Picasso.with(this)
+//                .load(id)
+//                .fit()
+//                .placeholder(R.drawable.no_media)
+//                .into(img);
+        Glide.with(this)
                 .load(id)
-                .fit()
-                .placeholder(R.drawable.no_media)
+                .apply(new RequestOptions().placeholderOf(R.drawable.no_media))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                        return false;
+                    }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(img);
-
           dialog.show();
 
     }

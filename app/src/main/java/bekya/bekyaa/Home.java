@@ -18,9 +18,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import bekya.bekyaa.Common.Common;
 import bekya.bekyaa.Model.Category;
@@ -38,6 +57,8 @@ public class Home extends AppCompatActivity
     TextView txtFullName;
     public static String token;
     public static Toolbar toolbar;
+    private static final String URL_REGISTER_DEVICE = "http://zamaleksongs.000webhostapp.com/RegisterDevice.php";
+    public static Boolean Visablty;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -52,7 +73,7 @@ public class Home extends AppCompatActivity
                 .build()
         );
         setContentView(R.layout.activity_home);
-
+         sendTokenToServer();
          toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("الصفحة الرئيسية");
         setSupportActionBar(toolbar);
@@ -76,6 +97,23 @@ public class Home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+        final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("admin");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    String token = dataSnapshot.child("token").getValue().toString();
+                    SharedPrefManager.getInstance(getBaseContext()).saveTokenAdmin(token);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         //showHome();
 
     }
@@ -87,15 +125,26 @@ public class Home extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(fr instanceof Categories){
-               super.onBackPressed();
+            if (Visablty) {
+                if (fr instanceof Categories) {
+                    super.onBackPressed();
 
+                } else if (fr instanceof myposts) {
+                    BackToHome();
+                } else if (fr instanceof MyChat) {
+                    BackToHome();
+                } else if (fr instanceof Chat) {
+                    BackToHome();
+                } else {
+                    super.onBackPressed();
+                }
             }
-            else
-            {
-                BackToHome();
+            else {
+
+                super.onBackPressed();
             }
-        }
+            }
+
     }
 
 //    @Override
@@ -141,7 +190,20 @@ public class Home extends AppCompatActivity
 
                 fr = new myposts();
                 break;
+            case R.id.mychat:
+                mCurrentSelectedPosition = 2;
+
+                fr = new MyChat();
+                break;
+
+            case R.id.chat:
+                mCurrentSelectedPosition = 3;
+
+                fr = new Chat();
+                break;
+
             case R.id.about:
+                mCurrentSelectedPosition = 4;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(String.format("%1$s", getString(R.string.app_name)));
                 builder.setMessage(getResources().getText(R.string.aboutus));
@@ -152,6 +214,7 @@ public class Home extends AppCompatActivity
 
                 return true;
             case R.id.nav_setting:
+                mCurrentSelectedPosition = 4;
                 showSettingdialog();
 
 
@@ -214,6 +277,38 @@ public class Home extends AppCompatActivity
         alertDialog.show();
 
 
+    }
+
+    private void sendTokenToServer() {
+            final String token = SharedPrefManager.getInstance(this).getDeviceToken();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGISTER_DEVICE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", token);
+                params.put("token", token);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 

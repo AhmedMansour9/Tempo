@@ -39,4 +39,17 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return  sharedPreferences.getString(TAG_TOKEN, null);
     }
+    public boolean saveTokenAdmin(String token){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences("admin", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("admin", token);
+        editor.apply();
+        return true;
+    }
+
+    //this method will fetch the device token from shared preferences
+    public String getTokenAdmin(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences("admin", Context.MODE_PRIVATE);
+        return  sharedPreferences.getString("admin", null);
+    }
 }

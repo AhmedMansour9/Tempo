@@ -11,11 +11,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -39,6 +41,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -58,7 +71,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -75,9 +87,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -163,7 +180,7 @@ EditText name,descrip , phone, price ,govern;
          child=shared.getString("Category",null);
         data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
         childadmin=shared.getString("categoryadmin",null);
-        data = FirebaseDatabase.getInstance().getReference().child("Products").child(child);
+           FirebaseDatabase.getInstance().getReference().child("Products").child(child);
         mRequestPermissionHandler = new RequestPermissionListener();
         dataadmin= FirebaseDatabase.getInstance().getReference().child("Products").child(childadmin);
         storage = FirebaseStorage.getInstance();
@@ -288,22 +305,54 @@ EditText name,descrip , phone, price ,govern;
                 if (dataSnapshot.exists()) {
                     Retrivedata r = dataSnapshot.getValue(Retrivedata.class);
 
-                    String Date = r.getDate();
-                    int days = GetDays(Date, ProductList.date2);
-                    if (days > 350) {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    } else {
-                        if (r != null && !hasId(r.getName())) {
-                            arrayadmin.add(0, r);
+                    if(r.getStatues()!=null) {
+                        if (r.getStatues()) {
+                            String Date = r.getDate();
+                            int days = GetDays(Date, ProductList.date2);
+                            if (days > 350) {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            } else {
+                                if (r != null && !hasId(r.getName())) {
+                                    arrayadmin.add(r);
 
-                            mAdapter.notifyDataSetChanged();
+
+                                    Collections.reverse(arrayadmin);
+                                    mAdapter.notifyDataSetChanged();
+                                }
+
+
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        } else {
+
                         }
+                    }else {
+                        String Date = r.getDate();
+                        int days = GetDays(Date, ProductList.date2);
+                        if (days > 350) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        } else {
+                            if (r != null && !hasId(r.getName())) {
+                                arrayadmin.add(r);
+                                Collections.sort(arrayadmin, new Comparator<Retrivedata>() {
+                                    public int compare(Retrivedata o1, Retrivedata o2) {
+                                        if (o1.getDate() == null || o2.getDate() == null)
+                                            return 0;
+                                        return ProductList.date2.compareTo(o2.getDate());
+                                    }
+                                });
+                                mAdapter.notifyDataSetChanged();
+                            }
 
 
-                        mSwipeRefreshLayout.setRefreshing(false);
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
                     }
-                } else {
+
+
                 }
+
+
 
             }
 
@@ -343,6 +392,7 @@ EditText name,descrip , phone, price ,govern;
                     } else {
                         if (r != null && !hasId(r.getName())) {
                             arrayadmin.add(0,r);
+
                             mAdapter.notifyDataSetChanged();
 
                         }
@@ -452,6 +502,10 @@ EditText name,descrip , phone, price ,govern;
 
         }
         else if(dataT==null){
+            String tokenadmin=SharedPrefManager.getInstance(getBaseContext()).getTokenAdmin();
+
+            SendMessage(tokenadmin,child);
+
             SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price,Govern);
             update_info_layout.dismiss();
         }
@@ -493,6 +547,8 @@ EditText name,descrip , phone, price ,govern;
                                 int y = listimages.size();
 
                                 if (pos == y) {
+                                    String tokenadmin=SharedPrefManager.getInstance(getBaseContext()).getTokenAdmin();
+                                    SendMessage(tokenadmin,child);
                                     waitingdialog.dismiss();
                                     SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price, Govern);
                                     update_info_layout.dismiss();
@@ -518,7 +574,35 @@ EditText name,descrip , phone, price ,govern;
             }
         }
     }
+    public void SendMessage(final String token, final String Msg){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://zamaleksongs.000webhostapp.com/pushem.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("title", "User");
+
+
+                params.put("message", Msg);
+                params.put("email", token);
+                return params;
+            }
+        };
+
+        MyVolley.getInstance(getBaseContext()).addToRequestQueue(stringRequest);
+
+    }
     private void chooseImage() {
 handleButtonClicked();
     }
@@ -641,9 +725,9 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
     Retrivedata r=new Retrivedata();
     String date = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date());
     if(jsonFavorit!=null){
-
     int postion = favoriteIte.length;
     if(postion==4) {
+        r.setStatues(false);
         r.setImg1(favoriteIte[0]);
         r.setImg2(favoriteIte[1]);
         r.setImg3(favoriteIte[2]);
@@ -662,6 +746,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
 
     }
     if (postion == 3) {
+        r.setStatues(false);
         r.setImg1(favoriteIte[0]);
         r.setImg2(favoriteIte[1]);
         r.setImg3(favoriteIte[2]);
@@ -679,6 +764,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
 
     }
     if (postion == 2){
+        r.setStatues(false);
         r.setImg1(favoriteIte[0]);
         r.setImg2(favoriteIte[1]);
         r.setName(name);
@@ -695,6 +781,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
 
     }
     if(postion==1) {
+        r.setStatues(false);
         r.setImg1(favoriteIte[0]);
         r.setName(name);
         r.setDiscrption(discroption);
@@ -709,6 +796,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
                 .show();
 
     }}else {
+        r.setStatues(false);
         r.setName(name);
         r.setDiscrption(discroption);
         r.setDiscount(discount);
@@ -730,6 +818,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
       if(!Adapteritems.filteredList.isEmpty()){
           Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
           inty.putExtra("child",child);
+          inty.putExtra("tokenuser", Adapteritems.filteredList.get(poistion).getToken());
           inty.putExtra("childadmin",childadmin);
           inty.putExtra("key", Adapteritems.filteredList.get(poistion).getImg1());
           inty.putExtra("name", Adapteritems.filteredList.get(poistion).getName());
@@ -745,6 +834,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
           Intent inty=new Intent(ProductList.this,ActivityOneItem.class);
           inty.putExtra("child",child);
           inty.putExtra("childadmin",childadmin);
+          inty.putExtra("tokenuser", arrayadmin.get(poistion).getToken());
           inty.putExtra("key", arrayadmin.get(poistion).getImg1());
           inty.putExtra("name", arrayadmin.get(poistion).getName());
           inty.putExtra("discrp", arrayadmin.get(poistion).getDiscrption());
@@ -771,94 +861,157 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
 
     @Override
     public void onClickCallback(View view, int adapterPosition) {
-         update_items_layout = new Dialog(ProductList.this);
-        update_items_layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        update_items_layout.setContentView(R.layout.edititems);
-       init2();
-        if(Adapteritems.filteredList.isEmpty()){
-            Nameone=arrayadmin.get(adapterPosition).getName();
-            imgOne=arrayadmin.get(adapterPosition).getImg1();
-            imgTwo=arrayadmin.get(adapterPosition).getImg2();
-            imgThree=arrayadmin.get(adapterPosition).getImg3();
-            imgFour=arrayadmin.get(adapterPosition).getImg4();
-            editname.setText(arrayadmin.get(adapterPosition).getName());
-            editdiscrp.setText(arrayadmin.get(adapterPosition).getDiscrption());
-            editdiscount.setText(arrayadmin.get(adapterPosition).getDiscount());
-            editphone.setText(arrayadmin.get(adapterPosition).getPhone());
+             update_items_layout = new Dialog(ProductList.this);
+            update_items_layout.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            update_items_layout.setContentView(R.layout.edititems);
+           init2();
+            if(Adapteritems.filteredList.isEmpty()){
+                Nameone=arrayadmin.get(adapterPosition).getName();
+                imgOne=arrayadmin.get(adapterPosition).getImg1();
+                imgTwo=arrayadmin.get(adapterPosition).getImg2();
+                imgThree=arrayadmin.get(adapterPosition).getImg3();
+                imgFour=arrayadmin.get(adapterPosition).getImg4();
+                editname.setText(arrayadmin.get(adapterPosition).getName());
+                editdiscrp.setText(arrayadmin.get(adapterPosition).getDiscrption());
+                editdiscount.setText(arrayadmin.get(adapterPosition).getDiscount());
+                editphone.setText(arrayadmin.get(adapterPosition).getPhone());
 
-        }else if(!Adapteritems.filteredList.isEmpty()){
-            Nameone=Adapteritems.filteredList.get(adapterPosition).getName();
-            imgOne=Adapteritems.filteredList.get(adapterPosition).getImg1();
-            imgTwo=Adapteritems.filteredList.get(adapterPosition).getImg2();
-            imgThree=Adapteritems.filteredList.get(adapterPosition).getImg3();
-            imgFour=Adapteritems.filteredList.get(adapterPosition).getImg4();
-            editname.setText(Adapteritems.filteredList.get(adapterPosition).getName());
-            editdiscrp.setText(Adapteritems.filteredList.get(adapterPosition).getDiscrption());
-            editdiscount.setText(Adapteritems.filteredList.get(adapterPosition).getDiscount());
-            editphone.setText(Adapteritems.filteredList.get(adapterPosition).getPhone());
+            }else if(!Adapteritems.filteredList.isEmpty()){
+                Nameone=Adapteritems.filteredList.get(adapterPosition).getName();
+                imgOne=Adapteritems.filteredList.get(adapterPosition).getImg1();
+                imgTwo=Adapteritems.filteredList.get(adapterPosition).getImg2();
+                imgThree=Adapteritems.filteredList.get(adapterPosition).getImg3();
+                imgFour=Adapteritems.filteredList.get(adapterPosition).getImg4();
+                editname.setText(Adapteritems.filteredList.get(adapterPosition).getName());
+                editdiscrp.setText(Adapteritems.filteredList.get(adapterPosition).getDiscrption());
+                editdiscount.setText(Adapteritems.filteredList.get(adapterPosition).getDiscount());
+                editphone.setText(Adapteritems.filteredList.get(adapterPosition).getPhone());
 
-        }
-
-
-        if(imgOne!=null){
-           Uri u = Uri.parse(imgOne);
-           Picasso.with(getApplicationContext())
-                   .load(u)
-                   .fit()
-                   .placeholder(R.drawable.no_media)
-                   .into(imgone);
-
-       }else {
-          deltone.setVisibility(View.INVISIBLE);
-       }
-
-        if(imgTwo!=null){
-            Uri u = Uri.parse(imgTwo);
-            Picasso.with(getApplicationContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
-                    .into(imgtwo);
-        }else {
-            deletetwo.setVisibility(View.INVISIBLE);
-        }
-
-        if(imgThree!=null){
-            Uri u = Uri.parse(imgThree);
-            Picasso.with(getApplicationContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
-                    .into(imgthree);
-        }else {
-            deletethree.setVisibility(View.INVISIBLE);
-        }
+            }
 
 
-        if(imgFour!=null){
-            Uri u = Uri.parse(imgFour);
-            Picasso.with(getApplicationContext())
-                    .load(u)
-                    .fit()
-                    .placeholder(R.drawable.no_media)
-                    .into(imgfour);
-        }else {
-            deletefour.setVisibility(View.INVISIBLE);
-        }
-    clickimgeon();
-    clickimgtwo();
-    clickimgethree();
-    clickimgfour();
+            if(imgOne!=null){
+               Uri u = Uri.parse(imgOne);
+//               Picasso.with(getApplicationContext())
+//                       .load(u)
+//                       .fit()
+//                       .placeholder(R.drawable.no_media)
+//                       .into(imgone);
+                Glide.with(getBaseContext())
+                        .load( u)
+                        .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(imgone);
+           }else {
+              deltone.setVisibility(View.INVISIBLE);
+           }
 
-    deleteone();
-     deletetwo();
-     deletethree();
-     deletefour();
+            if(imgTwo!=null){
+                Uri u = Uri.parse(imgTwo);
+//                Picasso.with(getApplicationContext())
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(imgtwo);
+                Glide.with(getBaseContext())
+                        .load( u)
+                        .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(imgtwo);
+            }else {
+                deletetwo.setVisibility(View.INVISIBLE);
+            }
 
-      btnfinish();
+            if(imgThree!=null){
+                Uri u = Uri.parse(imgThree);
+//                Picasso.with(getApplicationContext())
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(imgthree);
+                Glide.with(getBaseContext())
+                        .load( u)
+                        .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(imgthree);
+            }else {
+                deletethree.setVisibility(View.INVISIBLE);
+            }
 
 
-        update_items_layout.show();
+            if(imgFour!=null){
+                Uri u = Uri.parse(imgFour);
+//                Picasso.with(getApplicationContext())
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(imgfour);
+                Glide.with(getBaseContext())
+                        .load( u)
+                        .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(imgfour);
+            }else {
+                deletefour.setVisibility(View.INVISIBLE);
+            }
+        clickimgeon();
+        clickimgtwo();
+        clickimgethree();
+        clickimgfour();
+
+        deleteone();
+         deletetwo();
+         deletethree();
+         deletefour();
+
+          btnfinish();
+
+
+            update_items_layout.show();
     }
 
     @Override
@@ -1013,12 +1166,27 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
                 waitingdialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                 final Uri u = taskSnapshot.getMetadata().getDownloadUrl();
-                Picasso.with(getApplicationContext())
-                        .load(u)
-                        .fit()
-                        .placeholder(R.drawable.no_media)
+//                Picasso.with(getApplicationContext())
+//                        .load(u)
+//                        .fit()
+//                        .placeholder(R.drawable.no_media)
+//                        .into(image);
+                Glide.with(getBaseContext())
+                        .load( u)
+                        .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(image);
-
                 DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
                 data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -1146,12 +1314,24 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         DateTimeFormatter formatter =  DateTimeFormat.forPattern("dd-MM-yyyy").withLocale(Locale.ENGLISH);
         DateTime d1 = formatter.parseDateTime(date1);
         DateTime d2 = formatter.parseDateTime(date2);
-        long diffInMillis = d2.getMillis() - d1.getMillis();
+//        long diffInMillis = d2.getDayOfMonth() - d1.getDayOfMonth();
+//
+//        Duration duration = new Duration(diffInMillis);
+//        int days = (int) duration.getStandardDays();
+//
 
-        Duration duration = new Duration(diffInMillis);
-        int days = (int) duration.getStandardDays();
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(d1.getYear(), d1.getMonthOfYear(), d1.getDayOfWeek());
+        long startDateMillis = startDate.getTimeInMillis();
 
-        return days;
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(d2.getYear(), d2.getMonthOfYear(), d2.getDayOfWeek());
+        long endDateMillis = endDate.getTimeInMillis();
+
+        long differenceMillis = endDateMillis - startDateMillis;
+        int daysDifference = (int) (differenceMillis / (1000 * 60 * 60 * 24));
+
+        return daysDifference;
     }
 
 

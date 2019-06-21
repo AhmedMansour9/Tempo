@@ -18,9 +18,11 @@ public class Retrivedata {
    private String token;
    private String key;
    private Boolean Admin;
+   private  Boolean Statues;
     public Retrivedata(){}
 
-    public Retrivedata(String img1, String img2, String img3, String img4, String name, String discrption, String discount, String phone, String date,String govern, String token) {
+
+    public Retrivedata(Boolean statues,String img1, String img2, String img3, String img4, String name, String discrption, String discount, String phone, String date,String govern, String token) {
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
@@ -32,6 +34,15 @@ public class Retrivedata {
         this.phone = phone;
         this.date = date;
         this.token = token;
+        this.Statues=statues;
+    }
+
+    public Boolean getStatues() {
+        return Statues;
+    }
+
+    public void setStatues(Boolean statues) {
+        Statues = statues;
     }
 
     public String getImg1() {

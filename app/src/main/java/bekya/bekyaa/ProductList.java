@@ -132,6 +132,7 @@ EditText name,descrip , phone, price ,govern;
     Button finish;
     GalleryAdapter adapter;
     ArrayList<Retrivedata> arrayadmin;
+    ArrayList<Retrivedata> testArray;
     ArrayList<String> listimages=new ArrayList<>();
     ViewSwitcher viewSwitcher;
     ImageLoader imageLoader;
@@ -176,6 +177,7 @@ EditText name,descrip , phone, price ,govern;
         product = findViewById(R.id.findyourproduct);
         handler = new Handler();
         arrayadmin=new ArrayList<>();
+        testArray=new ArrayList<>();
         SharedPreferences shared=getSharedPreferences("cat",MODE_PRIVATE);
          child=shared.getString("Category",null);
         data= FirebaseDatabase.getInstance().getReference().child("Products").child(child);
@@ -313,9 +315,27 @@ EditText name,descrip , phone, price ,govern;
                                 mSwipeRefreshLayout.setRefreshing(false);
                             } else {
                                 if (r != null && !hasId(r.getName())) {
-                                    arrayadmin.add(r);
-
-
+//                                    arrayadmin.add(r);
+                                    testArray.add(r);
+                                    Collections.reverse(testArray);
+                                   for (int i=0;i<testArray.size();i++){
+                                       Retrivedata retrivedata=new Retrivedata();
+                                       retrivedata.setStatues(testArray.get(i).getStatues());
+                                       retrivedata.setName(testArray.get(i).getName());
+                                       retrivedata.setAdmin(testArray.get(i).getAdmin());
+                                       retrivedata.setDate(testArray.get(i).getDate());
+                                       retrivedata.setDiscount(testArray.get(i).getDiscount());
+                                       retrivedata.setDiscrption(testArray.get(i).getDiscrption());
+                                       retrivedata.setGovern(testArray.get(i).getGovern());
+                                       retrivedata.setImg1(testArray.get(i).getImg1());
+                                       retrivedata.setImg2(testArray.get(i).getImg2());
+                                       retrivedata.setImg3(testArray.get(i).getImg3());
+                                       retrivedata.setImg4(testArray.get(i).getImg4());
+                                       retrivedata.setKey(testArray.get(i).getKey());
+                                       retrivedata.setToken(testArray.get(i).getToken());
+                                       retrivedata.setPhone(testArray.get(i).getPhone());
+                                       arrayadmin.add(retrivedata);
+                                   }
                                     Collections.reverse(arrayadmin);
                                     mAdapter.notifyDataSetChanged();
                                 }
@@ -333,18 +353,30 @@ EditText name,descrip , phone, price ,govern;
                             mSwipeRefreshLayout.setRefreshing(false);
                         } else {
                             if (r != null && !hasId(r.getName())) {
-                                arrayadmin.add(r);
-                                Collections.sort(arrayadmin, new Comparator<Retrivedata>() {
-                                    public int compare(Retrivedata o1, Retrivedata o2) {
-                                        if (o1.getDate() == null || o2.getDate() == null)
-                                            return 0;
-                                        return ProductList.date2.compareTo(o2.getDate());
-                                    }
-                                });
+                                testArray.add(r);
+                                Collections.reverse(testArray);
+                                for (int i = 0; i < testArray.size(); i++) {
+                                    Retrivedata retrivedata = new Retrivedata();
+                                    retrivedata.setStatues(testArray.get(i).getStatues());
+                                    retrivedata.setAdmin(testArray.get(i).getAdmin());
+                                    retrivedata.setDate(testArray.get(i).getDate());
+                                    retrivedata.setDiscount(testArray.get(i).getDiscount());
+                                    retrivedata.setDiscrption(testArray.get(i).getDiscrption());
+                                    retrivedata.setGovern(testArray.get(i).getGovern());
+                                    retrivedata.setImg1(testArray.get(i).getImg1());
+                                    retrivedata.setImg2(testArray.get(i).getImg2());
+                                    retrivedata.setImg3(testArray.get(i).getImg3());
+                                    retrivedata.setImg4(testArray.get(i).getImg4());
+                                    retrivedata.setKey(testArray.get(i).getKey());
+                                    retrivedata.setPhone(testArray.get(i).getPhone());
+                                    retrivedata.setName(testArray.get(i).getName());
+                                    retrivedata.setToken(testArray.get(i).getToken());
+                                    arrayadmin.add(retrivedata);
+                                }
+                                Collections.reverse(arrayadmin);
                                 mAdapter.notifyDataSetChanged();
-                            }
 
-
+                        }
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                     }
@@ -575,7 +607,7 @@ EditText name,descrip , phone, price ,govern;
         }
     }
     public void SendMessage(final String token, final String Msg){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://zamaleksongs.000webhostapp.com/pushem.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://bekyaaa.000webhostapp.com/pushem.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

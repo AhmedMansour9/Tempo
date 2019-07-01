@@ -171,7 +171,7 @@ public class Chat extends Fragment implements SwipeRefreshLayout.OnRefreshListen
 
     }
     public void SendMessage(final String token, final String Msg){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://zamaleksongs.000webhostapp.com/pushem.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://bekyaaa.000webhostapp.com/pushem.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -18,11 +18,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-       <android.support.v7.widget.RecyclerView
-           android:layout_width="match_parent"
-           android:layout_height="@dimen/_120sdp"
-           android:id="@+id/recycler_banner2"
-           ></android.support.v7.widget.RecyclerView>
+       <!--<android.support.v7.widget.RecyclerView-->
+           <!--android:layout_width="match_parent"-->
+           <!--android:layout_height="@dimen/_120sdp"-->
+           <!--android:id="@+id/recycler_banner2"-->
+           <!--&gt;</android.support.v7.widget.RecyclerView>-->
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_slider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/view_pager_circle_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_alignBottom="@+id/vp_slider"
+                android:layout_alignParentStart="true"
+              ></me.relex.circleindicator.CircleIndicator>
+
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

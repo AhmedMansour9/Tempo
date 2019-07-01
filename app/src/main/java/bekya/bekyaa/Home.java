@@ -57,7 +57,7 @@ public class Home extends AppCompatActivity
     TextView txtFullName;
     public static String token;
     public static Toolbar toolbar;
-    private static final String URL_REGISTER_DEVICE = "http://zamaleksongs.000webhostapp.com/RegisterDevice.php";
+    private static final String URL_REGISTER_DEVICE = "https://bekyaaa.000webhostapp.com/RegisterDevice.php";
     public static Boolean Visablty;
     @Override
     protected void attachBaseContext(Context newBase) {

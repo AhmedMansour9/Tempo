@@ -63,7 +63,8 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
     public Categories() {
         // Required empty public constructor
     }
-
+    SliderPagerAdapter sliderPagerAdapter;
+    ViewPager viewPager;
     LayoutInflater li;
     WindowManager wm;
     View myview;
@@ -88,7 +89,6 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
     LinearLayoutManager linearLayoutManager;
     Boolean end;
     Timer timer;
-    SliderPagerAdapter sliderPagerAdapter;
     int position = 0;
     Context context;
     Banner_Adapter banerAdapter;
@@ -98,18 +98,20 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
     List<Gallery> banne = new ArrayList<>();
     final int duration = 2500;
     final int pixelsToMove = 400;
-    int currentPage, NUM_PAGES;
-
+    int page_position = 0;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     final Handler handler = new Handler();
-    final Runnable Update = new Runnable() {
-        public void run() {
-            if (currentPage == NUM_PAGES - 1) {
-                currentPage = 0;
+//
+        final Runnable update = new Runnable() {
+            public void run() {
+                if (page_position == list.size()) {
+                    page_position = 0;
+                } else {
+                    page_position = page_position + 1;
+                }
+                vp_slider.setCurrentItem(page_position, true);
             }
-            vp_slider.setCurrentItem(currentPage++, true);
-        }
-    };
+        };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,7 +124,9 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
         database = FirebaseDatabase.getInstance();
         category = database.getReference("category");
         card = v.findViewById(R.id.friendCardView2);
-        rv_autoScroll = v.findViewById(R.id.recycler_banner2);
+//        rv_autoScroll = v.findViewById(R.id.recycler_banner2);
+//        viewPager=v.findViewById( R.id.vp_slider );
+//        skip=findViewById( R.id.view_pager_text_skip );
 
        GetImages();
         companymodel = new Companymodel();
@@ -173,7 +177,7 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
         });
 
 
-//        vp_slider = (ViewPager) v.findViewById(R.id.vp_slider);
+        vp_slider = (ViewPager) v.findViewById(R.id.vp_slider);
 //        ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
 
 //        slider_image_list = new ArrayList<>();
@@ -239,7 +243,35 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
 //            }
 //        });
 //
+        vp_slider.setOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                CURRENT_PAGE=position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+                if(state==ViewPager.SCROLL_STATE_IDLE)
+                {
+//                    int pagesCount=images.length;
+                    /*if(CURRENT_PAGE==0)
+                    {
+                        viewPager.setCurrentItem( pagesCount-1,false );
+                    }else if(CURRENT_PAGE==pagesCount-1)
+                    {
+                        viewPager.setCurrentItem( 0,false );
+                    }*/
+
+                }
+            }
+        } );
         SwipRefresh();
         return v;
     }
@@ -314,7 +346,7 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
         @Override
         public void run() {
             try {
-            if(position == banne.size()){
+            if(position == list.size()){
                 end = true;
             }
             else if (position == 0) {
@@ -326,6 +358,7 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
                 position--;
             }
                 rv_autoScroll.smoothScrollToPosition(position);
+
 
             }catch ( Exception e){
 
@@ -350,15 +383,24 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
                 banerAdapter.DeleteImage(Categories.this);
                 linearLayoutManager = new LinearLayoutManager(getContext());
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                rv_autoScroll.setLayoutManager(linearLayoutManager);
-                rv_autoScroll.setAdapter(banerAdapter);
-                if (banne.size() > 0) {
-                    if (context != null) {
-                        timer = new Timer();
-                        timer.scheduleAtFixedRate(new AutoScrollTask(), 6000, 8000);
-                    }
-                }
+//                rv_autoScroll.setLayoutManager(linearLayoutManager);
+//                rv_autoScroll.setAdapter(banerAdapter);
 
+                sliderPagerAdapter=new SliderPagerAdapter( getContext(),list );
+                vp_slider.setAdapter( sliderPagerAdapter );
+                CircleIndicator circleIndicator=v.findViewById( R.id.view_pager_circle_indicator );
+                circleIndicator.setViewPager( vp_slider );
+//                if (context != null) {
+//                    timer = new Timer();
+//                    timer.scheduleAtFixedRate(new AutoScrollTask(), 2500, 8000);
+//                }
+                Timer swipeTimer = new Timer();
+                swipeTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        handler.post(update);
+                    }
+                }, 2000, 2000);
             }
 
             @Override

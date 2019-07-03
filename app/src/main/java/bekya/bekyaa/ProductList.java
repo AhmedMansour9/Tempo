@@ -316,6 +316,7 @@ EditText name,descrip , phone, price ,govern;
                             } else {
                                 if (r != null && !hasId(r.getName())) {
 //                                    arrayadmin.add(r);
+                                    testArray.clear();
                                     testArray.add(r);
                                     Collections.reverse(testArray);
                                    for (int i=0;i<testArray.size();i++){
@@ -353,6 +354,7 @@ EditText name,descrip , phone, price ,govern;
                             mSwipeRefreshLayout.setRefreshing(false);
                         } else {
                             if (r != null && !hasId(r.getName())) {
+                                testArray.clear();
                                 testArray.add(r);
                                 Collections.reverse(testArray);
                                 for (int i = 0; i < testArray.size(); i++) {

@@ -146,13 +146,13 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(ChatUsers.this, ""+response.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ChatUsers.this, ""+response.toString(), Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ChatUsers.this, ""+error.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ChatUsers.this, ""+error.toString(), Toast.LENGTH_SHORT).show();
 
                     }
                 }) {
@@ -185,7 +185,7 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
                 Msg = Messages.getText().toString().trim();
                 if (Msg != null && Msg.equals("")) {
                 } else {
-                    SendMessage(tokenadmin,Msg);
+                    SendMessage(TokenUser,Msg);
                     HashMap<String, String> map = new HashMap<>();
                     map.put("Msg", Msg);
                     map.put("from", token);

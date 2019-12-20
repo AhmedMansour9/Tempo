@@ -40,8 +40,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,6 +55,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
 import org.joda.time.Days;
 
@@ -542,50 +546,76 @@ public class myposts extends Fragment implements SwipeRefreshLayout.OnRefreshLis
         final SpotsDialog waitingdialog = new SpotsDialog(getActivity());
         waitingdialog.setTitle("يتم التحميل ..");
         waitingdialog.show();
-        StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-        ref.putFile(filePath)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        waitingdialog.dismiss();
-                        Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
-                        final Uri u = taskSnapshot.getDownloadUrl();
+        final StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+        UploadTask uploadTask ;
+
+        uploadTask = ref.putFile(filePath);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                // Continue with the task to get the download URL
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    waitingdialog.dismiss();
+                    Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+                    final Uri u = task.getResult();
 //                        Picasso.with(getActivity())
 //                                .load(u)
 //                                .fit()
 //                                .placeholder(R.drawable.no_media)
 //                                .into(image);
-                        Glide.with(getActivity())
-                                .load( u)
-                                .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
-                                .listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    Glide.with(getActivity())
+                            .load( u)
+                            .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
 //                            holder.ProgrossSpare.setVisibility(View.GONE);
-                                        return false;
-                                    }
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                            holder.ProgrossSpare.setVisibility(View.GONE);
-                                        return false;
-                                    }
-                                })
-                                .into(image);
-                        DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
-                        data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot data:dataSnapshot.getChildren()){
-                                    data.getRef().child(childimage).setValue(u.toString());
-
+                                    return false;
                                 }
-                            }
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            holder.ProgrossSpare.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .into(image);
+                    DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
+                    data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot data:dataSnapshot.getChildren()){
+                                data.getRef().child(childimage).setValue(u.toString());
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
                             }
-                        });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+        ref.putFile(filePath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     }
                 })

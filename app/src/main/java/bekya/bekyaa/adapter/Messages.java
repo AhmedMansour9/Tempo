@@ -88,7 +88,8 @@ public class Messages extends RecyclerView.Adapter<Messages.MyViewHolder> {
             System.out.println(date);
         } catch (ParseException e) {
             e.printStackTrace();
-        }//        if(LastDate.equals(datee)){
+        }
+        //        if(LastDate.equals(datee)){
 //            holder.T_Time.setVisibility(View.GONE);
 //
 //        }else {

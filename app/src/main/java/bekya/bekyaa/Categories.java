@@ -11,7 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -104,12 +106,25 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
 //
         final Runnable update = new Runnable() {
             public void run() {
-                if (page_position == list.size()) {
-                    page_position = 0;
-                } else {
-                    page_position = page_position + 1;
+//                if (page_position == banne.size()-1) {
+//                    page_position --;
+//                } else {
+//                    page_position ++;
+//                }
+
+                if(position == list.size()-1){
+                    end = true;
                 }
-                vp_slider.setCurrentItem(page_position, true);
+                else if (position == 0) {
+                    end = false;
+                }
+                if(!end){
+                    position++;
+                } else {
+                    position--;
+                }
+//                vp_slider.setCurrentItem(page_position, true);
+                rv_autoScroll.smoothScrollToPosition(position);
             }
         };
 
@@ -124,7 +139,7 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
         database = FirebaseDatabase.getInstance();
         category = database.getReference("category");
         card = v.findViewById(R.id.friendCardView2);
-//        rv_autoScroll = v.findViewById(R.id.recycler_banner2);
+        rv_autoScroll = v.findViewById(R.id.recycler_banner2);
 //        viewPager=v.findViewById( R.id.vp_slider );
 //        skip=findViewById( R.id.view_pager_text_skip );
 
@@ -177,7 +192,7 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
         });
 
 
-        vp_slider = (ViewPager) v.findViewById(R.id.vp_slider);
+//        vp_slider = (ViewPager) v.findViewById(R.id.vp_slider);
 //        ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
 
 //        slider_image_list = new ArrayList<>();
@@ -209,10 +224,10 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
 //        GetImages(new firebasecallback() {
 //            @Override
 //            public void Company(List<Gallery> comp) {
-////                sliderPagerAdapter = new SliderPagerAdapter(getActivity(), comp);
-////                vp_slider.setAdapter(sliderPagerAdapter);
-////                CircleIndicator circleIndicator=v.findViewById( R.id.view_pager_circle_indicator );
-////                circleIndicator.setViewPager( vp_slider );
+//                sliderPagerAdapter = new SliderPagerAdapter(getActivity(), comp);
+//                vp_slider.setAdapter(sliderPagerAdapter);
+//                CircleIndicator circleIndicator=v.findViewById( R.id.view_pager_circle_indicator );
+//                circleIndicator.setViewPager( vp_slider );
 ////                Timer timer = new Timer();
 ////                timer.scheduleAtFixedRate(new SliderTimer(), 4000, 8000);
 //
@@ -242,37 +257,40 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
 ////                mHandler.postDelayed(SCROLLING_RUNNABLE, 2000);
 //            }
 //        });
+
+//        vp_slider.setOnPageChangeListener( new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //
-        vp_slider.setOnPageChangeListener( new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-//                CURRENT_PAGE=position;
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-                if(state==ViewPager.SCROLL_STATE_IDLE)
-                {
-//                    int pagesCount=images.length;
-                    /*if(CURRENT_PAGE==0)
-                    {
-                        viewPager.setCurrentItem( pagesCount-1,false );
-                    }else if(CURRENT_PAGE==pagesCount-1)
-                    {
-                        viewPager.setCurrentItem( 0,false );
-                    }*/
-
-                }
-            }
-        } );
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+////                Intent facebookIntent = getOpenFacebookIntent(getContext(),banne.get(position).getLinl());
+////                startActivity(facebookIntent);
+//
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//                if(state==ViewPager.SCROLL_STATE_IDLE)
+//                {
+////                    int pagesCount=images.length;
+//                    /*if(CURRENT_PAGE==0)
+//                    {
+//                        viewPager.setCurrentItem( pagesCount-1,false );
+//                    }else if(CURRENT_PAGE==pagesCount-1)
+//                    {
+//                        viewPager.setCurrentItem( 0,false );
+//                    }*/
+//
+//                }
+//            }
+//        } );
         SwipRefresh();
+
         return v;
     }
 
@@ -354,10 +372,14 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
             }
             if(!end){
                 position++;
+                rv_autoScroll.smoothScrollToPosition(position);
+                return;
             } else {
                 position--;
-            }
                 rv_autoScroll.smoothScrollToPosition(position);
+                return;
+            }
+
 
 
             }catch ( Exception e){
@@ -383,16 +405,16 @@ public class Categories extends Fragment implements  Open_Galler_View,SwipeRefre
                 banerAdapter.DeleteImage(Categories.this);
                 linearLayoutManager = new LinearLayoutManager(getContext());
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//                rv_autoScroll.setLayoutManager(linearLayoutManager);
-//                rv_autoScroll.setAdapter(banerAdapter);
+                rv_autoScroll.setLayoutManager(linearLayoutManager);
+                rv_autoScroll.setAdapter(banerAdapter);
 
-                sliderPagerAdapter=new SliderPagerAdapter( getContext(),list );
-                vp_slider.setAdapter( sliderPagerAdapter );
-                CircleIndicator circleIndicator=v.findViewById( R.id.view_pager_circle_indicator );
-                circleIndicator.setViewPager( vp_slider );
+//                sliderPagerAdapter=new SliderPagerAdapter( getContext(),list );
+//                vp_slider.setAdapter( sliderPagerAdapter );
+//                CircleIndicator circleIndicator=v.findViewById( R.id.view_pager_circle_indicator );
+//                circleIndicator.setViewPager( vp_slider );
 //                if (context != null) {
 //                    timer = new Timer();
-//                    timer.scheduleAtFixedRate(new AutoScrollTask(), 2500, 8000);
+//                    timer.scheduleAtFixedRate(new AutoScrollTask(), 2000, 4000);
 //                }
                 Timer swipeTimer = new Timer();
                 swipeTimer.schedule(new TimerTask() {

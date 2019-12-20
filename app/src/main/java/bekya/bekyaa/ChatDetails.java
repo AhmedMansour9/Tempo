@@ -201,7 +201,7 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
 
     }
     private void loademoresmassg() {
-        DatabaseReference datams=datamsg.child(token).child(token);
+        DatabaseReference datams=datamsg.child(tokenadmin).child(token);
 
         Query mqery=datams.orderByKey().endAt(key).limitToLast(10);
         mqery.addChildEventListener(new ChildEventListener() {

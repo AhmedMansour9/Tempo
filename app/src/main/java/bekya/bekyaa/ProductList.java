@@ -52,8 +52,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -562,48 +565,95 @@ EditText name,descrip , phone, price ,govern;
 
                         storageRef = storage.getReferenceFromUrl("gs://bekya-5f805.appspot.com/");
                         Uri file = Uri.fromFile(new File(dataT.get(i).sdcardPath));
-                        StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
+                        final StorageReference imageRef = storageRef.child("images" + "/" + file + ".jpg");
                         UploadTask uploadTask = imageRef.putBytes(dat);
 
+                        uploadTask = imageRef.putFile(file);
 
-                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                             @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Log.e("ss", "onSuccess: " + taskSnapshot);
-                                waitingdialog.dismiss();
-                                Uri u = taskSnapshot.getDownloadUrl();
-                                Gson i = new Gson();
-                                listimages.add(u.toString());
-                                String jsonFavorites = i.toJson(listimages);
-                                editor.putString("img", jsonFavorites);
-                                editor.commit();
-                                final int pos = dataT.size();
-                                int y = listimages.size();
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
 
-                                if (pos == y) {
-                                    String tokenadmin=SharedPrefManager.getInstance(getBaseContext()).getTokenAdmin();
-                                    SendMessage(tokenadmin,child);
+
+                                }
+                                // Continue with the task to get the download URL
+                                return imageRef.getDownloadUrl();
+                            }
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+                                    String downloadURL = downloadUri.toString();
                                     waitingdialog.dismiss();
-                                    SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price, Govern);
-                                    update_info_layout.dismiss();
-                                    Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
-                                            .show();
+                                    Uri u = Uri.parse(downloadURL);
+                                    Gson i = new Gson();
+                                    listimages.add(u.toString());
+                                    String jsonFavorites = i.toJson(listimages);
+                                    editor.putString("img", jsonFavorites);
+                                    editor.commit();
+                                    final int pos = dataT.size();
+                                    int y = listimages.size();
+
+                                    if (pos == y) {
+                                        String tokenadmin = SharedPrefManager.getInstance(getBaseContext()).getTokenAdmin();
+                                        SendMessage(tokenadmin, child);
+                                        waitingdialog.dismiss();
+                                        SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price, Govern);
+                                        update_info_layout.dismiss();
+                                        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+                                                .show();
+                                    }
+
+
+
+                            } else {
+                                    waitingdialog.dismiss();
                                 }
                             }
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        waitingdialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        });
 
-                                    }
-                                });
+
+//                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                            @Override
+//                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                Log.e("ss", "onSuccess: " + taskSnapshot);
+//                                waitingdialog.dismiss();
+//                                Uri u = taskSnapshot.getDownloadUrl();
+//                                Gson i = new Gson();
+//                                listimages.add(u.toString());
+//                                String jsonFavorites = i.toJson(listimages);
+//                                editor.putString("img", jsonFavorites);
+//                                editor.commit();
+//                                final int pos = dataT.size();
+//                                int y = listimages.size();
+//
+//                                if (pos == y) {
+//                                    String tokenadmin=SharedPrefManager.getInstance(getBaseContext()).getTokenAdmin();
+//                                    SendMessage(tokenadmin,child);
+//                                    waitingdialog.dismiss();
+//                                    SavedSahredPrefrenceSwitch(Name, Discrption, Phone, Price, Govern);
+//                                    update_info_layout.dismiss();
+//                                    Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+//                                            .show();
+//                                }
+//                            }
+//                        })
+//                                .addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        waitingdialog.dismiss();
+//                                        Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                })
+//                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                                    @Override
+//                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//                                    }
+//                                });
                     }}
             }
         }
@@ -613,6 +663,8 @@ EditText name,descrip , phone, price ,govern;
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
+//                        Toast.makeText(ProductList.this, ""+response.toString(), Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -1187,58 +1239,75 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         final SpotsDialog waitingdialog = new SpotsDialog(ProductList.this);
         waitingdialog.setTitle("يتم التحميل ..");
         waitingdialog.show();
-        StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-        UploadTask uploadTask=ref.putBytes(a);
-         uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+        UploadTask uploadTask = ref.putBytes(a);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                waitingdialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                final Uri u = taskSnapshot.getMetadata().getDownloadUrl();
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+
+
+                }
+                // Continue with the task to get the download URL
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+
+                if (task.isSuccessful()) {
+                    final Uri u = task.getResult();
 //                Picasso.with(getApplicationContext())
 //                        .load(u)
 //                        .fit()
 //                        .placeholder(R.drawable.no_media)
 //                        .into(image);
-                Glide.with(getBaseContext())
-                        .load( u)
-                        .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    Glide.with(getBaseContext())
+                            .load(u)
+                            .apply(new RequestOptions().override(500, 500).placeholderOf(R.drawable.no_media))
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
 //                            holder.ProgrossSpare.setVisibility(View.GONE);
-                                return false;
-                            }
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 //                            holder.ProgrossSpare.setVisibility(View.GONE);
-                                return false;
+                                    return false;
+                                }
+                            })
+                            .into(image);
+                    DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
+                    data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot data:dataSnapshot.getChildren()){
+                                data.getRef().child(childimage).setValue(u.toString());
+
                             }
-                        })
-                        .into(image);
-                DatabaseReference data=FirebaseDatabase.getInstance().getReference().child("Products").child(child);
-                data.orderByChild("name").equalTo(IMAGE).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot data:dataSnapshot.getChildren()){
-                            data.getRef().child(childimage).setValue(u.toString());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
+                } else {
+                    waitingdialog.dismiss();
+                }
             }
         });
+
+
+
+
+
 
     }
     public void deleteimage(final String childimage){

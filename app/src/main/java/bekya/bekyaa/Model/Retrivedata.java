@@ -14,34 +14,29 @@ public class Retrivedata {
     private String govern;
     private String discount;
    private String phone;
-   private String date;
+    private long cit_id;
+    private String date;
    private String token;
    private String key;
    private Boolean Admin;
    private  Boolean Statues;
     public Retrivedata(){}
 
-
-    public Retrivedata(Boolean statues,String img1, String img2, String img3, String img4, String name, String discrption, String discount, String phone, String date,String govern, String token) {
+    public Retrivedata(String img1, String img2, String img3, String img4, String name, String discrption, String govern, String discount, String phone, long cit_id, String date, String token, String key, Boolean admin, Boolean statues) {
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
         this.img4 = img4;
         this.name = name;
-        this.govern = govern;
         this.discrption = discrption;
+        this.govern = govern;
         this.discount = discount;
         this.phone = phone;
+        this.cit_id = cit_id;
         this.date = date;
         this.token = token;
-        this.Statues=statues;
-    }
-
-    public Boolean getStatues() {
-        return Statues;
-    }
-
-    public void setStatues(Boolean statues) {
+        this.key = key;
+        Admin = admin;
         Statues = statues;
     }
 
@@ -117,6 +112,14 @@ public class Retrivedata {
         this.phone = phone;
     }
 
+    public long getCit_id() {
+        return cit_id;
+    }
+
+    public void setCit_id(long cit_id) {
+        this.cit_id = cit_id;
+    }
+
     public String getDate() {
         return date;
     }
@@ -147,5 +150,13 @@ public class Retrivedata {
 
     public void setAdmin(Boolean admin) {
         Admin = admin;
+    }
+
+    public Boolean getStatues() {
+        return Statues;
+    }
+
+    public void setStatues(Boolean statues) {
+        Statues = statues;
     }
 }

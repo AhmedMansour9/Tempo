@@ -12,7 +12,7 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
 
-import bekya.bekyaa.CustomGallery;
+import bekya.bekyaa.Model.CustomGallery;
 import bekya.bekyaa.R;
 
 

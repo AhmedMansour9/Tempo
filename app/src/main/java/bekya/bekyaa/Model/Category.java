@@ -1,5 +1,7 @@
 package bekya.bekyaa.Model;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by kunda on 10/2/2017.
  */
@@ -40,5 +42,11 @@ public class Category {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return catogories;
     }
 }

@@ -2,17 +2,13 @@ package bekya.bekyaa.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import java.text.ParseException;
@@ -20,14 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import bekya.bekyaa.Home;
 import bekya.bekyaa.Interface.itemViewinterface;
 import bekya.bekyaa.Model.Retrivedata;
 import bekya.bekyaa.R;
 import bekya.bekyaa.Time;
-import bekya.bekyaa.meesage;
+import bekya.bekyaa.Model.meesage;
 import bekya.bekyaa.tokenid.SharedPrefManager;
 
 public class Messages extends RecyclerView.Adapter<Messages.MyViewHolder> {

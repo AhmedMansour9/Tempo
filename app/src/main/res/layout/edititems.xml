@@ -201,9 +201,11 @@
 
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="@dimen/_150sdp"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_gravity="center"
                                 android:weightSum="1">
 
 
@@ -218,7 +220,7 @@
                                     android:layout_weight="1"
                                     android:textSize="20sp"
                                     android:text="حفظ التعديلات"
-                                    android:background="@drawable/button_background"
+                                    android:background="@drawable/bc_btnborder"
                                     android:textColor="@color/white" />
 
 

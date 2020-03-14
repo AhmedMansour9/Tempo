@@ -5,60 +5,50 @@ package bekya.bekyaa.adapter;
  */
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Duration;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import bekya.bekyaa.Home;
+import bekya.bekyaa.Activites.Home;
 import bekya.bekyaa.Interface.itemViewinterface;
-import bekya.bekyaa.ProductList;
 import bekya.bekyaa.R;
 import bekya.bekyaa.Model.Retrivedata;
 
 
-public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder> implements Filterable {
+public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder>  implements Filterable{
     private List<Retrivedata> mArrayList;
+    ArrayList<Integer> list=new ArrayList<>();
     itemViewinterface itemclick;
     List<Retrivedata> array=new ArrayList<>();
     public imgclick btnclick;
   Context context;
   public static TextView textadmin;
    public static List<Retrivedata> filteredList = new ArrayList<>();
-
+    int pos=5;
+    AdRequest adRequest;
 
     @Override
     public Filter getFilter() {
@@ -73,39 +63,47 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
                 } else {
                     for (Retrivedata androidVersion : mArrayList) {
                         if (androidVersion.getName().toLowerCase().contains(charString)) {
-                            filteredList.add(androidVersion);}}
-                    array = filteredList;}
+                            filteredList.add(androidVersion);
+                        }
+                    }
+                    array = filteredList;
+                }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = array;
                 return filterResults;
             }
+
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                 array = (List<Retrivedata>) filterResults.values;
-                 // Adapteritems.this.notify();
+                array = (List<Retrivedata>) filterResults.values;
+                // Adapteritems.this.notify();
                 array = (List<Retrivedata>) filterResults.values;
 
                 notifyDataSetChanged();
             }
         };
-
     }
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
-        public ImageView image,imageedit,imgdelete;
+        public ImageView image;
+        Button imageedit,imgdelete;
         ProgressBar progross;
+        private AdView adView;
+
         CardView itemcard;
-      public   TextView textname,textprice,textgovern,textphone,textdate,textadmin;
+      public   TextView textname,textprice,textgovern,descrption,textdate,textadmin;
         public MyViewHolder(View view) {
             super(view);
             image =  view.findViewById(R.id.product_image);
             textadmin=view.findViewById(R.id.admintext);
             imageedit=view.findViewById(R.id.imageedit);
+            adView = view.findViewById(R.id.adView);
             imgdelete=view.findViewById(R.id.imagedeleteee);
             textname= view.findViewById(R.id.product_name);
             textprice= view.findViewById(R.id.price);
             textgovern= view.findViewById(R.id.govern);
-           // textphone= view.findViewById(R.id.textphone);
+            descrption= view.findViewById(R.id.descrption);
             textdate=view.findViewById(R.id.textdate);
             itemcard=view.findViewById(R.id.itemcard);
             progross=view.findViewById(R.id.progross);
@@ -121,6 +119,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
         }
     }
     public Adapteritems( List<Retrivedata> moviesList , Context context) {
+
         this.array = moviesList;
         this.context=context;
         mArrayList = moviesList;
@@ -146,6 +145,24 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+          if(position==pos){
+              pos+=5;
+
+              if(!holder.adView.isShown()) {
+                  MobileAds.initialize(context, "ca-app-pub-3940256099942544~3347511713");
+                  adRequest = new AdRequest.Builder().build();
+
+                  holder.adView.loadAd(adRequest);
+                  holder.adView.setVisibility(View.VISIBLE);
+              }
+
+          }else {
+//              holder.adView.setVisibility(View.GONE);
+
+          }
+
+
+
 
 
         Retrivedata y=array.get(position);
@@ -169,10 +186,10 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
                 holder.imageedit.setVisibility(View.VISIBLE);
                 holder.imgdelete.setVisibility(View.VISIBLE);
             }else {
-                holder.imageedit.setVisibility(View.INVISIBLE);
-                holder.imgdelete.setVisibility(View.INVISIBLE);
+                holder.imageedit.setVisibility(View.GONE);
+                holder.imgdelete.setVisibility(View.GONE);
             }
-
+            holder.descrption.setText(y.getDiscrption());
             String textdate=y.getDate();
             holder.textdate.setText(textdate);
 
@@ -195,11 +212,6 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
             if(img1!=null) {
                 Uri u = Uri.parse(img1);
-//                Picasso.with(context)
-//                        .load(u)
-//                        .fit()
-//                        .placeholder(R.drawable.no_media)
-//                        .into(holder.image);
                holder.progross.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load( u)
@@ -216,13 +228,9 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
                             }
                         })
                         .into(holder.image);
+
             }else if(img2!=null){
                 Uri u = Uri.parse(img2);
-//                Picasso.with(context)
-//                        .load(u)
-//                        .fit()
-//                        .placeholder(R.drawable.no_media)
-//                        .into(holder.image);
                 holder.progross.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(u)
@@ -242,11 +250,6 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
             }else if(img3!=null){
                 Uri u = Uri.parse(img3);
-//                Picasso.with(context)
-//                        .load(u)
-//                        .fit()
-//                        .placeholder(R.drawable.no_media)
-//                        .into(holder.image);
                 holder.progross.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(u)
@@ -265,11 +268,6 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
                         .into(holder.image);
             }else if(img4!=null){
                 Uri u = Uri.parse(img4);
-//                Picasso.with(context)
-//                        .load(u)
-//                        .fit()
-//                        .placeholder(R.drawable.no_media)
-//                        .into(holder.image);
                 holder.progross.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(u)

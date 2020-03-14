@@ -1,18 +1,78 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#fff"
+    android:layoutDirection="rtl"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="bekya.bekyaa.Categories">
+    tools:context="bekya.bekyaa.Fragments.Categories">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_Categories"
+        android:layout_width="match_parent"
+        android:background="#fff"
+        android:layout_height="@dimen/_35sdp"/>
+  <View
+      android:layout_width="match_parent"
+      android:layout_height=".5dp"
+      android:background="#e7e7e7"
+      android:layout_below="@+id/recycler_Categories"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:id="@+id/Search"
+                android:visibility="gone"
+                android:layout_below="@+id/recycler_Categories"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardElevation="1dp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint=" بتدور على إيه ؟"
+                    android:textStyle="normal"
+                    android:textColor="@color/darkblue"
+                    android:paddingStart="@dimen/_25sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:background="@null"
+                    android:id="@+id/findyourproduct"
+                    android:paddingLeft="20dp"
+                    android:textColorHint="@color/darkblue"
+                    />
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_search"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_120sdp"
         android:id="@+id/friendCardView2"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_below="@+id/Search"
         app:cardBackgroundColor="@android:color/white"
-        android:visibility="gone"
         app:cardCornerRadius="5dp"
-        app:cardElevation="7dp">
+        app:cardElevation="1dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,41 +90,39 @@
                 <!--android:layout_height="match_parent" />-->
 
 
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/view_pager_circle_indicator"
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_48sdp"
-                android:layout_alignBottom="@+id/vp_slider"
-                android:layout_alignParentStart="true"
-              ></me.relex.circleindicator.CircleIndicator>
+                android:layout_below="@+id/friendCardView2"
+                android:layout_height="@dimen/_400sdp"
+                android:layout_centerHorizontal="true">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/Float_AddPost"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_40sdp"
+                app:elevation="6dp"
+                android:scaleType="fitCenter"
+                app:maxImageSize="@dimen/_28sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_below="@+id/friendCardView2"
+                android:layout_marginTop="@dimen/_300sdp"
+                app:srcCompat="@drawable/add"/>
 
 
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_below="@+id/friendCardView2">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_cont"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="match_parent">
-        <GridView
-            android:id="@+id/grid_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scrollbars="none"
-            android:horizontalSpacing="@dimen/_15sdp"
-
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth" >
-
-        </GridView>
-    </android.support.v4.widget.SwipeRefreshLayout>
-    </RelativeLayout>
-</RelativeLayout>
+</ScrollView>

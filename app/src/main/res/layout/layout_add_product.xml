@@ -1,26 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:id="@+id/rootlayout"
+    android:layoutDirection="ltr"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:cardElevation="4dp">
 
-    <LinearLayout
+
+
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbar"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#fff"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/logotoolbar"
+                    />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_70sdp"
         android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
+            android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ViewSwitcher
                 android:id="@+id/viewSwitcher"
                 android:layout_width="fill_parent"
-                android:layout_height="80dp"
+                android:layout_height="150dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="0" >
@@ -28,16 +65,9 @@
                 <GridView
                     android:id="@+id/gridGallery"
                     android:layout_width="fill_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="120dp"
                     android:layout_gravity="top"
-                    android:layout_marginBottom="-10dp"
-                    android:layout_marginLeft="-10dp"
-                    android:layout_marginRight="-10dp"
-                    android:layout_marginTop="-10dp"
-                    android:horizontalSpacing="-15dp"
                     android:numColumns="4"
-                    android:padding="0dp"
-                    android:verticalSpacing="-15dp"
                     tools:listitem="@layout/gallery_item" >
                 </GridView>
 
@@ -54,136 +84,196 @@
             </ViewSwitcher>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+        <RelativeLayout
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/linear"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-            <android.support.v4.widget.NestedScrollView
-                android:id="@+id/nestedScrollView"
-                android:clipToPadding="false"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:hintEnabled="false"
+                    android:id="@+id/Input_Name"
                     >
                     <EditText android:id="@+id/Name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
                         android:inputType="textMultiLine"
                         android:maxLines="10"
-                        android:gravity="right"
-                        android:textColorHint="@color/blue"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_5sdp"
+
+                        android:gravity="center|right"
+                        android:background="@drawable/bc_edittext"
+                        android:textColorHint="@color/darkblue"
                         android:textSize="14sp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/darkblue"
                         android:hint="أسم المنتج" />
+                </android.support.design.widget.TextInputLayout>
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:hintEnabled="false"
+                        android:id="@+id/Input_Descrp"
+                        android:layout_below="@+id/Input_Name"
+                        android:layout_marginTop="@dimen/_10sdp"
                         >
                         <EditText android:id="@+id/descrip"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_30sdp"
                             android:inputType="textMultiLine"
                             android:maxLines="10"
-                            android:gravity="right"
-                            android:textColorHint="@color/blue"
+                            android:gravity="center|right"
+                            android:paddingEnd="@dimen/_5sdp"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:background="@drawable/bc_edittext"
+                            android:textColorHint="@color/darkblue"
                             android:textSize="14sp"
-                            android:textColor="@android:color/black"
+                            android:textColor="@color/darkblue"
                             android:hint="الوصف" />
+                    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_below="@+id/Input_Descrp"
+                android:id="@+id/Input_Phone"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:hintEnabled="false"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/bc_edittext"
+                    android:gravity="center|right"
+                    android:hint="رقم الهاتف"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:textColor="@color/darkblue"
+                    android:textColorHint="@color/darkblue"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/spinner_Categories"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:dropDownWidth="match_parent"
+                android:background="@null"
+                android:layout_below="@+id/Input_Phone"
+                android:popupBackground="@android:color/white"
+                android:popupElevation="3dp"
+                android:spinnerMode="dialog"
+                />
+
                         <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="@dimen/_120sdp"
                             android:layout_height="wrap_content"
+                            app:hintEnabled="false"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/spinner_Categories"
+                            android:layout_marginTop="@dimen/_10sdp"
                             >
                             <EditText android:id="@+id/price"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/_30sdp"
                                 android:inputType="number"
                                 android:maxLines="10"
-                                android:gravity="right"
-                                android:textColorHint="@color/blue"
+                                android:gravity="center|right"
+                                android:paddingEnd="@dimen/_5sdp"
+                                android:paddingStart="@dimen/_5sdp"
+                                android:background="@drawable/bc_edittext"
+                                android:textColorHint="@color/darkblue"
+
                                 android:textSize="14sp"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/darkblue"
                                 android:hint="السعر" />
+                        </android.support.design.widget.TextInputLayout>
 
-                            <android.support.design.widget.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <EditText
-                                    android:id="@+id/phone"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:hint="رقم الهاتف"
-                                    android:inputType="phone"
-                                    android:maxLines="10"
-                                    android:textColor="@android:color/black"
-                                    android:textColorHint="@color/blue"
-                                    android:textSize="14sp" />
-                                <android.support.design.widget.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    >
-                                    <EditText android:id="@+id/govern"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="textMultiLine"
-                                        android:maxLines="10"
-                                        android:gravity="right"
-                                        android:textColorHint="@color/blue"
-                                        android:textSize="14sp"
-                                        android:textColor="@android:color/black"
-                                        android:hint="المحافظة" />
+            <Spinner
+                android:id="@+id/spinner_country"
+                style="@style/Widget.AppCompat.Spinner"
+                android:layout_width="@dimen/_130sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:dropDownWidth="match_parent"
+                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                android:paddingRight="14dp"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_below="@+id/spinner_Categories"
+                android:popupBackground="@android:color/white"
+                android:popupElevation="3dp"
+                android:stateListAnimator="@drawable/spinner_sla"
+                android:spinnerMode="dialog"
+                />
 
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
-                                        android:weightSum="2">
 
-                                        <Button
-                                            android:id="@+id/btnselect"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_margin="8dp"
-                                            android:layout_marginLeft="8dp"
-                                            android:layout_marginRight="8dp"
-                                            android:layout_weight="1"
-                                            android:background="@drawable/button_background"
-                                            android:text="تحديد صورة"
-                                            android:textColor="@color/white" />
 
-                                        <Button
-                                            android:id="@+id/btnupload"
-                                            android:layout_width="0dp"
-                                            android:layout_height="wrap_content"
-                                            android:layout_margin="8dp"
-                                            android:layout_marginLeft="8dp"
-                                            android:layout_marginRight="8dp"
-                                            android:layout_weight="1"
-                                            android:text="تحميل"
-                                            android:background="@drawable/button_background"
-                                            android:textColor="@color/white" />
+           <LinearLayout
+           android:layout_width="@dimen/_200sdp"
+           android:layout_height="wrap_content"
+               android:id="@+id/Linear_buttons"
+           android:orientation="horizontal"
+           android:layout_marginTop="@dimen/_30sdp"
+            android:layout_centerHorizontal="true"
+           android:layout_below="@+id/spinner_country"
+           android:weightSum="2">
+
+           <Button
+           android:id="@+id/btnselect"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_margin="8dp"
+           android:layout_marginLeft="8dp"
+           android:layout_marginRight="8dp"
+           android:layout_weight="1"
+           android:background="@drawable/bc_post"
+           android:text="تحديد صورة"
+           android:textColor="@color/white" />
+
+           <Button
+           android:id="@+id/btnupload"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_margin="8dp"
+           android:layout_marginLeft="8dp"
+           android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:text="نشر"
+           android:background="@drawable/bc_post"
+           android:textColor="@color/white" />
 
 
                                     </LinearLayout>
-                                </android.support.design.widget.TextInputLayout>
-                            </android.support.design.widget.TextInputLayout>
-                        </android.support.design.widget.TextInputLayout>
-                    </android.support.design.widget.TextInputLayout>
-                </android.support.design.widget.TextInputLayout>
-            </android.support.v4.widget.NestedScrollView>
+
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/Linear_buttons"
+                android:layout_marginTop="@dimen/_15sdp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+            </com.google.android.gms.ads.AdView>
 
 
-        </LinearLayout>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+
+
+        </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

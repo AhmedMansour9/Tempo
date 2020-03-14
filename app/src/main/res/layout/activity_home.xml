@@ -5,6 +5,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
     <LinearLayout
@@ -30,8 +32,8 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
         android:background="@color/white"
-        app:itemTextColor="@android:color/black"
-        app:itemIconTint="@color/green"
+        app:itemTextColor="#27bcd4"
+        app:itemIconTint="#27bcd4"
         app:menu="@menu/activity_home_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

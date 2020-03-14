@@ -52,4 +52,18 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences("admin", Context.MODE_PRIVATE);
         return  sharedPreferences.getString("admin", null);
     }
+
+    public boolean savePostion(String token){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences("pos", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("postion", token);
+        editor.apply();
+        return true;
+    }
+
+    //this method will fetch the device token from shared preferences
+    public String getPostion(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences("pos", Context.MODE_PRIVATE);
+        return  sharedPreferences.getString("postion", null);
+    }
 }

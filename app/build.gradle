@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "bekya.bekyaa"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 11
         versionName "2.0"
@@ -53,6 +53,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'me.relex:circleindicator:1.2.2'
+    implementation 'com.google.firebase:firebase-ads:11.8.0'
 
 
 }

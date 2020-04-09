@@ -79,7 +79,7 @@ public class Home extends AppCompatActivity
         public void run() {
 
             // Wait 60 seconds
-            mHandler.postDelayed(this, 60*1000);
+            mHandler.postDelayed(this, 60*10*1000);
 
             // Show Ad
             showInterstitial();
@@ -399,6 +399,7 @@ public class Home extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
                     }
                 }) {
 

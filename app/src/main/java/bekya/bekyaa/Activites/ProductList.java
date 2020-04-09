@@ -465,6 +465,13 @@ EditText name,descrip , phone, price ,govern;
         });
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        showInterstitial();
+    }
+
     private void uploadimage() {
 
         Name = name.getText().toString().trim();
@@ -570,7 +577,15 @@ EditText name,descrip , phone, price ,govern;
                                             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                                         }
-                                        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+                                        Name=null;
+                                        Discrption=null;
+                                        Phone=null;
+                                        Price=null;
+                                        name.setText(null);
+                                        descrip.setText(null);
+                                        phone.setText(null);
+                                        price.setText(null);
+                                        Snackbar.make(rootlayout, "تم إضافة منتجك, سيتم مراجعة الاعلان", Snackbar.LENGTH_LONG)
                                                 .show();
                                     }
 
@@ -775,7 +790,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك, سيتم مراجعة الاعلان", Snackbar.LENGTH_SHORT)
                 .show();
 
     }
@@ -793,7 +808,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك, سيتم مراجعة الاعلان", Snackbar.LENGTH_SHORT)
                 .show();
 
     }
@@ -810,7 +825,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك, سيتم مراجعة الاعلان", Snackbar.LENGTH_SHORT)
                 .show();
 
     }}else {
@@ -825,7 +840,7 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setToken(token);
         r.setAdmin(false);
         data.push().setValue(r);
-        Snackbar.make(rootlayout, "تم إضافة منتجك بنجاح", Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootlayout, "تم إضافة منتجك, سيتم مراجعة الاعلان", Snackbar.LENGTH_SHORT)
                 .show();
     }
 

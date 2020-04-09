@@ -140,7 +140,7 @@ public class Categories extends Fragment implements imgclick,itemViewinterface,C
         final Runnable update = new Runnable() {
             public void run() {
 
-                if(position == list.size()-1){
+                if(position == banne.size()-1){
                     end = true;
                 }
                 else if (position == 0) {
@@ -304,13 +304,15 @@ public class Categories extends Fragment implements imgclick,itemViewinterface,C
                 rv_autoScroll.setLayoutManager(linearLayoutManager);
                 rv_autoScroll.setAdapter(banerAdapter);
 
-                Timer swipeTimer = new Timer();
-                swipeTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        handler.post(update);
-                    }
-                }, 3000, 3000);
+                if(banne.size()>1) {
+                    Timer swipeTimer = new Timer();
+                    swipeTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            handler.post(update);
+                        }
+                    }, 3000, 3000);
+                }
             }
 
             @Override

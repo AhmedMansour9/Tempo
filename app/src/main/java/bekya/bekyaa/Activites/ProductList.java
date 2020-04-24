@@ -453,7 +453,7 @@ EditText name,descrip , phone, price ,govern;
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Category_Name = spinner_Categories.getSelectedItem().toString();
-                showInterstitial();
+
                 data= FirebaseDatabase.getInstance().getReference().child("Products").child(Category_Name);
 
             }
@@ -469,7 +469,7 @@ EditText name,descrip , phone, price ,govern;
     @Override
     protected void onStop() {
         super.onStop();
-        showInterstitial();
+
     }
 
     private void uploadimage() {
@@ -587,6 +587,7 @@ EditText name,descrip , phone, price ,govern;
                                         price.setText(null);
                                         Snackbar.make(rootlayout, "تم إضافة منتجك, سيتم مراجعة الاعلان", Snackbar.LENGTH_LONG)
                                                 .show();
+                                        showInterstitial();
                                     }
 
 

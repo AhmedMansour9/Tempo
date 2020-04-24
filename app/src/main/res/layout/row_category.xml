@@ -15,6 +15,7 @@
         android:text="e;fklfkelfkel"
         android:layout_centerVertical="true"
         android:textColor="#000"
+        android:textStyle="bold"
         />
 
     <View

@@ -6,24 +6,32 @@
 
     <item
         android:id="@+id/nav_products"
-        android:title="الصفحة الرئيسية" />
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
         <item
             android:id="@+id/posts"
-            android:title="إعلاناتك" />
+            android:icon="@drawable/ic_poster"
+            android:title="@string/myposts" />
         <item
+            android:icon="@drawable/ic_inbox"
             android:id="@+id/mychat"
-            android:title="رسائلي" />
+            android:title="@string/messages" />
         <item
             android:id="@+id/chat"
-            android:title="تواصل مع الادمن" />
-        <item
-            android:id="@+id/about"
-            android:title="اتصل بنا" />
+            android:icon="@drawable/ic_contactus"
+            android:title="@string/contact" />
+<!--        <item-->
+<!--            android:id="@+id/about"-->
+<!--            android:title="@string/aboutt" />-->
 
 
         <item
-            android:id="@+id/nav_setting"
-            android:title="ضبط الإشعارات" />
+            android:id="@+id/nav_language"
+            android:icon="@drawable/ic_language"
+            android:title="@string/language" />
+        <item android:id="@+id/log_out"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/log_out" />
 
     </group>
 

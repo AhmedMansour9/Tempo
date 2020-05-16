@@ -14,7 +14,7 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:text="e;fklfkelfkel"
         android:layout_centerVertical="true"
-        android:textColor="#000"
+        android:textColor="#003152"
         android:textStyle="bold"
         />
 

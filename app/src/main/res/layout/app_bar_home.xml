@@ -22,11 +22,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:layout_width="@dimen/_70sdp"
+                    android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_55sdp"
-                    android:background="@drawable/logotoolbar"
+                    android:layout_marginStart="@dimen/_40sdp"
+                    android:background="@drawable/logo"
                     />
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -44,8 +44,8 @@
                     android:textColor="#27bcd4"
                     android:maxLines="1"
                     android:maxLength="10"
+                    android:text="@string/location"
                     android:ellipsize="end"
-                    android:text="القاهرة"
                     android:textStyle="bold"
                     android:textSize="@dimen/_11sdp"
                     />

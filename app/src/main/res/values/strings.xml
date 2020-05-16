@@ -1,10 +1,10 @@
 <resources>
     <dimen name="photo_width">110dp</dimen>
     <dimen name="photo_height">110dp</dimen>
-    <string name="app_name">Bekya</string>
+    <string name="app_name">Tempo</string>
     <string name="title_activity_home">Home</string>
 
-    <string name="selectcountry"> اختار محافظتك</string>
+    <string name="selectcountry"> Select Location</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
 
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -12,6 +12,8 @@
 
     <string name="aboutus"> عشان تعمل إعلان مميز برجاء التواصل مع خدمة العملاء على رقم 01000057220
     </string>
+
+    <string name="aboutt">About Us</string>
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
 
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
@@ -106,21 +108,81 @@
     <string name="time_ago_year">about a year</string>
     <string name="time_ago_years">%d years</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string-array name="country">
-        <item>بنى سويف</item>
-        <item>ببا</item>
-        <item>الفشن</item>
-        <item>سمسطا</item>
-        <item>الواسطى</item>
-        <item>إهناسيا</item>
-        <item>ناصر</item>
-        <item>شرق النيل</item>
-
-
-    </string-array>
-
     <string name="city">اختر المحافظة</string>
-    <string name="edit">تعديل</string>
-    <string name="delete">حذف</string>
-
+    <string name="login_face">Login With Facebook</string>
+    <string name="welcome">Welcome To Tempo</string>
+    <string name="work">Work From Home</string>
+    <string name="facebook_app_id">228882291703789</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="location">Location</string>
+    <string name="product_name">Product Name</string>
+    <string name="desc">Description</string>
+    <string name="phone">Mobile Number</string>
+    <string name="share">Share</string>
+    <string name="price">Price</string>
+    <string name="select_image">Select Image</string>
+    <string name="validate_phone">Please Insert Phone</string>
+    <string name="review_post">Post has been added, please wait review</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="forgetpas">Forget Password ?</string>
+    <string name="login">LOGIN</string>
+    <string name="or">Or</string>
+    <string name="loginface">LOGIN WITH FACEBOOK</string>
+    <string name="noacc">Don\'t Have An Account?</string>
+    <string name="signupnow">SIGN UP NOW</string>
+    <string name="fullname">Full Name</string>
+    <string name="policy">Terms &amp; Conditions</string>
+    <string name="data_policty">This application is only an advertisement platform and is not responsible for interactions between users either financially or physically,</string>
+    <string name="register">Register</string>
+    <string name="indvidual">Individual</string>
+    <string name="company">Company</string>
+    <string name="major">Major</string>
+    <string name="years">Years of experience</string>
+    <string name="c_name">Company Name</string>
+    <string name="f_name">Full Time</string>
+    <string name="p_time">Part Time</string>
+    <string name="skills">Skills</string>
+    <string name="subject">Subject</string>
+    <string name="home">Home</string>
+    <string name="myposts">My Posts</string>
+    <string name="messages">Inbox</string>
+    <string name="contact">Contact Us</string>
+    <string name="notifications">Notifications</string>
+    <string name="language">Language</string>
+    <string name="feildempty">Fill input with valid data</string>
+    <string name="invalidemail">Please Enter Valid Email</string>
+    <string name="enterpas">Please Enter Valid Password</string>
+    <string name="alreadyuser">This User Already Exist</string>
+    <string name="checked">Please Make Sure That You Check Privacy</string>
+    <string name="log_out">Log Out</string>
+    <string name="title">Title</string>
+    <string name="descrip">Description</string>
+    <string name="delete_post">Do You want to delete this post ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="english">English</string>
+    <string name="arabic">عربي</string>
+    <string name="validate_city">Please Make Sure That You Select Country First</string>
+    <string name="validate_data">Please Fill All Inputs</string>
+    <string name="currency">Currency</string>
+    <string name="fogetpassword">Do you forget your Password ?</string>
+    <string name="reset">Reset</string>
+    <string name="reseet">Reset password code has been emailed to</string>
+    <string name="invalidemaail">Invalid Email , try later</string>
+    <string name="adv">Advertise with us</string>
+    <string name="customer">Customer Service</string>
+    <string name="chat"> Chat With Us</string>
+    <string name="click_here">Click Here</string>
+    <string name="save">Save edits</string>
+    <string name="savedsucces">Edits saved successfully</string>
+    <string-array name="types">
+        <item>Present a service </item>
+        <item>Request a service</item>
+    </string-array>
+    <string name="p_service">Present a Service</string>
+    <string name="r_service">Request a Service</string>
+    <string name="type_message">Type Your Message</string>
+    <string name="specialad">Featured ad</string>
 </resources>

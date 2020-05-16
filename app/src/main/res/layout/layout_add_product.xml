@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/rootlayout"
-    android:layoutDirection="ltr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardElevation="4dp">
@@ -29,16 +28,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:layout_width="@dimen/_70sdp"
+                    android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/logotoolbar"
+                    android:src="@drawable/logo"
                     />
 
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:layout_below="@+id/appbar"
+        android:background="#C5C5C5"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -80,7 +85,7 @@
                     android:layout_gravity="center"
                     android:visibility="visible"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/no_media" />
+                    android:src="@drawable/no_image" />
             </ViewSwitcher>
         </LinearLayout>
 
@@ -108,13 +113,11 @@
                         android:maxLines="10"
                         android:paddingEnd="@dimen/_5sdp"
                         android:paddingStart="@dimen/_5sdp"
-
-                        android:gravity="center|right"
                         android:background="@drawable/bc_edittext"
                         android:textColorHint="@color/darkblue"
                         android:textSize="14sp"
                         android:textColor="@color/darkblue"
-                        android:hint="أسم المنتج" />
+                        android:hint="@string/title" />
                 </android.support.design.widget.TextInputLayout>
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -129,14 +132,13 @@
                             android:layout_height="@dimen/_30sdp"
                             android:inputType="textMultiLine"
                             android:maxLines="10"
-                            android:gravity="center|right"
                             android:paddingEnd="@dimen/_5sdp"
                             android:paddingStart="@dimen/_5sdp"
                             android:background="@drawable/bc_edittext"
                             android:textColorHint="@color/darkblue"
                             android:textSize="14sp"
                             android:textColor="@color/darkblue"
-                            android:hint="الوصف" />
+                            android:hint="@string/desc" />
                     </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -151,8 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
                     android:background="@drawable/bc_edittext"
-                    android:gravity="center|right"
-                    android:hint="رقم الهاتف"
+                    android:hint="@string/phone"
                     android:inputType="phone"
                     android:maxLength="11"
                     android:paddingStart="@dimen/_5sdp"
@@ -176,12 +177,36 @@
                 android:spinnerMode="dialog"
                 />
 
+            <Spinner
+                android:id="@+id/spinner_SubCategories"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:dropDownWidth="match_parent"
+                android:background="@null"
+                android:layout_below="@+id/spinner_Categories"
+                android:popupBackground="@android:color/white"
+                android:popupElevation="3dp"
+                android:spinnerMode="dialog"
+                />
+            <Spinner
+                android:id="@+id/spinner_Types"
+                style="@style/Widget.AppCompat.Spinner"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:dropDownWidth="match_parent"
+                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                android:background="@null"
+                android:layout_below="@+id/spinner_SubCategories"
+                android:popupBackground="@android:color/white"
+                android:spinnerMode="dialog"
+                />
                         <android.support.design.widget.TextInputLayout
                             android:layout_width="@dimen/_120sdp"
                             android:layout_height="wrap_content"
                             app:hintEnabled="false"
-                            android:layout_alignParentEnd="true"
-                            android:layout_below="@+id/spinner_Categories"
+                            android:layout_below="@+id/spinner_country"
                             android:layout_marginTop="@dimen/_10sdp"
                             >
                             <EditText android:id="@+id/price"
@@ -189,35 +214,45 @@
                                 android:layout_height="@dimen/_30sdp"
                                 android:inputType="number"
                                 android:maxLines="10"
-                                android:gravity="center|right"
                                 android:paddingEnd="@dimen/_5sdp"
                                 android:paddingStart="@dimen/_5sdp"
                                 android:background="@drawable/bc_edittext"
                                 android:textColorHint="@color/darkblue"
-
                                 android:textSize="14sp"
                                 android:textColor="@color/darkblue"
-                                android:hint="السعر" />
+                                android:hint="@string/price" />
                         </android.support.design.widget.TextInputLayout>
 
             <Spinner
                 android:id="@+id/spinner_country"
                 style="@style/Widget.AppCompat.Spinner"
-                android:layout_width="@dimen/_130sdp"
+                android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:dropDownWidth="match_parent"
-                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
-                android:paddingRight="14dp"
-                android:backgroundTint="@android:color/transparent"
-                android:layout_below="@+id/spinner_Categories"
+                android:background="@null"
+                android:layout_below="@+id/spinner_Types"
                 android:popupBackground="@android:color/white"
-                android:popupElevation="3dp"
-                android:stateListAnimator="@drawable/spinner_sla"
                 android:spinnerMode="dialog"
                 />
 
 
+            <TextView android:id="@+id/Currency"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:inputType="number"
+                android:maxLines="10"
+                android:layout_below="@+id/spinner_country"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:background="@drawable/bc_edittext"
+                android:textColorHint="@color/darkblue"
+                android:textSize="14sp"
+                android:textColor="@color/darkblue"
+                android:hint="@string/currency" />
 
 
            <LinearLayout
@@ -227,7 +262,7 @@
            android:orientation="horizontal"
            android:layout_marginTop="@dimen/_30sdp"
             android:layout_centerHorizontal="true"
-           android:layout_below="@+id/spinner_country"
+           android:layout_below="@+id/Currency"
            android:weightSum="2">
 
            <Button
@@ -237,9 +272,10 @@
            android:layout_margin="8dp"
            android:layout_marginLeft="8dp"
            android:layout_marginRight="8dp"
+               android:textAllCaps="false"
            android:layout_weight="1"
            android:background="@drawable/bc_post"
-           android:text="تحديد صورة"
+           android:text="@string/select_image"
            android:textColor="@color/white" />
 
            <Button
@@ -250,24 +286,13 @@
            android:layout_marginLeft="8dp"
            android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:text="نشر"
+            android:text="@string/share"
            android:background="@drawable/bc_post"
            android:textColor="@color/white" />
 
 
                                     </LinearLayout>
 
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/Linear_buttons"
-                android:layout_marginTop="@dimen/_15sdp"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-            </com.google.android.gms.ads.AdView>
 
 
 

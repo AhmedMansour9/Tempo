@@ -1,104 +1,45 @@
 {
   "project_info": {
-    "project_number": "188061470835",
-    "firebase_url": "https://bekya-5f805.firebaseio.com",
-    "project_id": "bekya-5f805",
-    "storage_bucket": "bekya-5f805.appspot.com"
+    "project_number": "200612161330",
+    "firebase_url": "https://temp-95e43.firebaseio.com",
+    "project_id": "temp-95e43",
+    "storage_bucket": "temp-95e43.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:188061470835:android:4adc7208dbac2b2d",
+        "mobilesdk_app_id": "1:200612161330:android:78aa77eda936bfe1ec992b",
         "android_client_info": {
-          "package_name": "bekya.bekyaa"
+          "package_name": "com.tempo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "188061470835-rbtfacpp1rs98sojqpppnm45emkksgtn.apps.googleusercontent.com",
+          "client_id": "200612161330-96195d93kpla9g1md1oibse1a2lirdkd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "bekya.bekyaa",
-            "certificate_hash": "aa3f665062551b4b48bbd606b17bbeed8ba26deb"
+            "package_name": "com.tempo",
+            "certificate_hash": "2aaee980c44d411fbba02b5493cc1e7b3a8b1c57"
           }
         },
         {
-          "client_id": "188061470835-chh9qh480nis59c7rff59tguckd3sbjr.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "188061470835-chh9qh480nis59c7rff59tguckd3sbjr.apps.googleusercontent.com",
+          "client_id": "200612161330-gbt0m8li86a7evm3vse9rjv88t9k605k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAirEwZynFn5UmXeqrfWJI2g1elRJu_vvQ"
+          "current_key": "AIzaSyB4UN41q1sUQmSia7gRio0-qQiG7L6dXDc"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "188061470835-chh9qh480nis59c7rff59tguckd3sbjr.apps.googleusercontent.com",
+              "client_id": "200612161330-gbt0m8li86a7evm3vse9rjv88t9k605k.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:188061470835:android:5f97b973744ca70b",
-        "android_client_info": {
-          "package_name": "com.example.bekya.bekya"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "188061470835-oqrb1mi97tsrdge5lgnu5rmgc45j8lgk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.bekya.bekya",
-            "certificate_hash": "aa3f665062551b4b48bbd606b17bbeed8ba26deb"
-          }
-        },
-        {
-          "client_id": "188061470835-chh9qh480nis59c7rff59tguckd3sbjr.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "188061470835-chh9qh480nis59c7rff59tguckd3sbjr.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAirEwZynFn5UmXeqrfWJI2g1elRJu_vvQ"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "188061470835-chh9qh480nis59c7rff59tguckd3sbjr.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

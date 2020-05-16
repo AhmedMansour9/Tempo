@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootlayout"
-    tools:context="bekya.bekyaa.Fragments.myposts">
+    tools:context="com.tempo.Fragments.myposts">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
@@ -18,15 +18,16 @@
             android:scrollbars="vertical" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="لا يوجد منتجات لك"
-        android:textSize="20dp"
-        android:textColor="@android:color/black"
-        android:visibility="visible"
-        android:id="@+id/text"
-        />
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_30sdp"
+        ads:adSize="BANNER"
+        android:visibility="gone"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>

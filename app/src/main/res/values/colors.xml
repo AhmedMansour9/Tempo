@@ -31,8 +31,7 @@
     <color name="dialog_bg">#f0f0f0</color>
 
     <drawable name="light_black_">#33000000</drawable>
-    <color name="darkblue">#27bcd2</color>
-
+    <color name="darkblue">#003152</color>
 </resources>
 
     <!--<resources>-->

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    >
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <ImageView
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/logo_splash"
+                android:id="@+id/logo"
+                android:layout_marginTop="@dimen/_30sdp"
+                />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000"
+                android:alpha=".2"/>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_gravity="center"
+                android:layout_below="@+id/logo"
+                android:background="#fff"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_height="@dimen/_90sdp"
+                card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:background="#fff"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:hint="@string/email"
+                        android:textColor="#a2a2a2"
+                        android:textColorHint="#a2a2a2"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:backgroundTint="#e5e5e5"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:id="@+id/E_EmailLogin"
+                        />
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:hint="@string/password"
+                        android:layout_weight="1"
+                        android:inputType="textPassword"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:id="@+id/E_PasswordLogin"
+                        android:background="@null"
+                        android:textColor="#a2a2a2"
+                        android:textColorHint="#a2a2a2"
+                        android:layout_below="@+id/E_Email"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    android:background="#e5e5e5"
+                    android:layout_gravity="center"/>
+            </android.support.v7.widget.CardView>
+
+         <CheckBox
+             android:layout_width="@dimen/_20sdp"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="@dimen/_10sdp"
+             android:layout_below="@+id/card_view"
+             android:textColor="#a2a2a2"
+             android:id="@+id/CheckBox"
+             android:layout_alignStart="@+id/card_view"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_below="@+id/card_view"
+                android:layout_marginStart="@dimen/_4sdp"
+               android:layout_toEndOf="@+id/CheckBox"
+                android:text="@string/policy"
+                android:id="@+id/Privacy"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:textColor="#9B9090"
+                android:textSize="@dimen/_11sdp"
+                />
+            <Button
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:id="@+id/Btn_login"
+                android:text="@string/login"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_below="@+id/card_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_55sdp"
+                android:background="@drawable/bc_buttons"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/forgetpas"
+                android:textColor="#a2a2a2"
+                android:id="@+id/T_forget"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/Btn_login"
+                android:layout_marginTop="@dimen/_10sdp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/noacc"
+                android:textColor="#a2a2a2"
+                android:id="@+id/T_forgetpass"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/Btn_loginFace"
+                android:layout_marginTop="@dimen/_15sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/T_forget"
+                android:layout_centerHorizontal="true"
+                android:text="@string/or"
+                android:id="@+id/or"
+                android:textColor="#a2a2a2"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_15sdp"
+                />
+            <View
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_2sdp"
+                android:background="#ee3f60"
+                android:layout_below="@+id/T_forget"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_toLeftOf="@+id/or"
+                />
+
+            <View
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_2sdp"
+                android:background="#ee3f60"
+                android:layout_below="@+id/T_forget"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_toRightOf="@+id/or"
+                />
+
+            <Button
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:id="@+id/Btn_loginFace"
+                android:text="@string/loginface"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_below="@+id/or"
+                android:gravity="start|center"
+                android:paddingStart="@dimen/_30sdp"
+                android:drawableStart="@drawable/facebook"
+                android:drawablePadding="@dimen/_15sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/bc_face"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/noacc"
+                android:textColor="#a2a2a2"
+                android:id="@+id/T_noaccount"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/Btn_loginFace"
+                android:layout_marginTop="@dimen/_15sdp"/>
+            <Button
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:id="@+id/Btn_signup"
+                android:text="@string/signupnow"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_below="@+id/T_noaccount"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/bc_buttons"
+                />
+        </RelativeLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:id="@+id/progressBarLogin"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="@drawable/bc_login"-->
+<!--    tools:context=".Activites.Login">-->
+
+
+
+
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:id="@+id/loginfac"-->
+<!--        android:layout_height="wrap_content">-->
+
+
+<!--        <Button-->
+<!--            android:layout_width="@dimen/_230sdp"-->
+<!--            android:layout_height="@dimen/_35sdp"-->
+<!--            android:id="@+id/Btn_loginFace"-->
+<!--            android:text="@string/login_face"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="#fff"-->
+<!--            android:gravity="start|center"-->
+<!--            android:paddingStart="@dimen/_30sdp"-->
+<!--            android:drawableStart="@drawable/facebook"-->
+<!--            android:drawablePadding="@dimen/_15sdp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="@dimen/_10sdp"-->
+<!--            android:background="@drawable/bc_face"-->
+<!--            />-->
+
+<!--    </RelativeLayout>-->
+
+
+
+<!--</RelativeLayout>-->

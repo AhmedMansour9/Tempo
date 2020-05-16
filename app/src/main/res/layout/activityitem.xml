@@ -25,10 +25,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:layout_width="@dimen/_70sdp"
+                    android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/logotoolbar"
+                    android:background="@drawable/logo"
                     />
 
             </RelativeLayout>
@@ -41,6 +41,8 @@
                 android:layout_marginTop="?actionBarSize"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_180sdp" />
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="@dimen/_80sdp"
@@ -87,28 +89,26 @@
     <TextView
         android:textSize="19sp"
         android:layout_below="@+id/view_pager_circle_indicator"
-        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:maxLength="50"
-        android:textColor="@android:color/black"
+        android:textColor="#003152"
         android:textStyle="bold"
         android:maxLines="1"
-        android:layout_marginStart="@dimen/_50sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Title"
-        android:text=" محل تجاري للبيع نبتمنبتبنثمبتنمثتمبنتثنمبتمنثبتبنمثتبمنثبتبثمنبتنمثبت"
-        />
-
+        android:text=""/>
 
     <TextView
-        android:text="2500 ج.م"
-        android:textColor="@android:color/black"
+        android:text="28378"
+        android:textColor="#003152"
         android:textSize="19sp"
         android:layout_below="@+id/view_pager_circle_indicator"
         android:layout_marginTop="@dimen/_10sdp"
-         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_alignParentEnd="true"
+         android:layout_marginEnd="@dimen/_10sdp"
         android:paddingRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,25 +121,22 @@
         android:layout_height="@dimen/_15sdp"
         android:layout_below="@id/textprice"
         android:layout_marginTop="@dimen/_13sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_alignParentEnd="true"
+        android:id="@+id/marker"
+        android:layout_marginStart="@dimen/_10sdp"
         android:src="@drawable/marker"/>
 
     <TextView
         android:id="@+id/textgovern"
-        android:layout_width="@dimen/_90sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textprice"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="@dimen/_13sdp"
         android:text=" بصيصيي"
         android:layout_marginEnd="@dimen/_25sdp"
-        android:layout_alignParentEnd="true"
-        android:gravity="right"
+        android:layout_toEndOf="@+id/marker"
         android:textSize="15sp"
         android:singleLine="true"
-        android:textColor="#c9c9c9"
+        android:textColor="#003152"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
 
@@ -147,15 +144,15 @@
 
     <TextView
         android:id="@+id/textdate"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textprice"
-        android:layout_marginLeft="5dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_13sdp"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:textSize="15sp"
         android:singleLine="true"
-        android:textColor="#c9c9c9"
+        android:textColor="#003152"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
 
@@ -177,7 +174,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:textColor="#c9c9c9"
+                android:textColor="#003152"
                 android:textSize="14sp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"

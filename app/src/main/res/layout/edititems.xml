@@ -14,7 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:id="@+id/imgone"
-            android:background="@drawable/no_media"
+            android:background="@drawable/no_image"
             android:layout_weight="1"
             />
         <ImageView
@@ -22,7 +22,7 @@
             android:layout_height="80dp"
             android:id="@+id/imgtwo"
             android:layout_weight="1"
-            android:background="@drawable/no_media"
+            android:background="@drawable/no_image"
             />
 
         <ImageView
@@ -30,12 +30,12 @@
             android:layout_height="80dp"
             android:id="@+id/imgthree"
             android:layout_weight="1"
-            android:background="@drawable/no_media"
+            android:background="@drawable/no_image"
             />
         <ImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
-            android:background="@drawable/no_media"
+            android:background="@drawable/no_image"
             android:layout_weight="1"
             android:id="@+id/imgfour"
             />
@@ -121,123 +121,258 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_below="@+id/iconsrow"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
-            android:clipToPadding="false"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            android:id="@+id/Input_Name"
             >
             <EditText android:id="@+id/editname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:inputType="textMultiLine"
                 android:maxLines="10"
-                android:gravity="right"
-                android:textColorHint="@color/blue"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:background="@drawable/bc_edittext"
+                android:textColorHint="@color/darkblue"
                 android:textSize="14sp"
-                android:textColor="@android:color/black"
-                android:hint="أسم المنتج" />
-            <android.support.design.widget.TextInputLayout
+                android:textColor="@color/darkblue"
+                android:hint="@string/title" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            android:id="@+id/Input_Descrp"
+            android:layout_below="@+id/Input_Name"
+            android:layout_marginTop="@dimen/_10sdp"
+            >
+            <EditText android:id="@+id/editdiscrp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <EditText android:id="@+id/editdiscrp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:maxLines="10"
-                    android:gravity="right"
-                    android:textColorHint="@color/blue"
-                    android:textSize="14sp"
+                android:layout_height="@dimen/_30sdp"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:background="@drawable/bc_edittext"
+                android:textColorHint="@color/darkblue"
+                android:textSize="14sp"
+                android:textColor="@color/darkblue"
+                android:hint="@string/desc" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/Input_Descrp"
+            android:id="@+id/Input_Phone"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:hintEnabled="false"
+            android:layout_height="wrap_content">
 
-                    android:textColor="@android:color/black"
-                    android:hint="الوصف" />
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-                    <EditText android:id="@+id/editdiscount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLines="10"
-                        android:gravity="right"
-                        android:textColorHint="@color/blue"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:hint="السعر" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/editphone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:hint="رقم الهاتف"
-                            android:inputType="phone"
-                            android:maxLines="10"
-                            android:textColor="@android:color/black"
-                            android:textColorHint="@color/blue"
-                            android:textSize="14sp" />
+            <EditText
+                android:id="@+id/editphone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/bc_edittext"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColor="@color/darkblue"
+                android:textColorHint="@color/darkblue"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
 
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:id="@+id/input_price"
+            android:layout_below="@+id/Input_Phone"
+            android:layout_marginTop="@dimen/_10sdp"
+            >
+            <EditText android:id="@+id/editdiscount"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:inputType="number"
+                android:maxLines="10"
 
-                            <LinearLayout
-                                android:layout_width="@dimen/_150sdp"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_gravity="center"
-                                android:weightSum="1">
-
-
-
-                                <Button
-                                    android:id="@+id/finish"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_marginRight="8dp"
-                                    android:layout_weight="1"
-                                    android:textSize="20sp"
-                                    android:text="حفظ التعديلات"
-                                    android:background="@drawable/bc_btnborder"
-                                    android:textColor="@color/white" />
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:background="@drawable/bc_edittext"
+                android:textColorHint="@color/darkblue"
+                android:textSize="14sp"
+                android:textColor="@color/darkblue"
+                android:hint="@string/price" />
+        </android.support.design.widget.TextInputLayout>
 
 
 
-                            </LinearLayout>
 
+          <Button
+                 android:id="@+id/finish"
+                 android:layout_width="@dimen/_120sdp"
+                 android:layout_height="@dimen/_35sdp"
+                 android:layout_margin="8dp"
+                 android:textSize="15sp"
+                 android:textAllCaps="false"
+                 android:layout_below="@+id/input_price"
+                 android:layout_centerHorizontal="true"
+                 android:text="@string/save"
+                 android:background="@drawable/bc_btnborder"
+                 android:textColor="@color/white" />
 
-                        </android.support.design.widget.TextInputLayout>
-                    </android.support.design.widget.TextInputLayout>
-                </android.support.design.widget.TextInputLayout>
-            </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
 
-
-        </android.support.v4.widget.NestedScrollView>
-
-    </LinearLayout>
 
 
 
 </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<LinearLayout-->
+<!--android:orientation="vertical"-->
+<!--android:layout_below="@+id/iconsrow"-->
+<!--android:layout_marginTop="5dp"-->
+<!--android:layout_marginRight="10dp"-->
+<!--android:layout_marginLeft="10dp"-->
+<!--android:layout_marginBottom="10dp"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--    >-->
+<!--<android.support.v4.widget.NestedScrollView-->
+<!--    android:id="@+id/nestedScrollView"-->
+<!--    android:clipToPadding="false"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+<!--    <android.support.design.widget.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        >-->
+<!--        <EditText android:id="@+id/editname"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="textMultiLine"-->
+<!--            android:maxLines="10"-->
+<!--            android:gravity="right"-->
+<!--            android:textColorHint="@color/blue"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:hint="أسم المنتج" />-->
+<!--        <android.support.design.widget.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            >-->
+<!--            <EditText android:id="@+id/editdiscrp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textMultiLine"-->
+<!--                android:maxLines="10"-->
+<!--                android:gravity="right"-->
+<!--                android:textColorHint="@color/blue"-->
+<!--                android:textSize="14sp"-->
+
+<!--                android:textColor="@android:color/black"-->
+<!--                android:hint="الوصف" />-->
+<!--            <android.support.design.widget.TextInputLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                >-->
+<!--                <EditText android:id="@+id/editdiscount"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="number"-->
+<!--                    android:maxLines="10"-->
+<!--                    android:gravity="right"-->
+<!--                    android:textColorHint="@color/blue"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:textColor="@android:color/black"-->
+<!--                    android:hint="السعر" />-->
+
+<!--                <android.support.design.widget.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/editphone"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="right"-->
+<!--                        android:hint="رقم الهاتف"-->
+<!--                        android:inputType="phone"-->
+<!--                        android:maxLines="10"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:textColorHint="@color/blue"-->
+<!--                        android:textSize="14sp" />-->
+
+
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="@dimen/_150sdp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_marginTop="@dimen/_10sdp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:weightSum="1">-->
+
+
+
+<!--                        <Button-->
+<!--                            android:id="@+id/finish"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_margin="8dp"-->
+<!--                            android:layout_marginLeft="8dp"-->
+<!--                            android:layout_marginRight="8dp"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:textSize="20sp"-->
+<!--                            android:text="حفظ التعديلات"-->
+<!--                            android:background="@drawable/bc_btnborder"-->
+<!--                            android:textColor="@color/white" />-->
+
+
+
+<!--                    </LinearLayout>-->
+
+
+<!--                </android.support.design.widget.TextInputLayout>-->
+<!--            </android.support.design.widget.TextInputLayout>-->
+<!--        </android.support.design.widget.TextInputLayout>-->
+<!--    </android.support.design.widget.TextInputLayout>-->
+
+
+<!--</android.support.v4.widget.NestedScrollView>-->
+
+<!--</LinearLayout>-->

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+
+    <EditText
+        android:id="@+id/getppassword"
+        android:textColor="#DCD0C0"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_width="match_parent"
+        android:background="@drawable/bc_edittext"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:hint="@string/email"
+
+        android:textColorHint="#DCD0C0"
+        android:paddingLeft="20dp"
+        android:drawablePadding="16dp"
+        android:paddingTop="16dp"
+        android:maxLength="35"
+        android:paddingBottom="16dp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        >
+    </EditText>
+
+    <Button
+        android:id="@+id/btnreset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_below="@+id/getppassword"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:background="@drawable/bc_buttons"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:text="@string/reset"
+        android:textColor="#fff"
+        android:textSize="19dp"
+        android:typeface="serif" />
+
+</RelativeLayout>

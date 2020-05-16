@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context=".Activites.Privacy">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#fff"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/logo"
+                />
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:layout_below="@+id/toolbar"
+        android:background="#C5C5C5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/policy"
+
+        android:textColor="#000"
+        android:id="@+id/policy"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"/>
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/policy"-->
+<!--        android:layout_marginStart="@dimen/_10sdp"-->
+<!--        android:layout_marginEnd="@dimen/_10sdp"-->
+
+<!--        android:layout_marginTop="@dimen/_10sdp"-->
+<!--        android:text="@string/data_policty"-->
+<!--        android:id="@+id/data"-->
+<!--        android:textColor="#9B9090"-->
+<!--        android:textSize="@dimen/_12sdp"-->
+<!--        />-->
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/policy"
+        android:id="@+id/WebView"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

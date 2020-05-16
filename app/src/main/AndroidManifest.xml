@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="bekya.bekyaa">
+    package="com.tempo">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/bekyaalogo"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
+        android:icon="@mipmap/ic_launcher_foreground"
+        android:roundIcon="@mipmap/ic_launcher_foreground"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
+        android:name=".Activites.App"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="adjustPan|adjustResize"
-        tools:replace="android:supportsRtl">
-        <activity android:name=".Activites.Cities">
-
-
-        </activity>
-        <activity android:name=".Fragments.ChatUsers" />
-        <activity android:name=".Activites.Home">
+        android:usesCleartextTraffic="true"
+        android:windowSoftInputMode="adjustPan|adjustResize">
+        <activity android:name=".Activites.Register"></activity>
+        <activity android:name=".Activites.Privacy" />
+        <activity android:name=".Activites.All_Product" />
+        <activity android:name=".Activites.splash_screen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activites.Cities" />
+        <activity android:name=".Activites.Login" />
+
+        <activity android:name=".Fragments.ChatUsers" />
+        <activity android:name=".Activites.Home" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".Activites.CustomGalleryActivity">
@@ -33,11 +50,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activites.ProductList"
-            />
-
+        
+        <activity android:name=".Activites.ProductList" />
         <activity android:name=".Activites.ActivityOneItem" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
@@ -47,7 +67,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".Notifications.MyFirebaseMessaging">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -56,12 +75,12 @@
             </intent-filter>
         </service>
     </application>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

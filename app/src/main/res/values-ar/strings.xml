@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="data_policty">التطبيق عبارة عن معلن فقط وغير مسؤول عن التعاملات بين المستخدمين سواء ماليا او وجه لوجه</string>
+    <string name="selectcountry"> أختر البلد</string>
+    <string name="aboutt">من نحن</string>
+    <string name="hint_user_id">User ID</string>
+    <string name="get_custom_token">Get Token</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">انشاء حساب</string>
+    <string name="sign_out">تسجيل خروج</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="loading">تحميل ..</string>
+    <string name="custom_token">Custom Token</string>
+    <string name="signed_in">Logged in !</string>
+    <string name="signed_out">You are not logged in !</string>
+    <string name="token_null">Token: null</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="start_phone_auth">Login</string>
+    <string name="verify_phone_auth">Verify</string>
+    <string name="resend_phone_auth">Resend</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_verification_code">Verification Code</string>
+    <string name="status_code_sent">Code Sent</string>
+    <string name="status_verification_failed">Verification failed</string>
+    <string name="status_verification_succeeded">Verification succeeded</string>
+    <string name="status_sign_in_failed">Sign-in failed</string>
+
+    <string name="instant_validation">(instant validation)</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+
+    <string name="firebase_user_management">Firebase User Management</string>
+    <string name="google_status_fmt">Google User: %s</string>
+
+    <string name="google_title_text">Google Sign In</string>
+    <string name="facebook_status_fmt">Facebook User: %s</string>
+
+    <string name="facebook_title_text">Facebook Login</string>
+    <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
+
+    <string name="emailpassword_title_text">Email and Password</string>
+
+    <string name="phone_title_text">Phone Number</string>
+    <string name="twitter_status_fmt">Twitter User: %s</string>
+
+    <string name="twitter_title_text">Twitter Login</string>
+    <string name="firebaseui_status_fmt">Firebase User: %s</string>
+
+    <string name="firebaseui_title_text">FirebaseUI Auth</string>
+    <string name="id_fmt">User ID: %s</string>
+    <string name="email_fmt">Email: %s</string>
+    <string name="btn_ok">موافق</string>
+    <string name="btn_pick_mul">Pick From Gallery (Multiple)</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+        <!-- TODO: Remove or change this placeholder text -->
+        <string name="time_ago_prefix"></string>
+
+    <string name="time_ago_suffix">منذ</string>
+    <string name="time_ago_seconds">أقل من دقيقة</string>
+    <string name="time_ago_minute">حوالي دقيقة</string>
+    <string name="time_ago_minutes">٪  دقيقة</string>
+    <string name="time_ago_hour">حوالي ساعة</string>
+    <string name="time_ago_hours">about %d hours</string>
+    <string name="time_ago_day">يوم</string>
+    <string name="time_ago_days">ايام</string>
+    <string name="time_ago_month">حوالي شهر</string>
+    <string name="time_ago_months">شهور</string>
+    <string name="time_ago_year">حوالي سنة</string>
+    <string name="time_ago_years">سنين</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="city">اختر المحافظة</string>
+    <string name="login_face">تسجيل الدخول بالفيس بوك</string>
+    <string name="welcome">Welcome To Tempo</string>
+    <string name="work">Work From Home</string>
+    <string name="facebook_app_id">228882291703789</string>
+    <string name="edit">تعديل</string>
+    <string name="delete">Delete</string>
+    <string name="location">المكان</string>
+    <string name="product_name">Product Name</string>
+    <string name="share">مشاركة</string>
+    <string name="price">السعر </string>
+    <string name="select_image">تحديد الصورة</string>
+    <string name="validate_phone">من فضلك ادخل رقم التليفون</string>
+    <string name="review_post">تمت إضافة المنشور ، يرجى الانتظار للمراجعة </string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="password">رقم السري</string>
+    <string name="forgetpas">Forget Password?</string>
+    <string name="login">تسجيل </string>
+    <string name="or">أو</string>
+    <string name="loginface">تسجيل الدخول بالفيس بوك</string>
+    <string name="noacc">لا يوجد لديك أكونت ؟</string>
+    <string name="signupnow">انشاء حساب</string>
+    <string name="fullname">الاسم كامل</string>
+    <string name="policy">الأحكام والشروط</string>
+    <string name="register">تسجيل</string>
+    <string name="desc">التفاصيل</string>
+    <string name="phone">رقم التليفون</string>
+
+    <string name="indvidual">فردي</string>
+    <string name="company">شركة</string>
+    <string name="major">تخصص</string>
+    <string name="years">سنين الخبرة</string>
+    <string name="c_name">اسم الشركة</string>
+    <string name="f_name">Full Time</string>
+    <string name="p_time">Part Time</string>
+    <string name="skills">Skills</string>
+    <string name="subject">موضوع</string>
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="myposts">المشاركات</string>
+    <string name="messages">الرسائل الواردة</string>
+    <string name="contact">تواصل معنا</string>
+    <string name="notifications">اشعارات</string>
+    <string name="language">اللغة</string>
+    <string name="feildempty">من فضلك املئ الحقول</string>
+    <string name="invalidemail">من فضلك ادخل بريد الكتروني صحيح</string>
+    <string name="enterpas">من فضلك ادخل رقم سري صحيح</string>
+    <string name="alreadyuser">البريد الاكتروني مسجل من قبل</string>
+    <string name="checked">يرجى التأكد من التحقق من الخصوصية</string>
+    <string name="log_out">تسجيل خروج</string>
+        <string name="title">العنوان</string>
+    <string name="descrip">تفاصيل</string>
+    <string name="delete_post">هل تريد حذف الاعلان ؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="english">English</string>
+    <string name="arabic">عربي</string>
+    <string name="validate_city">من فضلك تأكد من اختيار البلد اولا</string>
+    <string name="validate_data">من فضلك املئ جميع الحقول</string>
+    <string name="currency">العملة</string>
+    <string name="fogetpassword">هل نسيت رقمك السري ؟</string>
+    <string name="reset">إعادة تعيين </string>
+    <string name="reseet">تم إرسال رمز إعادة تعيين كلمة المرور إلى البريد الإلكتروني</string>
+    <string name="invalidemaail">بريد إلكتروني غير صالح ، حاول لاحقًا</string>
+    <string name="adv">اعلن معنا</string>
+    <string name="customer">الدعم الفني</string>
+    <string name="chat">تواصل معنا</string>
+    <string name="click_here">اضغط هنا</string>
+    <string name="p_service">تقديم خدمة</string>
+    <string name="r_service">طلب خدمة</string>
+    <string name="save">حفظ التعديلات</string>
+    <string name="savedsucces">تم حفظ التعديلات بنجاح</string>
+    <string name="type_message">اكتب رسالتك</string>
+    <string name="specialad">اعلان مميز</string>
+
+    <string-array name="types">
+        <item>تقديم خدمة </item>
+        <item>طلب خدمة</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFDFD"
+    android:id="@+id/Rela_Contact"
+    tools:context=".Fragments.ContactUs">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contact"
+        android:textColor="@color/darkblue"
+        android:textSize="@dimen/_15sdp"
+        android:id="@+id/contact"
+        android:layout_marginTop="@dimen/_70sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        />
+    <TextView android:id="@+id/ContactUs"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:maxLines="10"
+        android:paddingEnd="@dimen/_5sdp"
+        android:layout_below="@+id/contact"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:gravity="center"
+        android:background="@drawable/bc_edittext"
+        android:textColorHint="@color/darkblue"
+        android:textSize="14sp"
+        android:textColor="@color/darkblue"
+        android:hint="Info@tempomena.com" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/adv"
+        android:textColor="@color/darkblue"
+        android:textSize="@dimen/_15sdp"
+        android:layout_below="@+id/ContactUs"
+        android:id="@+id/Advertisement"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        />
+    <TextView android:id="@+id/T_Advertisement"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:maxLines="10"
+        android:paddingEnd="@dimen/_5sdp"
+        android:layout_below="@+id/Advertisement"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:gravity="center"
+        android:background="@drawable/bc_edittext"
+        android:textColorHint="@color/darkblue"
+        android:textSize="14sp"
+        android:textColor="@color/darkblue"
+        android:hint="Adv@tempomena.com" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/customer"
+        android:textColor="@color/darkblue"
+        android:textSize="@dimen/_15sdp"
+        android:layout_below="@+id/T_Advertisement"
+        android:id="@+id/Customer"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        />
+    <TextView android:id="@+id/T_Customer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:maxLines="10"
+        android:paddingEnd="@dimen/_5sdp"
+        android:layout_below="@+id/Customer"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:gravity="center"
+        android:background="@drawable/bc_edittext"
+        android:textColorHint="@color/darkblue"
+        android:textSize="14sp"
+        android:textColor="@color/darkblue"
+        android:hint="Support@tempomena.com" />
+
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/chat"-->
+<!--        android:textColor="@color/darkblue"-->
+<!--        android:textSize="@dimen/_15sdp"-->
+<!--        android:layout_below="@+id/T_Customer"-->
+<!--        android:id="@+id/chat"-->
+<!--        android:layout_marginTop="@dimen/_20sdp"-->
+<!--        android:layout_marginStart="@dimen/_20sdp"-->
+<!--        />-->
+<!--    <Button-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/_35sdp"-->
+<!--        android:layout_marginStart="@dimen/_20sdp"-->
+<!--        android:layout_marginEnd="@dimen/_20sdp"-->
+<!--        android:id="@+id/Btn_Chat"-->
+<!--        android:text="@string/click_here"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="#fff"-->
+<!--        android:layout_below="@+id/chat"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="@dimen/_20sdp"-->
+<!--        android:background="@drawable/bc_buttons"-->
+<!--        />-->
+</RelativeLayout>

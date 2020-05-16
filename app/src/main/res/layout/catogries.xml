@@ -2,102 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="#fff"
-    android:layoutDirection="rtl"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="bekya.bekyaa.Fragments.Categories">
+    tools:context="com.tempo.Fragments.Categories">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:id="@+id/view"
+                android:background="#C5C5C5"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_Categories"
         android:layout_width="match_parent"
         android:background="#fff"
+        android:layout_below="@+id/view"
         android:layout_height="@dimen/_35sdp"/>
   <View
       android:layout_width="match_parent"
       android:layout_height=".5dp"
       android:background="#e7e7e7"
+      android:id="@+id/vieew"
       android:layout_below="@+id/recycler_Categories"/>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:id="@+id/Search"
-                android:visibility="gone"
-                android:layout_below="@+id/recycler_Categories"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardElevation="1dp"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint=" بتدور على إيه ؟"
-                    android:textStyle="normal"
-                    android:textColor="@color/darkblue"
-                    android:paddingStart="@dimen/_25sdp"
-                    android:paddingEnd="@dimen/_20sdp"
-                    android:background="@null"
-                    android:id="@+id/findyourproduct"
-                    android:paddingLeft="20dp"
-                    android:textColorHint="@color/darkblue"
-                    />
-                <ImageView
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_search"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp"
-        android:id="@+id/friendCardView2"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_below="@+id/Search"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="1dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-       <android.support.v7.widget.RecyclerView
-           android:layout_width="match_parent"
-           android:layout_height="@dimen/_120sdp"
-           android:id="@+id/recycler_banner2"
-           ></android.support.v7.widget.RecyclerView>
-
-            <!--<android.support.v4.view.ViewPager-->
-                <!--android:id="@+id/vp_slider"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent" />-->
-
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/friendCardView2"
-                android:layout_height="@dimen/_400sdp"
+                android:layout_below="@+id/vieew"
+                android:layout_height="@dimen/_450sdp"
                 android:layout_centerHorizontal="true">
 
                 <android.support.v7.widget.RecyclerView
@@ -109,20 +47,78 @@
             </android.support.v4.widget.SwipeRefreshLayout>
 
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/swipe_container"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_70sdp"
+                        android:id="@+id/recycler_banner2"
+                        />
+
+                    <!--<android.support.v4.view.ViewPager-->
+                    <!--android:id="@+id/vp_slider"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent" />-->
+
+
+                </RelativeLayout>
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/Float_AddPost"
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_40sdp"
-                app:elevation="6dp"
-                android:scaleType="fitCenter"
-                app:maxImageSize="@dimen/_28sdp"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_below="@+id/friendCardView2"
-                android:layout_marginTop="@dimen/_300sdp"
-                app:srcCompat="@drawable/add"/>
+                android:layout_height="@dimen/_45sdp"
+                app:fabSize="normal"
+                app:rippleColor="@null"
+                app:backgroundTint="@null"
+
+                app:maxImageSize="@dimen/_50sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_400sdp"
+                app:srcCompat="@drawable/ic_addpost"/>
 
 
 
         </RelativeLayout>
 
 </ScrollView>
+    <!--            <android.support.v7.widget.CardView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="@dimen/_35sdp"-->
+    <!--                android:id="@+id/Search"-->
+    <!--                android:visibility="gone"-->
+    <!--                android:layout_below="@+id/recycler_Categories"-->
+    <!--                app:cardBackgroundColor="@android:color/white"-->
+    <!--                app:cardElevation="1dp"-->
+    <!--                >-->
+    <!--                <RelativeLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent">-->
+
+    <!--                <EditText-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:hint=" بتدور على إيه ؟"-->
+    <!--                    android:textStyle="normal"-->
+    <!--                    android:textColor="@color/darkblue"-->
+    <!--                    android:paddingStart="@dimen/_25sdp"-->
+    <!--                    android:paddingEnd="@dimen/_20sdp"-->
+    <!--                    android:background="@null"-->
+    <!--                    android:id="@+id/findyourproduct"-->
+    <!--                    android:paddingLeft="20dp"-->
+    <!--                    android:textColorHint="@color/darkblue"-->
+    <!--                    />-->
+    <!--                <ImageView-->
+    <!--                    android:layout_width="@dimen/_15sdp"-->
+    <!--                    android:layout_height="@dimen/_15sdp"-->
+    <!--                    android:layout_marginEnd="@dimen/_20sdp"-->
+    <!--                    android:layout_alignParentEnd="true"-->
+    <!--                    android:layout_centerVertical="true"-->
+    <!--                    android:src="@drawable/ic_search"/>-->
+
+    <!--                </RelativeLayout>-->
+
+    <!--            </android.support.v7.widget.CardView>-->

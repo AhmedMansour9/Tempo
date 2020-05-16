@@ -4,7 +4,7 @@
     android:background="#fff"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.tempo.Fragments.Categories">
+    tools:context="com.tempomena.Fragments.Categories">
 
         <RelativeLayout
             android:layout_width="match_parent"

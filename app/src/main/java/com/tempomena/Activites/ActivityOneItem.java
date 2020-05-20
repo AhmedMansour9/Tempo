@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-import com.tempomena.Fragments.ChatUsers;
 import com.tempomena.Interface.btnclicks;
 import com.tempomena.Interface.imageclick;
 import com.tempomena.Model.Retrivedata;
@@ -68,7 +67,7 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
     AdView adView;
     String Img1,Img2,Img3,Img4=null;
     String ImgAdmin1,ImgAdmin2,ImgAdmin3,ImgAdmin4=null;
-
+    ImageView NoImage;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -86,6 +85,8 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
         vp_slider=findViewById(R.id.vp_slider);
         set = new Retrivedata();
         array = new ArrayList<>();
+        NoImage=findViewById(R.id.NoImage);
+
         adView=findViewById(R.id.adView);
         Title = findViewById(R.id.Title);
         textdiscrp = findViewById(R.id.textdiscrp);
@@ -131,6 +132,7 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
                Intent intent=new Intent(ActivityOneItem.this, ChatUsers.class);
                intent.putExtra("tokenuser",tokenUser);
                 intent.putExtra("social",SocialId);
+                intent.putExtra("user_name",getIntent().getStringExtra("user_name"));
 
 
                startActivity(intent);
@@ -178,53 +180,55 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
 
         String key=getIntent().getStringExtra("key");
         child=getIntent().getStringExtra(key);
-            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("NewProducts");
+            final DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("NewProducts");
             data.orderByChild("img1").equalTo(key).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        if (child.hasChild("img1")) {
-                            Img1 = child.child("img1").getValue().toString();
-                        }
-                        if (child.hasChild("img2")) {
-                            Img2 = child.child("img2").getValue().toString();
-                        }
-                        if (child.hasChild("img3")) {
-                            Img3 = child.child("img3").getValue().toString();
-                        }
-                        if (child.hasChild("img4")) {
-                            Img4 = child.child("img4").getValue().toString();
-                        }
-//                    f.Call(set);
-                    }
-//                mSwipeRefreshLayout.setRefreshing(false);
-                    if (Img1 != null) {
-                        set = new Retrivedata();
-                        set.setImg1(Img1);
-                        array.add(set);
-                    }
-                    if (Img2 != null) {
-                        set = new Retrivedata();
-                        set.setImg1(Img2);
-                        array.add(set);
-                    }
-                    if (Img3 != null) {
-                        set = new Retrivedata();
-                        set.setImg1(Img3);
-                        array.add(set);
-                    }
-                    if (Img4 != null) {
-                        set = new Retrivedata();
-                        set.setImg1(Img4);
-                        array.add(set);
-                    }
-//                Toast.makeText(ActivityOneItem.this, ""+sliders.size(), Toast.LENGTH_SHORT).show();
-                    banner_adapter = new Banner_Adapter(ActivityOneItem.this, array);
 
-                    vp_slider.setAdapter(banner_adapter);
-                    circleIndicator.setViewPager(vp_slider);
-//                timer = new Timer();
-//                timer.scheduleAtFixedRate(new SliderTimer(), 3000, 5000);
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.hasChild("img1")) {
+                                Img1 = child.child("img1").getValue().toString();
+                            }else {
+                                NoImage.setVisibility(View.VISIBLE);
+
+                            }
+                            if (child.hasChild("img2")) {
+                                Img2 = child.child("img2").getValue().toString();
+                            }
+                            if (child.hasChild("img3")) {
+                                Img3 = child.child("img3").getValue().toString();
+                            }
+                            if (child.hasChild("img4")) {
+                                Img4 = child.child("img4").getValue().toString();
+                            }
+                        }
+
+                        if (Img1 != null) {
+                            set = new Retrivedata();
+                            set.setImg1(Img1);
+                            array.add(set);
+                        }
+                        if (Img2 != null) {
+                            set = new Retrivedata();
+                            set.setImg1(Img2);
+                            array.add(set);
+                        }
+                        if (Img3 != null) {
+                            set = new Retrivedata();
+                            set.setImg1(Img3);
+                            array.add(set);
+                        }
+                        if (Img4 != null) {
+                            set = new Retrivedata();
+                            set.setImg1(Img4);
+                            array.add(set);
+                        }
+                        banner_adapter = new Banner_Adapter(ActivityOneItem.this, array);
+
+                        vp_slider.setAdapter(banner_adapter);
+                        circleIndicator.setViewPager(vp_slider);
+
+
                 }
 
                 @Override
@@ -281,6 +285,8 @@ public class ActivityOneItem extends AppCompatActivity implements imageclick, bt
                         set.setImg1(ImgAdmin4);
                         array.add(set);
                     }
+
+
                     banner_adapter = new Banner_Adapter(ActivityOneItem.this, array);
 
                     vp_slider.setAdapter(banner_adapter);

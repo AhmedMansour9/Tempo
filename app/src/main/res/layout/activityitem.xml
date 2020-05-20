@@ -40,9 +40,18 @@
                 android:id="@+id/vp_slider"
                 android:layout_marginTop="?actionBarSize"
                 android:layout_width="match_parent"
+
                 android:layout_height="@dimen/_180sdp" />
 
 
+             <ImageView
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_180sdp"
+                 android:id="@+id/NoImage"
+                 android:visibility="gone"
+                 android:scaleType="fitXY"
+                 android:layout_marginTop="?actionBarSize"
+                 android:src="@drawable/noimg"/>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="@dimen/_80sdp"

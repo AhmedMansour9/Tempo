@@ -4,11 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.Chat">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#fff">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/T_User"
+                    android:textColor="#003152"
+                    android:maxLines="1"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_11sdp"
+                    />
+            <Button
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:textAllCaps="false"
+                android:visibility="invisible"
+                android:background="@drawable/bc_city"
+                android:textColor="#003152"
+                android:id="@+id/Btn_Block"
+                android:text="@string/block"/>
+            <Button
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:textAllCaps="false"
+                android:visibility="invisible"
+                android:background="@drawable/bc_city"
+                android:textColor="#003152"
+                android:id="@+id/Btn_UnBlock"
+                android:text="@string/unblock"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_Chat"
         android:layout_above="@+id/E_Messsage"
         android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_height="match_parent">
 
 
@@ -29,14 +78,42 @@
         android:hint="@string/type_message"
         android:id="@+id/E_Messsage"
         android:paddingStart="@dimen/_10sdp"
+        android:visibility="invisible"
+        android:paddingEnd="@dimen/_10sdp"
         />
     <ImageView
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:visibility="invisible"
         android:layout_margin="@dimen/_10sdp"
         android:src="@drawable/sendmessage"
         android:id="@+id/Btn_SendMessage"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:textColor="#003152"
+        android:background="@drawable/bc_textblocked"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:id="@+id/T_blockedhim"
+        android:text="@string/blockedhim"
+        android:layout_alignParentBottom="true"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:textColor="#003152"
+        android:background="@drawable/bc_textblocked"
+        android:gravity="center"
+        android:id="@+id/T_blockyou"
+
+        android:visibility="invisible"
+        android:text="@string/blockedyou"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

@@ -29,47 +29,66 @@
                 />
 
             <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:layout_toStartOf="@+id/image_delete"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:id="@+id/image_edit"
-                android:src="@drawable/ic_edit"/>
-
-            <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/image_delete"
                 android:src="@drawable/ic_delete"/>
 
+
+            <ImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_toStartOf="@+id/image_delete"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:id="@+id/image_edit"
+                android:src="@drawable/ic_edit"/>
             <ImageView
                 android:id="@+id/product_image"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_centerVertical="true"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/product_image"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/_55sdp"
+                android:singleLine="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="15sp"
+                android:textColor="#003152" />
 
             <TextView
                 android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_below="@+id/user_name"
                 android:layout_toEndOf="@+id/product_image"
                 android:maxLines="1"
-                android:text="ddwdwddw"
                 android:ellipsize="end"
                 android:gravity="start"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="@dimen/_35sdp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/_55sdp"
+                android:singleLine="true"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:textSize="15sp"
-                android:textColor="#525252" />
+                android:textColor="#003152" />
 
             <TextView
                 android:id="@+id/price"
@@ -85,7 +104,7 @@
                 android:singleLine="true"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:textColor="#B3A2A2" />
+                android:textColor="#003152" />
 
             <TextView
                 android:id="@+id/descrption"
@@ -103,14 +122,14 @@
                 android:singleLine="true"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:textColor="#B3A2A2" />
+                android:textColor="#003152" />
             <ImageView
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_10sdp"
                 android:layout_below="@id/descrption"
                 android:layout_toEndOf="@+id/product_image"
                 android:id="@+id/marker"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:src="@drawable/marker"/>
 
             <TextView
@@ -120,10 +139,10 @@
                 android:layout_below="@id/descrption"
                 android:layout_marginStart="@dimen/_1sdp"
                 android:layout_toEndOf="@+id/marker"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:textSize="15sp"
                 android:singleLine="true"
-                android:textColor="#B3A2A2"
+                android:textColor="#003152"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
 
@@ -135,11 +154,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descrption"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_alignParentEnd="true"
                 android:textSize="15sp"
                 android:singleLine="true"
-                android:textColor="#B3A2A2"
+                android:textColor="#003152"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
 
@@ -167,6 +186,7 @@
             <!--            android:src="@drawable/ic_delete_forever_black_24dp"-->
 
             <!--             />-->
+
             <TextView
                 android:id="@+id/admintext"
                 android:layout_width="wrap_content"

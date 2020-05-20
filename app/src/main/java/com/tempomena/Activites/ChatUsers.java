@@ -1,4 +1,4 @@
-package com.tempomena.Fragments;
+package com.tempomena.Activites;
 
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,9 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -18,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,13 +45,12 @@ import com.tempomena.adapter.Messages;
 import com.tempomena.Model.meesage;
 import com.tempomena.tokenid.SharedPrefManager;
 
+import static com.google.firebase.auth.FirebaseAuth.getInstance;
+
 public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     DatabaseReference datamsg;
     SwipeRefreshLayout mSwipeRefreshLayout;
     String Msg;
-    public static String Myuserid;
-    public static Uri Myuserphoto;
-    String userid;
     RecyclerView recyclerView;
     com.tempomena.adapter.Messages mAdapter;
     List<meesage> moviesList=new ArrayList<>();
@@ -61,36 +63,28 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
     ValueEventListener value;
     DatabaseReference dat;
     public static String image;
-    TextView username,online;
+    TextView T_User,T_blockedhim,T_blockyou;
     ImageView imgefriend,sendmessage;
     EditText Messages;
-    View view;
     String token,Socialuser,MySocial;
     String tokenadmin;
-    String TokenUser;
+    String TokenUser,UserName,MyName;
     FirebaseAuth mAuth;
-
+     Button Btn_Block,Btn_UnBlock;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_users);
-        mAuth = FirebaseAuth.getInstance();
-
-        sendmessage=findViewById(R.id.Btn_SendMessage);
-        Messages=findViewById(R.id.E_Messsage);
-        token = SharedPrefManager.getInstance(this).getDeviceToken();
-        tokenadmin=SharedPrefManager.getInstance(this).getTokenAdmin();
-//        data= FirebaseDatabase.getInstance().getReference("Users");
-        datamsg= FirebaseDatabase.getInstance().getReference("ChatUsers");
-//        dat=FirebaseDatabase.getInstance().getReference("Users").child(userid);
-       TokenUser=getIntent().getStringExtra("tokenuser");
-        Socialuser=getIntent().getStringExtra("social");
-        MySocial=SharedPrefManager.getInstance(ChatUsers.this).getSocialId();
+        init();
+        CheckedBlocked();
+        Block();
+        UnBlocked();
         Recyclview();
-
         SendMeesges();
         loadesmassg();
         SwipRefresh();
+
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -103,6 +97,117 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
 
 
     }
+
+    private void UnBlocked() {
+
+        Btn_UnBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("block_list");
+                databaseReference.child(MySocial).child(Socialuser).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            dataSnapshot.getRef().removeValue();
+                            DatabaseReference databaseReferen = FirebaseDatabase.getInstance().getReference("block_list");
+                            databaseReferen.child(Socialuser).child(MySocial).removeValue();
+                            T_blockedhim.setVisibility(View.GONE);
+                            Messages.setVisibility(View.VISIBLE);
+                            sendmessage.setVisibility(View.VISIBLE);
+                            Btn_Block.setVisibility(View.VISIBLE);
+                            Btn_UnBlock.setVisibility(View.INVISIBLE);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+    }
+
+    private void Block() {
+      Btn_Block.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("block_list");
+              HashMap<String,String> hashMap=new HashMap<>();
+              hashMap.put("type","me");
+              databaseReference.child(MySocial).child(Socialuser).setValue(hashMap);
+              HashMap<String,String> hashMap2=new HashMap<>();
+              hashMap2.put("type","to");
+              databaseReference.child(Socialuser).child(MySocial).setValue(hashMap2);
+
+          }
+      });
+    }
+
+    private void CheckedBlocked() {
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("block_list");
+        databaseReference.child(MySocial).child(Socialuser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String Type=dataSnapshot.child("type").getValue().toString();
+                    if(Type.equals("me")){
+                        T_blockedhim.setVisibility(View.VISIBLE);
+                        Messages.setVisibility(View.INVISIBLE);
+                        sendmessage.setVisibility(View.INVISIBLE);
+                        Btn_Block.setVisibility(View.INVISIBLE);
+                        Btn_UnBlock.setVisibility(View.VISIBLE);
+                    }else {
+                        T_blockyou.setVisibility(View.VISIBLE);
+                        Messages.setVisibility(View.INVISIBLE);
+                        sendmessage.setVisibility(View.INVISIBLE);
+                        Btn_Block.setVisibility(View.INVISIBLE);
+                        Btn_UnBlock.setVisibility(View.INVISIBLE);
+                    }
+                }else {
+                    T_blockedhim.setVisibility(View.INVISIBLE);
+                    Messages.setVisibility(View.VISIBLE);
+                    sendmessage.setVisibility(View.VISIBLE);
+                    Btn_Block.setVisibility(View.VISIBLE);
+                    Btn_UnBlock.setVisibility(View.INVISIBLE);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void init() {
+        T_blockyou=findViewById(R.id.T_blockyou);
+        T_blockedhim=findViewById(R.id.T_blockedhim);
+        Btn_UnBlock=findViewById(R.id.Btn_UnBlock);
+        Btn_Block=findViewById(R.id.Btn_Block);
+        mAuth = FirebaseAuth.getInstance();
+        MyName = SharedPrefManager.getInstance(this).getMyName();
+        sendmessage=findViewById(R.id.Btn_SendMessage);
+        Messages=findViewById(R.id.E_Messsage);
+        token = SharedPrefManager.getInstance(this).getDeviceToken();
+        tokenadmin=SharedPrefManager.getInstance(this).getTokenAdmin();
+//        data= FirebaseDatabase.getInstance().getReference("Users");
+        datamsg= FirebaseDatabase.getInstance().getReference("ChatUsers");
+        T_User=findViewById(R.id.T_User);
+        UserName=getIntent().getStringExtra("user_name");
+        T_User.setText(UserName);
+        TokenUser=getIntent().getStringExtra("tokenuser");
+        Socialuser=getIntent().getStringExtra("social");
+        MySocial=SharedPrefManager.getInstance(ChatUsers.this).getSocialId();
+
+    }
+
     public void loadesmassg(){
         DatabaseReference datams=datamsg.child(MySocial).child(Socialuser);
 
@@ -150,6 +255,8 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
 
     }
     public void SendMessage(final String token, final String Msg){
+        final String UserName=SharedPrefManager.getInstance(this).getMyName();
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://wasalniegy.com//pushem.php",
                 new Response.Listener<String>() {
                     @Override
@@ -168,7 +275,7 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-                params.put("title", mAuth.getCurrentUser().getDisplayName());
+                params.put("title", UserName);
 
 
                 params.put("message", Msg);
@@ -200,7 +307,8 @@ public class ChatUsers extends AppCompatActivity implements SwipeRefreshLayout.O
                     map.put("to", Socialuser);
                     map.put("from_token", token);
                     map.put("to_token", TokenUser);
-
+                    map.put("recieved_from", MyName);
+                    map.put("send_to", UserName);
                     map.put("date", date);
                     datamsg.child(MySocial).child(Socialuser).push().setValue(map);
                     datamsg.child(Socialuser).child(MySocial).push().setValue(map);

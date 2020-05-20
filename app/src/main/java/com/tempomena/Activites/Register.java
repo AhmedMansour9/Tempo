@@ -83,12 +83,13 @@ public class Register extends AppCompatActivity {
                                    hashMap.put("token",token);
                                    hashMap.put("id",user.getUid());
                                    databaseReference.push().setValue(hashMap);
+                                   SharedPrefManager.getInstance(getBaseContext()).saveMyName(username);
                                    SharedPrefManager.getInstance(getBaseContext()).saveSocialId(user.getUid());
 //                                      user.sendEmailVerification();
 //                                      Toast.makeText(MainActivity.this,
 //                                              getResources().getString(R.string.verfiymail) + user.getEmail(),
 //                                              Toast.LENGTH_SHORT).show();
-//                                    authh.getInstance().signOut();
+                                   auth.getInstance().signOut();
                                    Intent intent=new Intent(Register.this,Login.class);
                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                    startActivity(intent);
@@ -132,12 +133,13 @@ public class Register extends AppCompatActivity {
                                    hashMap.put("token",token);
                                    hashMap.put("id",user.getUid());
                                    databaseReference.push().setValue(hashMap);
+                                   SharedPrefManager.getInstance(getBaseContext()).saveMyName(username);
                                    SharedPrefManager.getInstance(getBaseContext()).saveSocialId(user.getUid());
 //                                      user.sendEmailVerification();
 //                                      Toast.makeText(MainActivity.this,
 //                                              getResources().getString(R.string.verfiymail) + user.getEmail(),
 //                                              Toast.LENGTH_SHORT).show();
-//                                    authh.getInstance().signOut();
+                                   auth.getInstance().signOut();
                                    Intent intent=new Intent(Register.this,Login.class);
                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                    startActivity(intent);

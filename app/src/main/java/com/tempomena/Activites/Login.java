@@ -256,6 +256,7 @@ public class Login extends AppCompatActivity {
                             currnetuser= FirebaseDatabase.getInstance().getReference();
                             FirebaseUser user = mAuth.getCurrentUser();
                             String useer=user.getDisplayName();
+                            SharedPrefManager.getInstance(getBaseContext()).saveMyName(useer);
                             final String emaail=user.getEmail();
                             SharedPrefManager.getInstance(Login.this).saveSocialId(user.getUid());
                             final String id=user.getUid();

@@ -41,12 +41,13 @@ public class lastmessage extends RecyclerView.Adapter<lastmessage.MyViewHolder> 
         CardView itemcard;
         private AdView adView;
 
-        public TextView T_user,T_Time;
+        public TextView T_user,T_Time,T_userName;
         public MyViewHolder(View view) {
             super(view);
             T_user=view.findViewById(R.id.T_user);
             T_Time=view.findViewById(R.id.T_Time);
             adView = view.findViewById(R.id.adView);
+            T_userName=view.findViewById(R.id.T_userName);
 
         }
 
@@ -101,6 +102,7 @@ public class lastmessage extends RecyclerView.Adapter<lastmessage.MyViewHolder> 
 //
 //        }
         holder.T_user.setText(array.get(position).getMsg());
+        holder.T_userName.setText(array.get(position).getRecieved_from());
         if(position==1){
             holder.adView.setVisibility(View.VISIBLE);
             MobileAds.initialize(context, "ca-app-pub-3940256099942544~3347511713");
@@ -116,9 +118,9 @@ public class lastmessage extends RecyclerView.Adapter<lastmessage.MyViewHolder> 
             public void onClick(View view) {
                 String social=  SharedPrefManager.getInstance(context).getSocialId();
                 if(array.get(position).getFrom().equals(social)){
-                    token_view.token(array.get(position).getTo(),array.get(position).getTo_token());
+                    token_view.token(array.get(position).getTo(),array.get(position).getTo_token(),array.get(position).getSend_to());
                 }else {
-                    token_view.token(array.get(position).getFrom(),array.get(position).getFrom_token());
+                    token_view.token(array.get(position).getFrom(),array.get(position).getFrom_token(),array.get(position).getRecieved_from());
                 }
 
 

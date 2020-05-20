@@ -177,12 +177,18 @@
     <string name="click_here">Click Here</string>
     <string name="save">Save edits</string>
     <string name="savedsucces">Edits saved successfully</string>
-    <string-array name="types">
-        <item>Present a service </item>
-        <item>Request a service</item>
-    </string-array>
     <string name="p_service">Present a Service</string>
     <string name="r_service">Request a Service</string>
     <string name="type_message">Type Your Message</string>
     <string name="specialad">Featured ad</string>
+    <string name="received_newpost">New Ad From tempo Users </string>
+    <string name="block">Block</string>
+    <string name="unblock">Un block</string>
+    <string name="blockedhim">You blocked this person You cannot message him in this chat</string>
+    <string name="blockedyou">This person is Not available for you</string>
+
+    <string-array name="types">
+        <item>Present a service </item>
+        <item>Request a service</item>
+    </string-array>
 </resources>

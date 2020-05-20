@@ -154,7 +154,7 @@ public class Categories extends Fragment implements CityId_View,imgclick,itemVie
                 if(!end){
                     position++;
                 } else {
-                    position--;
+                    position=0;
                 }
 //                vp_slider.setCurrentItem(page_position, true);
                 rv_autoScroll.smoothScrollToPosition(position);
@@ -168,6 +168,7 @@ public class Categories extends Fragment implements CityId_View,imgclick,itemVie
         v = inflater.inflate(R.layout.catogries, container, false);
          databaseReference= FirebaseDatabase.getInstance().getReference();
         databaseReferenceSub= FirebaseDatabase.getInstance().getReference();
+        Home.toolbar.setVisibility(View.VISIBLE);
         Home.Rela_Govern.setVisibility(View.VISIBLE);
 
         init();
@@ -330,7 +331,7 @@ public class Categories extends Fragment implements CityId_View,imgclick,itemVie
                         public void run() {
                             handler.post(update);
                         }
-                    }, 3000, 3000);
+                    }, 8000, 8000);
                 }
             }
 

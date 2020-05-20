@@ -709,10 +709,10 @@ EditText name,descrip , phone, price ,govern;
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-                params.put("title", "User");
+                params.put("title", getResources().getString(R.string.received_newpost));
 
 
-                params.put("message", Msg);
+                params.put("message",Category_Name +" , "+ SubCategory_Name);
                 params.put("email", token);
                 return params;
             }
@@ -836,7 +836,7 @@ handleButtonClicked();
 
 public void SavedSahredPrefrenceSwitch(String name,String discroption,String phone,String discount , String govern){
     data= FirebaseDatabase.getInstance().getReference().child("NewProducts").push();
-
+     String UserName=SharedPrefManager.getInstance(getBaseContext()).getMyName();
     SharedPreferences sharedPref =getSharedPreferences("Photo", MODE_PRIVATE);
     String jsonFavorit = sharedPref.getString("img", null);
     Gson gson3 = new Gson();
@@ -854,6 +854,9 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setType_service(Type_id);
         r.setCit_id(Long.parseLong(Country_Id));
         r.setSub_id(SubId);
+        r.setSub_name(SubCategory_Name);
+        r.setCat_name(Category_Name);
+        r.setUser_name(UserName);
         r.setSocial_id(mAuth.getUid());
         r.setName(name);
         r.setGovern(govern);
@@ -881,7 +884,10 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setCit_id(Long.parseLong(Country_Id));
         r.setName(name);
         r.setType_service(Type_id);
+        r.setUser_name(UserName);
         r.setSub_id(SubId);
+        r.setSub_name(SubCategory_Name);
+        r.setCat_name(Category_Name);
         r.setSocial_id(mAuth.getUid());
         r.setDiscrption(discroption);
         r.setDiscount(discount);
@@ -905,12 +911,15 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setImg1(favoriteIte[0]);
         r.setImg2(favoriteIte[1]);
         r.setCit_id(Long.parseLong(Country_Id));
+        r.setUser_name(UserName);
         r.setName(name);
         r.setType_service(Type_id);
         r.setSocial_id(mAuth.getUid());
         r.setSub_id(SubId);
         r.setDiscrption(discroption);
         r.setDiscount(discount);
+        r.setSub_name(SubCategory_Name);
+        r.setCat_name(Category_Name);
         r.setCurrency(Currency.getText().toString());
         r.setKey(data.getKey());
         r.setGovern(govern);
@@ -935,8 +944,11 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setDiscount(discount);
         r.setCurrency(Currency.getText().toString());
         r.setKey(data.getKey());
+        r.setUser_name(UserName);
         r.setPhone(phone);
         r.setType_service(Type_id);
+        r.setSub_name(SubCategory_Name);
+        r.setCat_name(Category_Name);
         r.setSub_id(SubId);
         r.setSocial_id(mAuth.getUid());
         r.setGovern(govern);
@@ -958,6 +970,9 @@ public void SavedSahredPrefrenceSwitch(String name,String discroption,String pho
         r.setDiscount(discount);
         r.setType_service(Type_id);
         r.setPhone(phone);
+        r.setUser_name(UserName);
+        r.setSub_name(SubCategory_Name);
+        r.setCat_name(Category_Name);
         r.setDate(date);
         r.setSocial_id(mAuth.getUid());
         r.setCurrency(Currency.getText().toString());

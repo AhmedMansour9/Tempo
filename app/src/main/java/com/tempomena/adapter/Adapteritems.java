@@ -92,7 +92,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
         private AdView adView;
 
         CardView itemcard;
-      public   TextView textname,textprice,textgovern,descrption,textdate,textadmin;
+      public   TextView textname,textprice,textgovern,descrption,textdate,textadmin,user_name;
         public MyViewHolder(View view) {
             super(view);
             image =  view.findViewById(R.id.product_image);
@@ -107,6 +107,7 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
             textdate=view.findViewById(R.id.textdate);
             itemcard=view.findViewById(R.id.itemcard);
             progross=view.findViewById(R.id.progross);
+            user_name=view.findViewById(R.id.user_name);
             view.setOnClickListener(this);
 
         }
@@ -158,14 +159,10 @@ public class Adapteritems extends RecyclerView.Adapter<Adapteritems.MyViewHolder
 
           }else {
 //              holder.adView.setVisibility(View.GONE);
-
           }
 
-
-
-
         Retrivedata y=array.get(position);
-
+       holder.user_name.setText(y.getUser_name());
         if(!filteredList.isEmpty()){
             holder.textadmin.setVisibility(View.INVISIBLE);
         }

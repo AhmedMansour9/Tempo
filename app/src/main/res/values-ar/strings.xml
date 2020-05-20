@@ -148,6 +148,11 @@
     <string name="savedsucces">تم حفظ التعديلات بنجاح</string>
     <string name="type_message">اكتب رسالتك</string>
     <string name="specialad">اعلان مميز</string>
+    <string name="received_newpost">اعلان جديد من مستخدمين Tempo</string>
+    <string name="block">حظر</string>
+    <string name="unblock">فك الحظر</string>
+    <string name="blockedhim">لقد قمت بحظر هذا الشخص لا يمكنك مراسلته في هذة الدردشة</string>
+    <string name="blockedyou">هذا الشخص غير متاح لك</string>
 
     <string-array name="types">
         <item>تقديم خدمة </item>

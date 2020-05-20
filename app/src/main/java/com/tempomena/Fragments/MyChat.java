@@ -80,6 +80,8 @@ public class MyChat extends Fragment implements Token_View,SwipeRefreshLayout.On
 //        data= FirebaseDatabase.getInstance().getReference("Users");
         datamsg= FirebaseDatabase.getInstance().getReference("ChatUsers");
         Home.Rela_Govern.setVisibility(View.GONE);
+        Home.toolbar.setVisibility(View.VISIBLE);
+
         MySocial=SharedPrefManager.getInstance(getContext()).getSocialId();
 
         Recyclview();
@@ -242,11 +244,12 @@ public class MyChat extends Fragment implements Token_View,SwipeRefreshLayout.On
     }
 
     @Override
-    public void token(String social,String token) {
+    public void token(String social,String token,String Usename) {
         ChatDetails chatDetails=new ChatDetails();
         Bundle args = new Bundle();
         args.putString("social",social);
         args.putString("token",token);
+        args.putString("user_name",Usename);
         chatDetails.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.chatt, chatDetails )
@@ -273,5 +276,7 @@ public class MyChat extends Fragment implements Token_View,SwipeRefreshLayout.On
     public void onAttach(Context context) {
         super.onAttach(context);
         Home.Visablty=true;
+        Home.toolbar.setVisibility(View.VISIBLE);
+
     }
 }

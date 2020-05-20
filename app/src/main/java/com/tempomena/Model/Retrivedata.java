@@ -24,9 +24,13 @@ public class Retrivedata {
     private  String Sub_id;
     private String type_service;
     private String currency;
+    private String sub_name;
+    private String cat_name;
+    private String user_name;
+
     public Retrivedata(){}
 
-    public Retrivedata(String img1, String img2, String img3, String img4, String name, String discrption, String govern, String discount, String phone, long cit_id, String date, String token, String key, Boolean admin, Boolean statues, String social_id, String sub_id, String type_service, String currency) {
+    public Retrivedata(String img1, String img2, String img3, String img4, String name, String discrption, String govern, String discount, String phone, long cit_id, String date, String token, String key, Boolean admin, Boolean statues, String social_id, String sub_id, String type_service, String currency, String sub_name, String cat_name, String user_name) {
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
@@ -46,6 +50,33 @@ public class Retrivedata {
         Sub_id = sub_id;
         this.type_service = type_service;
         this.currency = currency;
+        this.sub_name = sub_name;
+        this.cat_name = cat_name;
+        this.user_name = user_name;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getSub_name() {
+        return sub_name;
+    }
+
+    public void setSub_name(String sub_name) {
+        this.sub_name = sub_name;
+    }
+
+    public String getCat_name() {
+        return cat_name;
+    }
+
+    public void setCat_name(String cat_name) {
+        this.cat_name = cat_name;
     }
 
     public String getCurrency() {

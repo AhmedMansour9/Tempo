@@ -27,7 +27,7 @@
         <activity android:name=".Activites.Cities" />
         <activity android:name=".Activites.Login" />
 
-        <activity android:name=".Fragments.ChatUsers" />
+        <activity android:name=".Activites.ChatUsers" />
         <activity android:name=".Activites.Home" />
         <activity
             android:name="com.facebook.FacebookActivity"

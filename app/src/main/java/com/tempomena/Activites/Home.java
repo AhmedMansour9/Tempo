@@ -129,9 +129,31 @@ public class Home extends AppCompatActivity
          sendTokenToServer();
            init();
          SendTokenFirebase();
-
+        GetUserNameFirebase();
 
     }
+    private void GetUserNameFirebase(){
+        final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Users");
+
+        databaseReference.orderByChild("id").equalTo(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                   if(dataSnapshot1.exists()) {
+                       String username = dataSnapshot1.child("username").getValue().toString();
+                       SharedPrefManager.getInstance(getBaseContext()).saveMyName(username);
+
+                   }
+               }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void SendTokenFirebase(){
         final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("admin");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,7 +181,7 @@ public class Home extends AppCompatActivity
         //mHandler.post(mRunnable);
 
         // Run first add after 20 seconds
-        mHandler.postDelayed(mRunnable,6000);
+        mHandler.postDelayed(mRunnable,8*6000);
 
 
     }

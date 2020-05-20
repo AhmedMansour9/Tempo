@@ -208,6 +208,7 @@ public class All_Product extends AppCompatActivity implements imgclick,itemViewi
                                      retrivedata.setKey(testArray.get(i).getKey());
                                      retrivedata.setCurrency(testArray.get(i).getCurrency());
                                      retrivedata.setAdmin(testArray.get(i).getAdmin());
+                                     retrivedata.setUser_name(testArray.get(i).getUser_name());
                                      retrivedata.setDate(testArray.get(i).getDate());
                                      retrivedata.setDiscount(testArray.get(i).getDiscount());
                                      retrivedata.setSocial_id(testArray.get(i).getSocial_id());
@@ -301,6 +302,7 @@ public class All_Product extends AppCompatActivity implements imgclick,itemViewi
             inty.putExtra("govern", arrayadmin.get(poistion).getGovern());
             inty.putExtra("cu", arrayadmin.get(poistion).getCurrency());
             inty.putExtra("social", arrayadmin.get(poistion).getSocial_id());
+            inty.putExtra("user_name", arrayadmin.get(poistion).getUser_name());
 
             startActivity(inty);
 

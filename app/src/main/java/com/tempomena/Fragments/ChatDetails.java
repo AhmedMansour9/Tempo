@@ -12,8 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -79,31 +81,20 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
     ImageView imgefriend,sendmessage;
     EditText Messages;
     View view;
-    String usertoken,SocialUser,mytoken,MySocial;
+    TextView T_User,T_blockedhim,T_blockyou;
+    String usertoken,SocialUser,mytoken,MySocial,UserName,MyName;
+    Button Btn_Block,Btn_UnBlock;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_chat_details, container, false);
-        mAuth = FirebaseAuth.getInstance();
-
-        mytoken = SharedPrefManager.getInstance(getContext()).getDeviceToken();
-        sendmessage=view.findViewById(R.id.Btn_SendMessage);
-        Messages=view.findViewById(R.id.E_Messsage);
-        MySocial=SharedPrefManager.getInstance(getContext()).getSocialId();
-        Bundle a=getArguments();
-        if(a!=null) {
-            usertoken = a.getString("token");
-            SocialUser=a.getString("social");
-        }
-//        data= FirebaseDatabase.getInstance().getReference("Users");
-        datamsg= FirebaseDatabase.getInstance().getReference("ChatUsers");
-//        dat=FirebaseDatabase.getInstance().getReference("Users").child(userid);
-
+        init();
+        CheckedBlocked();
+        Block();
+        UnBlocked();
         Recyclview();
-
-
         SendMeesges();
         loadesmassg();
         SwipRefresh();
@@ -119,6 +110,120 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
 
 
         return view;
+    }
+
+    private void UnBlocked() {
+
+        Btn_UnBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("block_list");
+                databaseReference.child(MySocial).child(SocialUser).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            dataSnapshot.getRef().removeValue();
+                            DatabaseReference databaseReferen = FirebaseDatabase.getInstance().getReference("block_list");
+                            databaseReferen.child(SocialUser).child(MySocial).removeValue();
+                            T_blockedhim.setVisibility(View.GONE);
+                            Messages.setVisibility(View.VISIBLE);
+                            sendmessage.setVisibility(View.VISIBLE);
+                            Btn_Block.setVisibility(View.VISIBLE);
+                            Btn_UnBlock.setVisibility(View.INVISIBLE);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+    }
+
+    private void Block() {
+        Btn_Block.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("block_list");
+                HashMap<String,String> hashMap=new HashMap<>();
+                hashMap.put("type","me");
+                databaseReference.child(MySocial).child(SocialUser).setValue(hashMap);
+                HashMap<String,String> hashMap2=new HashMap<>();
+                hashMap2.put("type","to");
+                databaseReference.child(SocialUser).child(MySocial).setValue(hashMap2);
+
+            }
+        });
+    }
+
+    private void CheckedBlocked() {
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("block_list");
+        databaseReference.child(MySocial).child(SocialUser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String Type=dataSnapshot.child("type").getValue().toString();
+                    if(Type.equals("me")){
+                        T_blockedhim.setVisibility(View.VISIBLE);
+                        Messages.setVisibility(View.INVISIBLE);
+                        sendmessage.setVisibility(View.INVISIBLE);
+                        Btn_Block.setVisibility(View.INVISIBLE);
+                        Btn_UnBlock.setVisibility(View.VISIBLE);
+                    }else {
+                        T_blockyou.setVisibility(View.VISIBLE);
+                        Messages.setVisibility(View.INVISIBLE);
+                        sendmessage.setVisibility(View.INVISIBLE);
+                        Btn_Block.setVisibility(View.INVISIBLE);
+                        Btn_UnBlock.setVisibility(View.INVISIBLE);
+                    }
+                }else {
+                    T_blockedhim.setVisibility(View.INVISIBLE);
+                    Messages.setVisibility(View.VISIBLE);
+                    sendmessage.setVisibility(View.VISIBLE);
+                    Btn_Block.setVisibility(View.VISIBLE);
+                    Btn_UnBlock.setVisibility(View.INVISIBLE);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void  init(){
+        T_blockyou=view.findViewById(R.id.T_blockyou);
+        T_blockedhim=view.findViewById(R.id.T_blockedhim);
+        Btn_UnBlock=view.findViewById(R.id.Btn_UnBlock);
+        Btn_Block=view.findViewById(R.id.Btn_Block);
+        mAuth = FirebaseAuth.getInstance();
+        Home.toolbar.setVisibility(View.GONE);
+        MyName = SharedPrefManager.getInstance(getContext()).getMyName();
+        T_User=view.findViewById(R.id.T_User);
+        mytoken = SharedPrefManager.getInstance(getContext()).getDeviceToken();
+        sendmessage=view.findViewById(R.id.Btn_SendMessage);
+        Messages=view.findViewById(R.id.E_Messsage);
+        MySocial=SharedPrefManager.getInstance(getContext()).getSocialId();
+        Bundle a=getArguments();
+        if(a!=null) {
+            usertoken = a.getString("token");
+            SocialUser=a.getString("social");
+            UserName=a.getString("user_name");
+        }
+//        data= FirebaseDatabase.getInstance().getReference("Users");
+        datamsg= FirebaseDatabase.getInstance().getReference("ChatUsers");
+//        dat=FirebaseDatabase.getInstance().getReference("Users").child(userid);
+        T_User.setText(UserName);
+
     }
     public void loadesmassg(){
         DatabaseReference datams=datamsg.child(MySocial).child(SocialUser);
@@ -185,7 +290,8 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
                     map.put("to", SocialUser);
                     map.put("from_token", mytoken);
                     map.put("to_token", usertoken);
-
+                    map.put("recieved_from",MyName);
+                    map.put("send_to", UserName);
                     map.put("date", date);
                     datamsg.child(SocialUser).child(MySocial).push().setValue(map);
                     datamsg.child(MySocial).child(SocialUser).push().setValue(map);
@@ -302,6 +408,7 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
     }
 
     public void SendMessage(final String token, final String Msg){
+        final String UserName=SharedPrefManager.getInstance(getContext()).getMyName();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://wasalniegy.com/pushem.php",
                 new Response.Listener<String>() {
                     @Override
@@ -318,7 +425,7 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-                params.put("title", mAuth.getCurrentUser().getDisplayName());
+                params.put("title", UserName);
 
 
                 params.put("message", Msg);
@@ -353,6 +460,7 @@ public class ChatDetails extends Fragment implements SwipeRefreshLayout.OnRefres
     public void onDetach() {
         super.onDetach();
         Home.Visablty = true;
+        Home.toolbar.setVisibility(View.VISIBLE);
 
     }
 

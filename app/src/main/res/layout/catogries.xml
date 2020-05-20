@@ -35,7 +35,7 @@
                 android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
                 android:layout_below="@+id/vieew"
-                android:layout_height="@dimen/_450sdp"
+                android:layout_height="@dimen/_430sdp"
                 android:layout_centerHorizontal="true">
 
                 <android.support.v7.widget.RecyclerView
@@ -54,7 +54,7 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_70sdp"
+                        android:layout_height="@dimen/_100sdp"
                         android:id="@+id/recycler_banner2"
                         />
 
@@ -71,9 +71,10 @@
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_45sdp"
                 app:fabSize="normal"
-                app:rippleColor="@null"
-                app:backgroundTint="@null"
-
+                android:elevation="0dp"
+                app:elevation="0dp"
+                app:rippleColor="@android:color/transparent"
+                app:backgroundTint="@android:color/transparent"
                 app:maxImageSize="@dimen/_50sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/_20sdp"
